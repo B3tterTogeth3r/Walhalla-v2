@@ -1,0 +1,2 @@
+rootProject.name = "Walhalla-App2"
+include ':app'

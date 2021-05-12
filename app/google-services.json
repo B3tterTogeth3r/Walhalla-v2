@@ -1,0 +1,114 @@
+{
+  "project_info": {
+    "project_number": "159729181477",
+    "firebase_url": "https://walhallaapp.firebaseio.com",
+    "project_id": "walhallaapp",
+    "storage_bucket": "walhallaapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:159729181477:android:1a6e147ddc9e91e4d770cc",
+        "android_client_info": {
+          "package_name": "de.walhalla.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "159729181477-4gdllcosbn0ohmcq7om8oasdfukhm14o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "de.walhalla.app",
+            "certificate_hash": "b777cefb75264ef5475b551259187c1600609e1f"
+          }
+        },
+        {
+          "client_id": "159729181477-pp5gamdboqul4elupsi3trf1n061likj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "de.walhalla.app",
+            "certificate_hash": "dc4c15e231b170419c737c838b85f7b37e530c5c"
+          }
+        },
+        {
+          "client_id": "159729181477-mujqia53vv7252erkt6r9up3c0u3pjgq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIBCTplA_JPq_isnfQLab0jyHu6yi4wLI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "159729181477-mujqia53vv7252erkt6r9up3c0u3pjgq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:159729181477:android:2e817b01e36c79b9d770cc",
+        "android_client_info": {
+          "package_name": "de.walhalla.app2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "159729181477-mujqia53vv7252erkt6r9up3c0u3pjgq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIBCTplA_JPq_isnfQLab0jyHu6yi4wLI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "159729181477-mujqia53vv7252erkt6r9up3c0u3pjgq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:159729181477:android:18ae75cd10c283d7d770cc",
+        "android_client_info": {
+          "package_name": "de.walhallawuerzburg.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "159729181477-mujqia53vv7252erkt6r9up3c0u3pjgq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIBCTplA_JPq_isnfQLab0jyHu6yi4wLI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "159729181477-mujqia53vv7252erkt6r9up3c0u3pjgq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

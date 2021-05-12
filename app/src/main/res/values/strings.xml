@@ -1,0 +1,211 @@
+<resources>
+    <string name="app_name">Walhalla_v2</string>
+
+    <string name="yes">Ja</string>
+    <string name="later">Später</string>
+    <string name="image_description">Bildbeschreibung</string>
+    <string name="description">Beschreibung</string>
+    <string name="exit_app_via_back">Nochmaliges Tippen beendet die App.</string>
+    <string name="msg_token_fmt" translatable="false">fbm</string>
+
+    <!-- #Error Messages -->
+    <string name="error_title">Fehler</string>
+    <string name="error_email_not_verified_message">Die E-Mail Adresse ist noch nicht bestätigt. Soll eine erneute Mail verschickt werden?</string>
+    <string name="error_display">Anzeige Fehlgeschlagen</string>
+    <string name="error_site_messages">Diese Seite ist nicht vorhanden.</string>
+
+    <!-- # FCM Strings -->
+    <string name="msg_unsubscribed">Abmeldung gespeichert</string>
+    <string name="msg_unsubscribe_failed">Abmeldung fehlgeschlagen</string>
+    <string name="msg_subscribe_failed">Speichern fehlgeschlagen</string>
+    <string name="msg_subscribed">Erfolgreich gespeichert</string>
+
+    <!-- # Login -->
+    <string name="login_email">E-Mail</string>
+    <string name="login_create">Account erstellen</string>
+    <string name="login_welcome_back_title">Willkommen zurück!</string>
+    <string name="login_welcome_back_content">Gib dein Passwort ein, um dich wieder einzuloggen.</string>
+    <string name="login_password_control">Erneut das Passwort eingeben</string>
+    <string name="login_sign_up">Registrieren</string>
+    <string name="login_sign_up_layout_auth_select_text">Diese E-Mail-Adresse ist bereits in der Kartei vorhanden. Bitte wähle deinen Namen aus und kontrolliere im Anschluss, ob alle Daten noch korrekt sind.</string>
+    <!-- # Sign up -->
+    <string name="login_username">Nutzername</string>
+    <string name="login_password">Passwort</string>
+    <string name="login_sign_in">Login</string>
+    <string name="login_cancel">Abbrechen</string>
+    <string name="close">Schließen</string>
+    <string name="login_empty">Nutzername/Passwort leer</string>
+    <string name="login_error">Diese kombination aus Nutzername und Passwort ist nicht bekannt.</string>
+    <string name="login_success">Login erfolgreich</string>
+    <string name="login_logout_successful">Erfolgreich Abgemeldet</string>
+    <string name="login_loading">Laden…</string>
+
+    <!-- #Months -->
+    <string name="month_jan">Januar</string>
+    <string name="month_feb">Februar</string>
+    <string name="month_mar">März</string>
+    <string name="month_apr">April</string>
+    <string name="month_may">Mai</string>
+    <string name="month_jun">Juni</string>
+    <string name="month_jul">Juli</string>
+    <string name="month_aug">August</string>
+    <string name="month_sep">September</string>
+    <string name="month_oct">Oktober</string>
+    <string name="month_nov">November</string>
+    <string name="month_dec">Dezember</string>
+
+    <!-- # Program -->
+    <string name="program_dialog_title">Neuen Programmpunkt hinzufügen</string>
+    <string name="program_dialog_date">Datum auswählen</string>
+    <string name="program_dialog_time">Zeit auswählen</string>
+    <string name="program_dialog_end">Für die Abrechnung</string>
+    <string name="program_dialog_addition">Zusatz</string>
+    <string name="program_dialog_before">Zuschuss vorher</string>
+    <string name="program_dialog_after">Maximale Bezuschussung hinterher</string>
+    <string name="program_change_saved">Änderungen gespeichert</string>
+    <string name="program_save_calendar_complete">der Eintrag wurde im Kalender gespeichert</string>
+    <string name="program_dialog_delete_successful">Veranstaltung erfolgreich gelöscht.</string>
+    <string name="program_add">Neue Veranstaltung</string>
+    <string name="program_add_new">Neu</string>
+    <string name="program_edit">Bearbeiten</string>
+    <string name="program_save_in_calendar">In Kalender speichern</string>
+    <string name="program_delete_title">Diese Veranstaltung löschen?</string>
+    <string name="program_button_given_tasks">Verteilte Aufgaben:</string>
+    <string name="program_button_give_tasks">Aufgaben verteilen</string>
+    <string name="program_name_place">Name des Ortes</string>
+    <string name="program_new_saved">Event erstellt.</string>
+    <string name="program_details" translatable="false">Details</string>
+    <string name="program_total">ganztägig</string>
+    <string name="program_later">anschl.</string>
+    <string name="program_dialog_acc_nothing" translatable="false">€ 0,00</string>
+    <string name="program_dialog_time_begin">Veranstaltungsbeginn</string>
+    <string name="program_dialog_time_end">Veranstaltungsende</string>
+    <string name="program_dialog_accounting">Für die Kassenplanung</string>
+    <string name="program_dialog_current">Aktuelle Ausgaben bei dieser Veranstaltung:</string>
+    <string name="program_dialog_meeting">Ist der Eintrag ein Konvent?</string>
+    <string name="program_dialog_place">Die Veranstaltung beginnt adh?</string>
+    <string name="program_dialog_semester">Semesterzugehörigkeit</string>
+    <string name="program_title">Veranstaltungstitel</string>
+    <string name="program_description">Zusatz zur Veranstaltung</string>
+    <string name="link_geocode" translatable="false">https://maps.googleapis.com/maps/api/geocode/json</string>
+
+    <!-- # News -->
+    <string name="messages_open_dialog">Hinzufügen</string>
+    <string name="messages_new_head">Neue Mitteilung</string>
+    <string name="messages_dialog_title">Neue Mitteilung hinzufügen</string>
+    <string name="messages_dialog_first">Titel</string>
+    <string name="messages_dialog_second">Inhalt</string>
+    <!-- #Chargen -->
+    <string name="charge_x">Senior</string>
+    <string name="charge_vx">Consenior</string>
+    <string name="charge_fm">Fuxmajor</string>
+    <string name="charge_xx">Schriftführer</string>
+    <string name="charge_xxx">Kassier</string>
+    <string name="dialog_chargen_title">Ein neues Chargenkabinett hinzufügen</string>
+    <string name="dialog_chargen_edit">Chargen bearbeiten</string>
+    <string name="charge_from">aus </string>
+    <string name="chargen_add">Neue Charge auswählen</string>
+    <!-- #Donation page -->
+    <string name="footer_helper">Die IBAN wird beim anklicken in die Zwischenablage kopiert.</string>
+    <string name="footer_sub_1_title">Konto der Aktivitas</string>
+    <string name="footer_sub_1_content" translatable="false">DE10 7509 0300 0103 0118 10</string>
+    <string name="footer_sub_2_title" translatable="false">Hausbauverein Walhalla e.V.</string>
+    <string name="footer_sub_2_content" translatable="false">DE80 7905 0000 0000 0679 59</string>
+    <string name="footer_sub_3_title" translatable="false">K.St.V. Walhalla</string>
+    <string name="footer_sub_3_content" translatable="false">DE50 7905 0000 0000 2099 57</string>
+    <string name="footer_sub_4_title">Spendenkonto Hausbau</string>
+    <string name="footer_sub_4_content" translatable="false">DE39 7905 0000 0047 3816 11</string>
+    <string name="footer_copy_aktivenkonto">Aktivenkonto kopiert</string>
+    <string name="footer_copy_hbvkonto" translatable="false">Konto des Hausbauvereins kopiert</string>
+    <string name="footer_copy_kstvkonto" translatable="false">Konto des K.St.V. Walhalla kopiert</string>
+    <string name="footer_copy_hbvdonatekonto" translatable="false">Das Spendenkonto des Hausbauvereins kopiert</string>
+
+    <!-- Left-Side-Nav -->
+    <string name="navigation_drawer_open" translatable="false">Open Navigation Drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close Navigation Drawer</string>
+
+    <!-- #Menu items -->
+    <string name="menu_beer">Bier</string>
+    <string name="menu_home">Start</string>
+    <string name="menu_chat">Chat</string>
+    <string name="menu_contacts">Kartei</string>
+    <string name="menu_donation">Spenden</string>
+    <string name="menu_login">Login</string>
+    <string name="menu_settings">Einstellungen</string>
+    <string name="menu_profile">Profil</string>
+    <string name="menu_register">Registrieren</string>
+    <string name="menu_program">Semesterprogramm</string>
+    <string name="menu_chargen">Vorstand der Aktivitas</string>
+    <string name="menu_chargen_phil">Philistervorstand</string>
+    <string name="menu_user">Nutzer</string>
+    <string name="menu_boobies_event">Damenveranstaltung</string>
+    <string name="menu_fuxenstunde">Fuxenstunde</string>
+    <string name="menu_transcript">Protokoll</string>
+    <string name="menu_new_person">Neue Person</string>
+    <string name="menu_kartei">Kartei</string>
+    <string name="menu_account">Kasse</string>
+    <string name="menu_remember">Zahlungserinnerungen</string>
+    <string name="menu_beer_invoice">Bierabrechnung</string>
+    <string name="menu_beer_buy">Biereinkauf</string>
+    <string name="menu_beer_price">Bierpreis</string>
+    <string name="menu_drive">Fahrten</string>
+    <string name="menu_lecture">Vortrag</string>
+    <string name="menu_budget_plan">Budgetplanung</string>
+    <string name="menu_end_semester">Kassenschluss</string>
+    <string name="menu_messages">Neuigkeiten</string>
+    <string name="menu_logout">Logout</string>
+    <string name="menu_donate">Spenden</string>
+    <string name="menu_other">Sonstiges</string>
+    <string name="menu_board_only">Für Chargen</string>
+    <string name="menu_intern">Intern</string>
+    <string name="menu_user_editing">Nutzerverwaltung</string>
+    <string name="menu_profile_edit">Profil bearbeiten</string>
+    <string name="menu_profile_add">Eine neue Person hinzufügen</string>
+    <string name="menu_chargen_bottom">Vorstand</string>
+    <string name="menu_share">Social Media</string>
+    <string name="menu_program_short">Programm</string>
+    <string name="menu_new_semester">Semester bearbeiten</string>
+    <string name="menu_about_us">Über uns</string>
+    <string name="menu_rooms">Zimmer</string>
+    <string name="menu_more">Mehr Informationen</string>
+    <string name="menu_more_board">Der Vorstand</string>
+    <string name="menu_more_history">Die Geschichte der Walhalla</string>
+    <string name="menu_more_frat_wue">Würzburger Verbindungen</string>
+    <string name="menu_more_frat_organisation">Verbindungen in Deutschland</string>
+    <string name="menu_more_board_description">Zuständig für die Leitung und Organisation</string>
+
+    <string name="attention">Achtung</string>
+    <string name="abort_sure">Wirklich abbrechen?</string>
+    <string name="abort">Abbrechen</string>
+
+    <!-- #Greeting -->
+    <string name="greeting_head">Liebe Bundesbrüder, werte Kartellbrüder, verehrte Damen und liebe Leser,</string>
+    <string-array name="greeting_default_text">
+        <item>Der Vorstand der Aktivitas freut sich, Euch und Ihnen dieses Semesterprogramm zu präsentieren.</item>
+        <item>Wir laden im Namen des K.St.V. Walhalla im KV zu Würzburg recht herzlich zu den Veranstaltungen ein. </item>
+        <item>Dieses Programm soll unseren Prinzipien „religio, scientia, amicitia“ gerecht werden. Wir freuen uns über eine intensive Nutzung dieses Angebots und den dadurch gepflegten Kontakt über Generationen hinweg. </item>
+        <item>Allen Studierenden wünschen wir ein erfolgreiches Semester!</item>
+    </string-array>
+    <string-array name="notes_default">
+        <item>Soweit nicht anders angegeben, treffen wir uns zu den Veranstaltungen auf dem Walhallahaus in der Mergentheimer Straße 32. Gäst sind, außer bei Conventen, immer herzlich eingeladen. Auf die sonst so geschätze Anwesenheit von Damen müssen wir bei Kneipen leider verzichten</item>
+        <item>An jedem veranstaltungsfreien Dienstag findet ein Aktivenstammtisch statt. Ort und Zeit gibt der Senior jeweils bekannt.</item>
+        <item>Der Walhallanenstammtisch findet an jedem letzten Freitag des Monats adH statt. Für die Teilnahme ist eine telefonische Anmeldung (0931 534 42) bei unserem lb AH Alfred Fischer erforderlich.</item>
+        <item>Jeden zweiten Mittwoch im Monat trifft sich er KV-Ortszirkel „Schlech“ um 18.00 Uhr in der Schiestl-Stube des Ratskellers.</item>
+        <item>Aktuelle Änderungen zum Programm werden rechtszeitig auf unserer Homepage, via Facebook oder App bekannt gegeben. </item>
+    </string-array>
+    <string name="greeting_end">Vivat, crescat, floreat Walhalla ad multos annos!</string>
+
+    <!-- #Faternity data -->
+    <string name="frat_name">K.St.V. Walhalla im KV zu Würzburg</string>
+    <string name="frat_address">Mergentheimer Straße 32</string>
+    <string name="frat_city">97082 Würzburg</string>
+    <string name="frat_email_x">senior@walhalla-wuerzburg.de</string>
+    <string name="frat_website">https://walhalla-wuerzburg.de</string>
+    <string name="error_close_app">Ein unerwarteter Fehler ist aufgetreten.</string>
+    <string name="ok">ok</string>
+    <string name="ws">Wintersemester</string>
+    <string name="ss">Sommersemester</string>
+    <string name="greeting">Grußwort des Seniors</string>
+    <!-- #since last sort -->
+
+</resources>
