@@ -227,5 +227,7 @@
     <string name="diashow_icon">image slider image</string>
     <string name="diashow_right">image slider right</string>
     <string name="diashow_left">image slider left</string>
+    <string name="error_download">Etwas ist beim herunterladen schief gelaufen. Probiere es später erneut.</string>
+    <string name="charge_aktive">Chargen des</string>
 
 </resources>

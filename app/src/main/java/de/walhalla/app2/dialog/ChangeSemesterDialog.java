@@ -1,5 +1,6 @@
 package de.walhalla.app2.dialog;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -23,6 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import de.walhalla.app2.App;
 import de.walhalla.app2.MainActivity;
 import de.walhalla.app2.R;
 import de.walhalla.app2.firebase.Firebase;
@@ -50,6 +52,7 @@ public class ChangeSemesterDialog extends DialogFragment implements DialogInterf
         layout.removeAllViewsInLayout();
         Toolbar toolbar = view.findViewById(R.id.dialog_toolbar);
         toolbar.setNavigationOnClickListener(v -> dismiss());
+        @SuppressLint("InflateParams")
         RelativeLayout numerPickers = (RelativeLayout) inflater.inflate(R.layout.dialog_item_sem_change, null);
         numerPickers.findViewById(R.id.np_left).setVisibility(View.GONE);
 
@@ -57,10 +60,9 @@ public class ChangeSemesterDialog extends DialogFragment implements DialogInterf
         np_right = numerPickers.findViewById(R.id.np_right);
         String[] time = new String[]{getString(R.string.ws), getString(R.string.ss)};
         np_center.setDisplayedValues(time);
-        np_center.setMaxValue(1);
         np_center.setMinValue(0);
+        np_center.setMaxValue(1);
         np_center.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
-        np_right.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
         layout.addView(numerPickers);
         toolbar.setTitle(R.string.dialog_semester_change);
         String[] year = createYears();
@@ -68,6 +70,21 @@ public class ChangeSemesterDialog extends DialogFragment implements DialogInterf
         np_right.setMaxValue(year.length - 1);
         np_right.setValue(year.length - 1);
         np_right.setDisplayedValues(year);
+        np_right.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+        if ((App.getChosenSemester().getID() % 2) == 0) {
+            np_center.setValue(1);
+            np_right.setValue((App.getChosenSemester().getID() / 2) - 1);
+        } else {
+            np_right.setDisplayedValues(createYearsWS());
+            np_right.setValue(((int) (App.getChosenSemester().getID() / 2f) - 1));
+        }
+        np_center.setOnValueChangedListener((picker, oldVal, newVal) -> {
+            if (newVal == 0) {
+                np_right.setDisplayedValues(createYearsWS());
+            } else if (newVal == 1) {
+                np_right.setDisplayedValues(createYears());
+            }
+        });
         builder.setView(view)
                 .setPositiveButton(R.string.send, this)
                 .setNeutralButton(R.string.abort, this);
@@ -87,6 +104,18 @@ public class ChangeSemesterDialog extends DialogFragment implements DialogInterf
         return years.toArray(new String[0]);
     }
 
+    @NotNull
+    private String[] createYearsWS() {
+        ArrayList<String> years = new ArrayList<>();
+        Calendar date = Calendar.getInstance();
+        int year = date.get(Calendar.YEAR) + 1;
+        for (int i = 1864; i < year; i++) {
+            String number = i + "/" + String.valueOf(i + 1).substring(2);
+            years.add(number);
+        }
+        return years.toArray(new String[0]);
+    }
+
     @Override
     public void onClick(DialogInterface dialog, int which) {
         if (which == DialogInterface.BUTTON_NEUTRAL) {
@@ -100,7 +129,7 @@ public class ChangeSemesterDialog extends DialogFragment implements DialogInterf
             }
             int yearInt = np_right.getValue();
             int semesterID = (int) ((timeInt + yearInt) * 2);
-            Log.i(TAG, "onClick: positive button: get result " + semesterID + " -> send result");
+
             Firebase.FIRESTORE.collection("Semester")
                     .document(String.valueOf(semesterID))
                     .get()
