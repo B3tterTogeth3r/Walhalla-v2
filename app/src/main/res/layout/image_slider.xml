@@ -2,21 +2,28 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="200dp"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp">
-
-    <ImageButton style="@style/Diashow.Left" />
-
-    <ImageButton style="@style/Diashow.Right" />
+    android:paddingStart="8dp"
+    android:paddingTop="16dp"
+    android:paddingEnd="8dp"
+    android:paddingBottom="16dp">
 
     <ImageView
         android:id="@id/diashow_image"
         style="@style/Diashow.Image"
-        android:layout_centerInParent="true"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" />
+        android:contentDescription="@string/image_description"
+        android:scaleType="centerCrop" />
 
     <TextView style="@style/Diashow.Description" />
+
+    <ImageButton
+        style="@style/Diashow.Left"
+        android:layout_above="@id/diashow_image"
+        android:contentDescription="@string/image_description" />
+
+    <ImageButton
+        style="@style/Diashow.Right"
+        android:layout_above="@id/diashow_image"
+        android:contentDescription="@string/image_description" />
 
     <ProgressBar
         android:id="@+id/diashow_progressBar"

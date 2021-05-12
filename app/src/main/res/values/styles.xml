@@ -50,6 +50,7 @@
         <item name="android:visibility">gone</item>
         <item name="android:id">@id/diashow_previous</item>
         <item name="android:padding">8dp</item>
+        <item name="android:layout_above">@id/diashow_image</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_alignParentStart">true</item>
@@ -65,6 +66,7 @@
     <style name="Diashow.Right">
         <item name="android:visibility">gone</item>
         <item name="android:padding">8dp</item>
+        <item name="android:layout_above">@id/diashow_image</item>
         <item name="android:layout_marginEnd">4dp</item>
         <item name="android:id">@id/diashow_next</item>
         <item name="android:layout_width">wrap_content</item>
@@ -79,7 +81,6 @@
     </style>
 
     <style name="Diashow.Image">
-        <item name="android:padding">2dp</item>
         <item name="android:layout_height">180dp</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_alignParentStart">false</item>
@@ -175,7 +176,10 @@
     </style>
 
     <style name="Custom.Layout">
-        <item name="android:layout_margin">8dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
         <item name="android:orientation">vertical</item>
         <item name="android:background">@drawable/border_round</item>
     </style>
@@ -188,11 +192,11 @@
         <item name="android:scaleType">fitCenter</item>
     </style>
 
-    <string name="diashow_icon">image slider image</string>
-    <string name="diashow_right">image slider right</string>
-    <string name="diashow_left">image slider left</string>
-    <item name="diashow_previous" type="id" />
-    <item name="diashow_next" type="id" />
-    <item name="diashow_description" type="id" />
-    <item name="diashow_image" type="id" />
+    <style name="Custom.Numberpicker">
+        <item name="android:layout_marginTop">32dp</item>
+        <item name="android:layout_marginBottom">32dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:id">@id/numberpicker</item>
+        <item name="android:layout_toRightOf">@id/numberpicker</item>
+    </style>
 </resources>

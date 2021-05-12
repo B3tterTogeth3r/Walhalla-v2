@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/greeting_x"
+        style="@style/Custom.Subtitle2"
+        android:layout_width="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@id/greeting_circle"
+        android:gravity="center" />
+
+    <TextView
+        style="@style/Custom.Text"
+        android:layout_width="wrap_content"
+        android:layout_below="@id/greeting_x"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@id/greeting_circle"
+        android:gravity="center"
+        android:text="@string/charge_x_active" />
+
+    <ImageView
+        android:id="@+id/greeting_circle"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_centerInParent="true"
+        android:contentDescription="@string/image_description"
+        android:padding="15dp"
+        android:src="@drawable/wappen_zirkel" />
+
+    <TextView
+        android:id="@+id/greeting_ahx"
+        style="@style/Custom.Subtitle2"
+        android:layout_width="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@id/greeting_circle"
+        android:gravity="center" />
+
+    <TextView
+        style="@style/Custom.Subtitle"
+        android:layout_width="wrap_content"
+        android:layout_below="@id/greeting_ahx"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@id/greeting_circle"
+        android:gravity="center"
+        android:text="@string/charge_x_ah" />
+
+</RelativeLayout>

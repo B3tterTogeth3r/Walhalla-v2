@@ -156,4 +156,8 @@ public class Firebase {
             return SUBSCRIBED_TO.contains(topic);
         }
     }
+
+    public interface Event {
+        void oneSemester(int semester_id);
+    }
 }

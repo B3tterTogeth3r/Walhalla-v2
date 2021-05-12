@@ -28,7 +28,13 @@ import de.walhalla.app2.interfaces.SemesterListener;
 public abstract class CustomFragment extends Fragment implements AuthCustomListener.send, SemesterListener {
     public static AuthCustomListener.send authChange;
     protected final String TAG = "CustomFragment";
+    /**
+     * A list to collect all realtime listeners into the firestore database.
+     */
     public ArrayList<ListenerRegistration> registration;
+    /**
+     * The top Toolbar of the whole application
+     */
     public Toolbar toolbar;
 
     @Override
@@ -41,16 +47,18 @@ public abstract class CustomFragment extends Fragment implements AuthCustomListe
         }
     }
 
+    /**
+     * called after new {@link #registration} got reset and the site can start
+     */
     public abstract void start();
 
     /**
-     * Don't call in the extending classes of this <b>CustomFragment</b>
+     * Don't call in the extending classes of this {@link CustomFragment}
      */
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         authChange = this;
-
         try {
             if (Firebase.AUTHENTICATION.getCurrentUser() != null) {
                 FirebaseUser user = Firebase.AUTHENTICATION.getCurrentUser();
@@ -89,6 +97,8 @@ public abstract class CustomFragment extends Fragment implements AuthCustomListe
         Log.d(TAG, "onViewCreated: running");
         try {
             toolbar = requireActivity().findViewById(R.id.toolbar);
+            toolbar.findViewById(R.id.custom_title).setVisibility(View.GONE);
+            toolbar.setTitle("Walhalla");
             super.onViewCreated(view, savedInstanceState);
         } catch (Exception e) {
             e.printStackTrace();
@@ -98,39 +108,43 @@ public abstract class CustomFragment extends Fragment implements AuthCustomListe
         }
     }
 
+    /**
+     * Create the view and initialize the necessary variables for the site.
+     * <p>
+     * <b>DON'T CALL FUNCTIONS THAT WORK WITH DATA OF {@link #start()} IN HERE</b>
+     *
+     * @param view     inflated View created in {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}
+     * @param inflater LayoutInflater for inflating new Layouts into the view
+     */
     public abstract void createView(View view, LayoutInflater inflater);
 
     public abstract void viewCreated();
 
     /**
-     * Called before {@link #viewCreated() viewCreated} returns a result. It is to format the toolbar in every Subclass the same way.
+     * Called before {@link #viewCreated() viewCreated} returns a result.
+     * This is to format the toolbar in every Subclass the same way.
      */
     public abstract void toolbarContent();
 
     @Override
     public void onAuthChange() {
-        try {
-            Log.d(TAG, "onAuthChange");
-        } finally {
-            authChange();
-        }
+        authChange();
 
     }
 
     /**
-     * The state of the authentication changed in {@link AuthCustomListener customAuthListener}
+     * Called on state change of {@link AuthCustomListener customAuthListener}
      */
     public abstract void authChange();
 
     @Override
     public void displayChangeDone() {
-        try {
-            Log.d(TAG, "displayChangeDone");
-        } finally {
-            displayChange();
-        }
+        displayChange();
     }
 
+    /**
+     * Called if the user changed the semester to display the board or the program of
+     */
     public abstract void displayChange();
 
     @Override
@@ -152,6 +166,8 @@ public abstract class CustomFragment extends Fragment implements AuthCustomListe
      * Called when the Fragment is no longer started.  This is generally
      * tied to {@link #onStop() onStop} of the containing
      * Activity's lifecycle.
+     * <p>
+     * Called after every entry in {@link #registration} got stopped and the list cleared.
      */
     public abstract void stop();
 }

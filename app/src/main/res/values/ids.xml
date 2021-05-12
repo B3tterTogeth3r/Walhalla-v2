@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="table" type="id" />
+    <item name="maps_fragment" type="id" />
+    <item name="diashow_previous" type="id" />
+    <item name="diashow_next" type="id" />
+    <item name="diashow_description" type="id" />
+    <item name="diashow_image" type="id" />
+    <item name="numberpicker" type="id" />
 </resources>

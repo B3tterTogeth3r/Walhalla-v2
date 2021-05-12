@@ -1,18 +1,32 @@
 <resources>
     <string name="app_name">Walhalla_v2</string>
+    <string name="msg_token_fmt" translatable="false">fbm</string>
 
     <string name="yes">Ja</string>
     <string name="later">Später</string>
+    <string name="ok">OK</string>
+    <string name="of">des</string>
+    <string name="clock">Uhr</string>
+    <string name="no">Nein</string>
+    <string name="send">Senden</string>
+    <string name="abort">Abbrechen</string>
+    <string name="abort_sure">Wirklich abbrechen?</string>
+    <string name="ws">Wintersemester</string>
+    <string name="ss">Sommersemester</string>
     <string name="image_description">Bildbeschreibung</string>
     <string name="description">Beschreibung</string>
     <string name="exit_app_via_back">Nochmaliges Tippen beendet die App.</string>
-    <string name="msg_token_fmt" translatable="false">fbm</string>
 
     <!-- #Error Messages -->
+    <string name="attention">Achtung</string>
     <string name="error_title">Fehler</string>
     <string name="error_email_not_verified_message">Die E-Mail Adresse ist noch nicht bestätigt. Soll eine erneute Mail verschickt werden?</string>
     <string name="error_display">Anzeige Fehlgeschlagen</string>
     <string name="error_site_messages">Diese Seite ist nicht vorhanden.</string>
+    <string name="error_close_app">Ein unerwarteter Fehler ist aufgetreten.</string>
+    <string name="error_upload">Beim hochladen ist etwas schief gelaufen. Bitte später erneut probieren.</string>
+    <string name="error_delete_event">Veranstaltung konnte nicht gelöscht werden. Später erneut probieren.</string>
+    <string name="error_semester_not_exist">Etwas ist schief gelaufen. Das gewählt Semester existiert nicht.</string>
 
     <!-- # FCM Strings -->
     <string name="msg_unsubscribed">Abmeldung gespeichert</string>
@@ -55,6 +69,10 @@
     <string name="month_dec">Dezember</string>
 
     <!-- # Program -->
+    <string name="program">Programm</string>
+    <string name="program_time_at">um</string>
+    <string name="dialog_semester_change">Angezeigtes Semester ändern</string>
+    <string name="change_semester">Semester ändern</string>
     <string name="program_dialog_title">Neuen Programmpunkt hinzufügen</string>
     <string name="program_dialog_date">Datum auswählen</string>
     <string name="program_dialog_time">Zeit auswählen</string>
@@ -95,6 +113,7 @@
     <string name="messages_dialog_title">Neue Mitteilung hinzufügen</string>
     <string name="messages_dialog_first">Titel</string>
     <string name="messages_dialog_second">Inhalt</string>
+
     <!-- #Chargen -->
     <string name="charge_x">Senior</string>
     <string name="charge_vx">Consenior</string>
@@ -105,6 +124,9 @@
     <string name="dialog_chargen_edit">Chargen bearbeiten</string>
     <string name="charge_from">aus </string>
     <string name="chargen_add">Neue Charge auswählen</string>
+    <string name="charge_x_active">Aktivensenior</string>
+    <string name="charge_x_ah">Philistersenior</string>
+
     <!-- #Donation page -->
     <string name="footer_helper">Die IBAN wird beim anklicken in die Zwischenablage kopiert.</string>
     <string name="footer_sub_1_title">Konto der Aktivitas</string>
@@ -174,11 +196,8 @@
     <string name="menu_more_frat_organisation">Verbindungen in Deutschland</string>
     <string name="menu_more_board_description">Zuständig für die Leitung und Organisation</string>
 
-    <string name="attention">Achtung</string>
-    <string name="abort_sure">Wirklich abbrechen?</string>
-    <string name="abort">Abbrechen</string>
-
     <!-- #Greeting -->
+    <string name="greeting">Grußwort des Seniors</string>
     <string name="greeting_head">Liebe Bundesbrüder, werte Kartellbrüder, verehrte Damen und liebe Leser,</string>
     <string-array name="greeting_default_text">
         <item>Der Vorstand der Aktivitas freut sich, Euch und Ihnen dieses Semesterprogramm zu präsentieren.</item>
@@ -186,6 +205,7 @@
         <item>Dieses Programm soll unseren Prinzipien „religio, scientia, amicitia“ gerecht werden. Wir freuen uns über eine intensive Nutzung dieses Angebots und den dadurch gepflegten Kontakt über Generationen hinweg. </item>
         <item>Allen Studierenden wünschen wir ein erfolgreiches Semester!</item>
     </string-array>
+    <string name="greeting_end">Vivat, crescat, floreat Walhalla ad multos annos!</string>
     <string-array name="notes_default">
         <item>Soweit nicht anders angegeben, treffen wir uns zu den Veranstaltungen auf dem Walhallahaus in der Mergentheimer Straße 32. Gäst sind, außer bei Conventen, immer herzlich eingeladen. Auf die sonst so geschätze Anwesenheit von Damen müssen wir bei Kneipen leider verzichten</item>
         <item>An jedem veranstaltungsfreien Dienstag findet ein Aktivenstammtisch statt. Ort und Zeit gibt der Senior jeweils bekannt.</item>
@@ -193,7 +213,7 @@
         <item>Jeden zweiten Mittwoch im Monat trifft sich er KV-Ortszirkel „Schlech“ um 18.00 Uhr in der Schiestl-Stube des Ratskellers.</item>
         <item>Aktuelle Änderungen zum Programm werden rechtszeitig auf unserer Homepage, via Facebook oder App bekannt gegeben. </item>
     </string-array>
-    <string name="greeting_end">Vivat, crescat, floreat Walhalla ad multos annos!</string>
+    <string name="home_notes">Hinweise</string>
 
     <!-- #Faternity data -->
     <string name="frat_name">K.St.V. Walhalla im KV zu Würzburg</string>
@@ -201,11 +221,11 @@
     <string name="frat_city">97082 Würzburg</string>
     <string name="frat_email_x">senior@walhalla-wuerzburg.de</string>
     <string name="frat_website">https://walhalla-wuerzburg.de</string>
-    <string name="error_close_app">Ein unerwarteter Fehler ist aufgetreten.</string>
-    <string name="ok">ok</string>
-    <string name="ws">Wintersemester</string>
-    <string name="ss">Sommersemester</string>
-    <string name="greeting">Grußwort des Seniors</string>
+    <string name="upload_complete">Upload abgeschlossen.</string>
     <!-- #since last sort -->
+
+    <string name="diashow_icon">image slider image</string>
+    <string name="diashow_right">image slider right</string>
+    <string name="diashow_left">image slider left</string>
 
 </resources>
