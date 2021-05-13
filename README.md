@@ -16,6 +16,7 @@ Added ability of ChangeSemesterDialog to start with the chosen semester. Also it
 Chargen_phil<br>
 Changed_phil a bit of the old chargen_phil.fragment code, because of the new design of CustomFragment.class
 <p>
+13.05.2021 13:51<br>
 News<br>
 Copied news.fragment from the old app. The dialog including the menu and onclick functions are still disabled, because of the yet missing auth functions I still have to redo in order to create, edit and delete users from inside the app. 
 <p>
