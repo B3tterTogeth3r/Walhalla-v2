@@ -233,5 +233,8 @@
     <string name="charge_vx_phil">Philisterschriftführer</string>
     <string name="charge_fm_phil">Philisterkassier</string>
     <string name="charge_phil_hw">Hausverwalter</string>
+    <string name="draft">Entwurf</string>
+    <string name="internal">Intern</string>
+    <string name="string_public">Öffentlich</string>
 
 </resources>

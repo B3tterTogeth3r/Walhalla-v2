@@ -158,6 +158,7 @@ public abstract class CustomFragment extends Fragment implements AuthCustomListe
         } catch (Exception e) {
             Log.e(TAG, "Something went wrong while removing the snapshot listener", e);
         } finally {
+            toolbar.getMenu().clear();
             stop();
         }
     }
