@@ -229,5 +229,9 @@
     <string name="diashow_left">image slider left</string>
     <string name="error_download">Etwas ist beim herunterladen schief gelaufen. Probiere es später erneut.</string>
     <string name="charge_aktive">Chargen des</string>
+    <string name="charge_x_phil">Philistersenior</string>
+    <string name="charge_vx_phil">Philisterschriftführer</string>
+    <string name="charge_fm_phil">Philisterkassier</string>
+    <string name="charge_phil_hw">Hausverwalter</string>
 
 </resources>
