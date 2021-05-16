@@ -3,6 +3,10 @@ package de.walhalla.app2.fragment.new_semester;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+
+import org.jetbrains.annotations.NotNull;
+
 import de.walhalla.app2.abstraction.CustomFragment;
 
 public class Fragment extends CustomFragment {
@@ -14,7 +18,7 @@ public class Fragment extends CustomFragment {
     }
 
     @Override
-    public void createView(View view, LayoutInflater inflater) {
+    public void createView(@NonNull @NotNull View view, @NonNull @NotNull LayoutInflater inflater) {
 
     }
 

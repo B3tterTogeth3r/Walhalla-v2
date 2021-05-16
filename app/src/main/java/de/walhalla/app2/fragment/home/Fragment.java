@@ -14,6 +14,8 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.google.firebase.firestore.MetadataChanges;
 
 import org.jetbrains.annotations.NotNull;
@@ -31,6 +33,7 @@ import de.walhalla.app2.firebase.Firebase;
 import de.walhalla.app2.interfaces.PictureListener;
 import de.walhalla.app2.model.Semester;
 import de.walhalla.app2.utils.ImageDownload;
+import de.walhalla.app2.utils.Slider;
 
 public class Fragment extends CustomFragment {
     private static final String TAG = "home.Fragment";
@@ -85,7 +88,7 @@ public class Fragment extends CustomFragment {
 
     @SuppressLint("InflateParams")
     @Override
-    public void createView(@NotNull View view, @NotNull LayoutInflater inflater) {
+    public void createView(@NonNull @NotNull View view, @NonNull @NotNull LayoutInflater inflater) {
         //Log.d(TAG, "createView: running");
         LinearLayout l = view.findViewById(R.id.fragment_container);
         l.setOrientation(LinearLayout.VERTICAL);
@@ -159,7 +162,7 @@ public class Fragment extends CustomFragment {
     private void formatImagesResult(@NotNull List<Object> imageList) {
         imageSlider = new ArrayList<>(imageList);
         //Log.e(TAG, "formatImagesResult: imageSlider.size(): "  + imageSlider.size());
-        loadImageSlider(imageLayout, imageSlider);
+        Slider.load(imageLayout, imageSlider);
     }
 
     /**

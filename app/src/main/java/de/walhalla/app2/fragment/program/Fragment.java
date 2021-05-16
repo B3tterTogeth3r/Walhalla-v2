@@ -8,6 +8,8 @@ import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import org.jetbrains.annotations.NotNull;
 
 import de.walhalla.app2.App;
@@ -32,7 +34,7 @@ public class Fragment extends CustomFragment {
     }
 
     @Override
-    public void createView(@NotNull View view, LayoutInflater inflater) {
+    public void createView(@NonNull @NotNull View view, @NonNull @NotNull LayoutInflater inflater) {
         Fragment.f = this;
         TableLayout content = new TableLayout(getContext());
         content.setStretchAllColumns(true);

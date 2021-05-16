@@ -11,6 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.ListenerRegistration;
@@ -74,7 +76,7 @@ public class Fragment extends CustomFragment {
     }
 
     @Override
-    public void createView(@NotNull View view, LayoutInflater inflater) {
+    public void createView(@NonNull @NotNull View view, @NonNull @NotNull LayoutInflater inflater) {
         LinearLayout fragmentLayout = view.findViewById(R.id.fragment_container);
         ScrollView sc = new ScrollView(getContext());
         fragmentLayout.addView(sc);
@@ -224,10 +226,10 @@ public class Fragment extends CustomFragment {
             if (image != null && !image.isEmpty()) {
                 final ImageButton IV = newsImage;
                 final News news = n;
-                new ImageDownload(IV::setImageBitmap, news.getImage(), true).execute();
+                new ImageDownload(IV::setImageBitmap, news.getImage()).execute();
                 IV.setClickable(false);
                 IV.setVisibility(View.VISIBLE);
-                IV.setScaleType(ImageView.ScaleType.CENTER);
+                IV.setScaleType(ImageView.ScaleType.FIT_CENTER);
             }
             /*if (User.hasCharge()) {
                 item.setOnLongClickListener(v -> {

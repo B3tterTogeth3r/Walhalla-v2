@@ -37,8 +37,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 
 import de.walhalla.app2.firebase.Firebase;
@@ -200,7 +198,7 @@ public class MainActivity extends AppCompatActivity implements
         Menu menu = navigationView.getMenu();
         //Public area
         menu.add(0, R.string.menu_home, 0, R.string.menu_home)
-                .setChecked(true)
+                //.setChecked(true)
                 .setIcon(R.drawable.ic_home);
         menu.add(0, R.string.menu_about_us, 0, R.string.menu_about_us)
                 .setIcon(R.drawable.ic_info);
@@ -254,8 +252,6 @@ public class MainActivity extends AppCompatActivity implements
         loginMenu.setGroupCheckable(1, false, true);
 
         Menu moreMenu = menu.addSubMenu(R.string.menu_more);
-        moreMenu.add(1, R.string.menu_more_board, 1, R.string.menu_more_board)
-                .setContentDescription(getString(R.string.menu_more_board_description));
         moreMenu.add(1, R.string.menu_more_history, 1, R.string.menu_more_history);
         moreMenu.add(1, R.string.menu_more_frat_wue, 1, R.string.menu_more_frat_wue);
         moreMenu.add(1, R.string.menu_more_frat_organisation, 1, R.string.menu_more_frat_organisation);
@@ -388,7 +384,6 @@ public class MainActivity extends AppCompatActivity implements
                 //Open site which enables the user to create the whole semester with every necessary field
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new de.walhalla.app2.fragment.new_semester.Fragment()).commit();
-                //NewSemesterDialog.display(getSupportFragmentManager());
                 break;
             //BottomToolBar
             case R.id.menu_share:
@@ -486,16 +481,17 @@ public class MainActivity extends AppCompatActivity implements
      * @param url the link the browser will open
      */
     @Override
-    public void browser(@NotNull String url) {
-        if (url.length() != 0) {
+    public void browser(@Nullable String url) {
+        if (url != null && url.length() != 0) {
             if (!url.startsWith("http://") && !url.startsWith("https://")) {
                 url = "http://" + url;
             }
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            startActivity(browserIntent);
         } else {
             Log.e(TAG, "browser: no link given");
+            url = Variables.Walhalla.WEBSITE;
         }
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(browserIntent);
     }
 
     /**

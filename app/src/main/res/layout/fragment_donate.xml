@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <TextView
+            style="@style/Custom.Text"
+            android:text="@string/footer_helper" />
+
+        <TextView
+            style="@style/Custom.Title"
+            android:gravity="center_horizontal"
+            android:text="@string/footer_sub_1_title" />
+
+        <Button
+            android:id="@+id/konto_aktive"
+            style="@style/Custom.Button"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/footer_sub_1_content" />
+
+        <TextView
+            style="@style/Custom.Title"
+            android:gravity="center_horizontal"
+            android:text="@string/footer_sub_2_title" />
+
+        <Button
+            android:id="@+id/konto_hbv"
+            style="@style/Custom.Button"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/footer_sub_2_content" />
+
+        <TextView
+            style="@style/Custom.Title"
+            android:gravity="center_horizontal"
+            android:text="@string/footer_sub_3_title" />
+
+        <Button
+            android:id="@+id/konto_kstv"
+            style="@style/Custom.Button"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/footer_sub_3_content" />
+
+        <TextView
+            style="@style/Custom.Title"
+            android:gravity="center_horizontal"
+            android:text="@string/footer_sub_4_title" />
+
+        <Button
+            android:id="@+id/konto_hbd_donate"
+            style="@style/Custom.Button"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/footer_sub_4_content" />
+
+    </LinearLayout>
+</RelativeLayout>

@@ -116,7 +116,7 @@ public abstract class CustomFragment extends Fragment implements AuthCustomListe
      * @param view     inflated View created in {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}
      * @param inflater LayoutInflater for inflating new Layouts into the view
      */
-    public abstract void createView(View view, LayoutInflater inflater);
+    public abstract void createView(@NonNull @NotNull View view, @NonNull @NotNull LayoutInflater inflater);
 
     public abstract void viewCreated();
 
@@ -129,7 +129,6 @@ public abstract class CustomFragment extends Fragment implements AuthCustomListe
     @Override
     public void onAuthChange() {
         authChange();
-
     }
 
     /**
@@ -159,6 +158,8 @@ public abstract class CustomFragment extends Fragment implements AuthCustomListe
             Log.e(TAG, "Something went wrong while removing the snapshot listener", e);
         } finally {
             toolbar.getMenu().clear();
+            toolbar.setTitle(R.string.app_name);
+            toolbar.setSubtitle("");
             stop();
         }
     }

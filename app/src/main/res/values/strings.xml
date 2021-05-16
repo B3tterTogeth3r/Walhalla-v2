@@ -236,5 +236,6 @@
     <string name="draft">Entwurf</string>
     <string name="internal">Intern</string>
     <string name="string_public">Öffentlich</string>
+    <string name="menu_about_us_section_3">Kurz und knapp: Das findest du bei uns</string>
 
 </resources>

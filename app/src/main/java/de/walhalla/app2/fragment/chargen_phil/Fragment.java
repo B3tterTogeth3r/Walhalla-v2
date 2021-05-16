@@ -11,6 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.ListenerRegistration;
 
@@ -53,7 +55,7 @@ public class Fragment extends CustomFragment {
     }
 
     @Override
-    public void createView(View view, LayoutInflater inflater) {
+    public void createView(@NonNull @NotNull View view, @NonNull @NotNull LayoutInflater inflater) {
 
     }
 
