@@ -30,6 +30,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -47,12 +48,16 @@ import de.walhalla.app2.firebase.Firebase;
 import de.walhalla.app2.model.Event;
 import de.walhalla.app2.utils.Variables;
 
+import static de.walhalla.app2.firebase.Firebase.ANALYTICS;
+
 @SuppressLint({"StaticFieldLeak", "NonConstantResourceId"})
 public class Details extends DialogFragment implements OnMapReadyCallback {
     protected static final float scale = App.getContext().getResources().getDisplayMetrics().density;
     private static final String TAG = "Details of Program-Event";
+    private static final Bundle analyticsData = new Bundle();
     public static Dialog DIALOG;
     private static Details detailsDialog;
+    private static Date start_date;
     private final Event event;
     private Toolbar toolbar;
 
@@ -63,6 +68,21 @@ public class Details extends DialogFragment implements OnMapReadyCallback {
     public static void display(FragmentManager fragmentManager, Event event) {
         Details.detailsDialog = new Details(event);
         detailsDialog.show(fragmentManager, TAG);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        //Set beginning values for the analyticsData
+        Date end_date = Calendar.getInstance(Variables.LOCALE).getTime();
+        analyticsData.putString(Variables.Analytics.EVENT_ID, event.getId());
+        analyticsData.putString(FirebaseAnalytics.Param.START_DATE, start_date.toString());
+        analyticsData.putString(FirebaseAnalytics.Param.END_DATE, end_date.toString());
+        int duration = (int) (end_date.getTime() - start_date.getTime() / 1000);
+        analyticsData.putString(Variables.Analytics.DURATION, duration + " seconds");
+        ANALYTICS.logEvent(Variables.Analytics.EVENT_DETAILS, analyticsData);
+
+        start_date = Calendar.getInstance(Variables.LOCALE).getTime();
     }
 
     @Override

@@ -33,11 +33,14 @@ import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import de.walhalla.app2.firebase.Firebase;
 import de.walhalla.app2.fragment.home.Fragment;
@@ -47,15 +50,19 @@ import de.walhalla.app2.model.SocialMedia;
 import de.walhalla.app2.utils.Variables;
 import io.github.douglasjunior.androidSimpleTooltip.SimpleTooltip;
 
+import static de.walhalla.app2.firebase.Firebase.ANALYTICS;
+
 @SuppressLint("StaticFieldLeak")
 public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
         BottomNavigationView.OnNavigationItemSelectedListener,
         AuthCustomListener.send, OpenExternal {
     private final static String TAG = "MainActivity";
+    private static final Bundle analyticsData = new Bundle();
     public static AuthCustomListener.send authChange;
     public static View parentLayout;
     public static OpenExternal listener;
+    private static Date start_date;
     private final ArrayList<SocialMedia> webLinks = new ArrayList<>();
     private MenuItem lastItem;
     private DrawerLayout drawerlayout;
@@ -101,6 +108,10 @@ public class MainActivity extends AppCompatActivity implements
         } catch (Exception e) {
             Log.d(TAG, "Listen to social media changes crashed", e);
         }
+        //Set beginning values for the analyticsData
+        start_date = Calendar.getInstance(Variables.LOCALE).getTime();
+        analyticsData.putString(FirebaseAnalytics.Param.START_DATE, start_date.toString());
+        analyticsData.putString(Variables.Analytics.MENU_ITEM_NAME, "home");
     }
 
     @Override
@@ -270,6 +281,9 @@ public class MainActivity extends AppCompatActivity implements
     @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        //For analytics
+        String itemName;
+        //Mark the clicked item Checked.
         if (lastItem != null) {
             lastItem.setChecked(false);
         } else {
@@ -281,10 +295,13 @@ public class MainActivity extends AppCompatActivity implements
         switch (item.getItemId()) {
             //SiteNav Left
             case R.string.menu_login:
-                //LoginDialog.display(getSupportFragmentManager());
+                itemName = getString(R.string.menu_login);
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new de.walhalla.app2.fragment.login.Fragment()).commit();
                 lastItem.setChecked(true);
                 break;
             case R.string.menu_logout:
+                itemName = getString(R.string.menu_logout);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new de.walhalla.app2.fragment.home.Fragment()).commit();
                 Firebase.AUTHENTICATION.signOut();
@@ -299,94 +316,115 @@ public class MainActivity extends AppCompatActivity implements
                 break;
             case R.id.menu_home:
             case R.string.menu_home:
+                itemName = getString(R.string.menu_home);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new de.walhalla.app2.fragment.home.Fragment()).commit();
                 break;
             case R.string.menu_account:
+                itemName = getString(R.string.menu_account);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new de.walhalla.app2.fragment.balance.Fragment()).commit();
                 break;
             case R.string.menu_donate:
+                itemName = getString(R.string.menu_donate);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new de.walhalla.app2.fragment.donate.Fragment()).commit();
                 break;
             case R.id.menu_program:
             case R.string.menu_program:
+                itemName = getString(R.string.menu_program);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new de.walhalla.app2.fragment.program.Fragment()).commit();
                 break;
             case R.id.menu_messages:
             case R.string.menu_messages:
+                itemName = getString(R.string.menu_messages);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new de.walhalla.app2.fragment.news.Fragment()).commit();
                 break;
             case R.id.menu_board:
             case R.string.menu_chargen:
+                itemName = getString(R.string.menu_chargen);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new de.walhalla.app2.fragment.chargen.Fragment()).commit();
                 break;
             case R.string.menu_profile:
+                itemName = getString(R.string.menu_profile);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new de.walhalla.app2.fragment.profile.Fragment()).commit();//TODO null)).commit();
                 break;
             case R.string.menu_beer:
+                itemName = getString(R.string.menu_beer);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new de.walhalla.app2.fragment.drink.Fragment()).commit();
                 break;
             case R.string.menu_kartei:
+                itemName = "toast";
                 Toast.makeText(this, R.string.menu_kartei, Toast.LENGTH_SHORT).show();
                 break;
             case R.string.menu_chargen_phil:
+                itemName = getString(R.string.menu_chargen_phil);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new de.walhalla.app2.fragment.chargen_phil.Fragment()).commit();
                 break;
             case R.string.menu_settings:
+                itemName = getString(R.string.menu_settings);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new de.walhalla.app2.fragment.settings.Fragment()).commit();
                 break;
             case R.string.menu_transcript:
+                itemName = getString(R.string.menu_transcript);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new de.walhalla.app2.fragment.transcript.Fragment()).commit();
-                //Toast.makeText(this, R.string.menu_transcript, Toast.LENGTH_SHORT).show();
                 break;
             case R.string.menu_user:
+                itemName = getString(R.string.menu_user);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new de.walhalla.app2.fragment.user_control.Fragment()).commit();
                 break;
             case R.string.menu_new_person:
+                itemName = getString(R.string.menu_new_person);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new de.walhalla.app2.fragment.new_person.Fragment()).commit();
                 break;
             case R.string.menu_more_board:
+                itemName = "toast";
                 Toast.makeText(this, R.string.menu_more_board, Toast.LENGTH_SHORT).show();
                 break;
             case R.string.menu_more_history:
+                itemName = getString(R.string.menu_more_history);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new de.walhalla.app2.fragment.own_history.Fragment()).commit();
                 break;
             case R.string.menu_more_frat_wue:
+                itemName = getString(R.string.menu_more_frat_wue);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new de.walhalla.app2.fragment.frat_wue.Fragment()).commit();
                 break;
             case R.string.menu_more_frat_organisation:
+                itemName = getString(R.string.menu_more_frat_organisation);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new de.walhalla.app2.fragment.frat_ger.Fragment()).commit();
                 break;
             case R.string.menu_about_us:
+                itemName = getString(R.string.menu_about_us);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new de.walhalla.app2.fragment.about_us.Fragment()).commit();
                 break;
             case R.string.menu_rooms:
+                itemName = getString(R.string.menu_rooms);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new de.walhalla.app2.fragment.rooms.Fragment()).commit();
                 break;
             case R.string.menu_new_semester:
+                itemName = getString(R.string.menu_new_semester);
                 //Open site which enables the user to create the whole semester with every necessary field
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new de.walhalla.app2.fragment.new_semester.Fragment()).commit();
                 break;
             //BottomToolBar
             case R.id.menu_share:
+                itemName = "Share";
                 //Open the social Media as a kind of dialog / tooltip
                 try {
                     lastItem.setChecked(true);
@@ -438,6 +476,7 @@ public class MainActivity extends AppCompatActivity implements
                 socialMedia.show();
                 break;
             default:
+                itemName = "no site clicked";
                 Snackbar.make(parentLayout, R.string.error_site_messages, Snackbar.LENGTH_LONG)
                         .setAction(R.string.close, v -> {
                         })
@@ -449,6 +488,17 @@ public class MainActivity extends AppCompatActivity implements
         lastItem = item;
         //Close drawer
         drawerlayout.closeDrawer(GravityCompat.START);
+        //Set beginning values for the analyticsData
+        Date end_date = Calendar.getInstance(Variables.LOCALE).getTime();
+        analyticsData.putString(FirebaseAnalytics.Param.ITEM_ID, String.valueOf(item.getItemId()));
+        analyticsData.putString(Variables.Analytics.MENU_ITEM_NAME, itemName);
+        analyticsData.putString(FirebaseAnalytics.Param.START_DATE, start_date.toString());
+        analyticsData.putString(FirebaseAnalytics.Param.END_DATE, end_date.toString());
+        int duration = (int) (end_date.getTime() - start_date.getTime() / 1000);
+        analyticsData.putString(Variables.Analytics.DURATION, duration + " seconds");
+        ANALYTICS.logEvent(Variables.Analytics.MENU_ITEM_CLICKED, analyticsData);
+
+        start_date = Calendar.getInstance(Variables.LOCALE).getTime();
         return false;
     }
 

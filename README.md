@@ -95,7 +95,7 @@ Fragments that can edit their displayed content:
 - Copied news.fragment from the old app. The dialog including the menu and onclick functions are still disabled, because of the yet missing auth functions I still have to redo in order to create, edit and delete users from inside the app.
  
 ## New Fragments and Functions
-17.05.2021
+17.05.2021 00:30
 1. About Us
    - Added content to about_us.Fragment. compared to the old one the data is now completely formatted and then displayed via Sites.java
 2. utils.Sites.create()
@@ -114,3 +114,7 @@ Fragments that can edit their displayed content:
    - Filled the content in it and added some relating TODOs to the top
 10. Donate
     - Filled the content, fitted the new design, removed some unnecessary code.
+    
+## Analytics
+17.05.2021 
+Enabled Analytics and put some custom events in the app. I right now just track how often a user is clicking on a event in the program fragment. Also logging which sites the user is opening and how long the user is staying on them.

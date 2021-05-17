@@ -1,8 +1,10 @@
 package de.walhalla.app2.firebase;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -19,26 +21,38 @@ import de.walhalla.app2.interfaces.AuthCustomListener;
 import de.walhalla.app2.model.Person;
 import de.walhalla.app2.utils.Variables;
 
+@SuppressLint("StaticFieldLeak")
 public class Firebase {
     private static final String TAG = "Firebase";
-    private static final boolean[] setters = new boolean[4];
+    private static final boolean[] setters = new boolean[5];
     public static StorageReference IMAGES;
     public static StorageReference RECEIPTS;
     public static FirebaseAuth AUTHENTICATION;
     public static boolean isUserLogin = false;
     public static FirebaseUser user;
     public static FirebaseFirestore FIRESTORE;
+    public static FirebaseAnalytics ANALYTICS;
 
     public static boolean setFirebase() {
         setters[0] = Variables.setAllSemesters();
         setters[1] = Firebase.setFirestoreDB();
         setters[2] = Firebase.setAuth();
         setters[3] = Firebase.setStorage();
-        //Log.d(TAG, "setFirebase: " + setters[0] + " " + setters[1] + " " + setters[2] + " " + setters[3]);
-        return (setters[0] && setters[1] && setters[2] && setters[3]);
+        setters[4] = Firebase.setAnalytics();
+        //Log.d(TAG, "setFirebase: " + setters[0] + " " + setters[1] + " " + setters[2] + " " + setters[3] + " " + setters[4]);
+        return (setters[0] && setters[1] && setters[2] && setters[3] && setters[4]);
     }
 
-    public static boolean setFirestoreDB() {
+    private static boolean setAnalytics() {
+        try {
+            ANALYTICS = FirebaseAnalytics.getInstance(App.getContext());
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
+    private static boolean setFirestoreDB() {
         try {
             FIRESTORE = FirebaseFirestore.getInstance();
         } catch (Exception e) {
@@ -94,6 +108,10 @@ public class Firebase {
             return false;
         }
         return true;
+    }
+
+    public interface Event {
+        void oneSemester(int semester_id);
     }
 
     public abstract static class AuthCustom implements FirebaseAuth.AuthStateListener, FirebaseAuth.IdTokenListener {
@@ -155,9 +173,5 @@ public class Firebase {
         public static boolean isSubscribed(String topic) {
             return SUBSCRIBED_TO.contains(topic);
         }
-    }
-
-    public interface Event {
-        void oneSemester(int semester_id);
     }
 }

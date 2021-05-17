@@ -1,7 +1,6 @@
 package de.walhalla.app2.utils;
 
 import android.content.res.Resources;
-import android.util.Log;
 
 import com.google.firebase.firestore.GeoPoint;
 
@@ -148,5 +147,13 @@ public class Variables {
         public static final String SCHRIFTFUEHRER = "Schriftführer";
         public static final String KASSIER = "Kassier";
         public static final String WEBSITE = "http://walhalla-wuerzburg.de";
+    }
+
+    public static class Analytics {
+        public static final String DURATION = "duration";
+        public static final String MENU_ITEM_NAME = "menu_item_name";
+        public static final String MENU_ITEM_CLICKED = "menu_item_clicked";
+        public static final String EVENT_DETAILS = "event_details";
+        public static final String EVENT_ID = "event_id";
     }
 }

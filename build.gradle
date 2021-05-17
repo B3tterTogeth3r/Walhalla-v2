@@ -5,17 +5,17 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:4.2.0"
-        classpath 'com.google.gms:google-services:4.3.5'
+        classpath "com.android.tools.build:gradle:4.2.1"
+        classpath 'com.google.gms:google-services:4.3.8'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
 
         // Add the dependency for the Performance Monitoring plugin
-        classpath ('com.google.firebase:perf-plugin:1.3.5') {
+        classpath ('com.google.firebase:perf-plugin:1.4.0') {
             exclude group: 'com.google.guava', module: 'guava-jdk5'
         }  // Performance Monitoring plugin
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.5.2' //Firebase Crash Analytics
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.6.1' //Firebase Crash Analytics
     }
 }
 
@@ -25,6 +25,7 @@ allprojects {
         mavenCentral()
         maven { url 'https://jitpack.io'}
         maven { url 'https://maven.google.com' }
+        //noinspection JcenterRepositoryObsolete
         jcenter() // Warning: this repository is going to shut down soon
     }
 }
