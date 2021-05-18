@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:contentDescription="@string/image_description"
+                android:padding="16dp"
+                android:src="@drawable/wappen_round" />
+
+            <TextView
+                style="@style/Custom.Title"
+                android:gravity="center"
+                android:padding="16dp"
+                android:text="@string/login_set_contact_data" />
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:boxBackgroundColor="@color/background">
+
+                    <EditText
+                        android:id="@+id/profile_firstName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:ems="10"
+                        android:hint="@string/profile_first_name"
+                        android:importantForAutofill="no"
+                        android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:boxBackgroundColor="@color/background">
+
+                    <EditText
+                        android:id="@+id/profile_lastName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:ems="10"
+                        android:hint="@string/profile_lastName"
+                        android:importantForAutofill="no"
+                        android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </TableRow>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/profile_float_street"
+                    android:layout_width="270dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    app:boxBackgroundColor="@color/background">
+
+                    <EditText
+                        android:id="@+id/profile_address_street"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/profile_address_street"
+                        android:importantForAutofill="no"
+                        android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/profile_float_number"
+                    android:layout_width="90dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="17dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_toEndOf="@id/profile_float_street"
+                    android:paddingBottom="10dp"
+                    app:boxBackgroundColor="@color/background">
+
+                    <EditText
+                        android:id="@+id/profile_address_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/profile_address_number"
+                        android:importantForAutofill="no"
+                        android:inputType="text"
+                        tools:ignore="TextFields" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/profile_float_zip"
+                    android:layout_width="90dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/profile_float_street"
+                    android:layout_marginBottom="10dp"
+                    app:boxBackgroundColor="@color/background">
+
+                    <EditText
+                        android:id="@+id/profile_address_zip"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/profile_address_zip"
+                        android:importantForAutofill="no"
+                        android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/profile_float_street"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_toEndOf="@id/profile_float_zip"
+                    app:boxBackgroundColor="@color/background">
+
+                    <EditText
+                        android:id="@+id/profile_address_city"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/profile_address_city"
+                        android:importantForAutofill="no"
+                        android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/profile_dob"
+                style="@style/Custom.Button"
+                android:layout_width="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:ems="10"
+                android:text="@string/profile_dob" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                app:boxBackgroundColor="@color/background">
+
+                <EditText
+                    android:id="@+id/profile_mobile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/profile_mobile"
+                    android:importantForAutofill="no"
+                    android:inputType="phone" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/login_next"
+                    style="@style/Custom.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="@string/next" />
+
+                <Button
+                    android:id="@+id/login_previous"
+                    style="@style/Custom.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_alignParentEnd="false"
+                    android:text="@string/back" />
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

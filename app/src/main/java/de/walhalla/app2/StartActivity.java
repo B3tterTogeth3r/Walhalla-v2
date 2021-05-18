@@ -3,6 +3,7 @@ package de.walhalla.app2;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,11 +17,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Map;
+import java.util.HashMap;
 
 import de.walhalla.app2.firebase.Firebase;
 import de.walhalla.app2.model.Semester;
@@ -28,9 +30,9 @@ import de.walhalla.app2.utils.Variables;
 
 public class StartActivity extends AppCompatActivity {
     private static final String TAG = "StartActivity";
-    private final int totalAsks = 7;
-    private final int maxAmount = 98;
-    private int downloadProgress = 0;
+    private final int totalAsks = 8;
+    private final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.getInstance();
+    private float downloadProgress = 0f;
     private ProgressBar progressBar;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -39,12 +41,29 @@ public class StartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_screen);
         progressBar = findViewById(R.id.start_progressBar);
-        Log.i(TAG, "StartActivity should show the shield.");
+        Log.i(TAG, "onCreate: shield should now be shown");
+        // [START Initialize SharedPreferences]
+        Variables.SHARED_PREFERENCES = getSharedPreferences(Variables.SHARED_PREFERENCES_PATH_DEFAULT, MODE_PRIVATE);
+        // [END Initialize SharedPreferences]
+
+        // [START update Variables with Firebase Remote Config]
+        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+                .setMinimumFetchIntervalInSeconds(3600)
+                .build();
+        remoteConfig.setConfigSettingsAsync(configSettings);
+        HashMap<String, Object> defaults = new HashMap<>();
+        defaults.put("current_semester_id", 316);
+        remoteConfig.setDefaultsAsync(defaults);
+        remoteConfig.fetch()
+                .addOnSuccessListener(this, unused -> {
+                    remoteConfig.activate();
+                    updateProgressbar();
+                });
+        // [END update Variables with Firebase Remote Config]
 
         // [START get current FCM token]
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(task -> {
-                    Log.d(TAG, "onCreate: get current fcm token");
                     if (!task.isSuccessful()) {
                         Log.w(TAG, "Fetching FCM registration token failed", task.getException());
                         return;
@@ -54,14 +73,15 @@ public class StartActivity extends AppCompatActivity {
                     String token = task.getResult();
 
                     // Log and toast
-                    String msg = getString(R.string.msg_token_fmt) + " " + token;
-                    Log.d(TAG, msg);
+                    String msg = getString(R.string.msg_token_fmt) + ": " + token;
+                    Log.d(TAG, "onCreate: " + msg);
                     //Toast.makeText(App.getContext(), msg, Toast.LENGTH_SHORT).show();
 
-                    /* Set default notification channel */
-                    Firebase.Messaging.SubscribeTopic(Firebase.Messaging.TOPIC_DEFAULT);
-
-                    updateProgressbar(maxAmount / totalAsks);
+                    if (!Variables.SHARED_PREFERENCES.contains("Messaging")) {
+                        /* Set default notification channel on first app start*/
+                        Firebase.Messaging.SubscribeTopic(Firebase.Messaging.TOPIC_DEFAULT);
+                    }
+                    updateProgressbar();
                 });
         // [END get current FCM token]
 
@@ -71,7 +91,7 @@ public class StartActivity extends AppCompatActivity {
             requestPermissions(new String[]{Manifest.permission.CAMERA},
                     Variables.REQUEST_CODE_ASK_PERMISSIONS);
         }
-        updateProgressbar(maxAmount / totalAsks);
+        updateProgressbar();
         // [END Ask for CAMERA permission]
 
         // [START Ask for CALENDAR permission]
@@ -80,7 +100,7 @@ public class StartActivity extends AppCompatActivity {
             requestPermissions(new String[]{Manifest.permission.WRITE_CALENDAR},
                     124);
         }
-        updateProgressbar(maxAmount / totalAsks);
+        updateProgressbar();
         // [End Ask for CAMERA permission]
 
         // [START check Firebase.setFirebase() results]
@@ -93,7 +113,7 @@ public class StartActivity extends AppCompatActivity {
                 // [START get current Semester]
                 loadCurrentSemester();
                 // [END get current Semester]
-                updateProgressbar(maxAmount / totalAsks);
+                updateProgressbar();
             } catch (Exception e) {
                 Log.d(TAG, "Error loading data from firestore", e);
                 error();
@@ -132,83 +152,71 @@ public class StartActivity extends AppCompatActivity {
     }
 
     private void loadCurrentSemester() {
-        Firebase.FIRESTORE.collection("Current")
-                .document("Semester")
+        final String id = remoteConfig.getString("current_semester_id");
+        Firebase.FIRESTORE.collection("Semester")
+                .document(id)
                 .get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    final String id = String.valueOf(documentSnapshot.get("id"));
-                    updateProgressbar(maxAmount / totalAsks / 2);
-                    if (id != null && !id.equals("0")) {
-                        Firebase.FIRESTORE.collection("Semester")
-                                .document(id)
-                                .get()
-                                .addOnSuccessListener(documentSnapshot1 -> {
-                                    Semester sem = documentSnapshot1.toObject(Semester.class);
-                                    App.setCurrentSemester(sem);
-                                    updateProgressbar(maxAmount / totalAsks / 2);
-                                    loadCurrentChargen(id);
-                                });
-                    } else {
-                        Log.e(TAG, "loadCurrentSemester: found no semester");
-                        error();
-                    }
+                .addOnSuccessListener(documentSnapshot1 -> {
+                    Semester sem = documentSnapshot1.toObject(Semester.class);
+                    App.setCurrentSemester(sem);
                 });
+        updateProgressbar();
+        loadCurrentChargen(id);
     }
 
     private void loadCurrentChargen(String current_semester_id) {
-        Firebase.FIRESTORE.collection("Semester")
-                .document(current_semester_id)
-                .collection("Chargen")
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    ArrayList<String> currentChargen = new ArrayList<>();
-                    for (QueryDocumentSnapshot s : queryDocumentSnapshots) {
-                        currentChargen.add((String) s.get("uid"));
-                    }
-                    App.setCurrentChargen(currentChargen);
-                    updateProgressbar(maxAmount / totalAsks);
-                    loadAdmins();
-                })
-                .addOnFailureListener(e -> {
-                    Log.e(TAG, "loadCurrentChargen: no chargen in current semester " + current_semester_id, e);
-                    updateProgressbar(maxAmount / totalAsks);
-                    loadAdmins();
-                });
+        if (Firebase.USER != null) {
+            Firebase.FIRESTORE.collection("Semester")
+                    .document(current_semester_id)
+                    .collection("Chargen")
+                    .get()
+                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                        for (QueryDocumentSnapshot s : queryDocumentSnapshots) {
+                            if (Firebase.USER.getUid().equals(s.getString("uid"))) {
+                                //give the user editorial rights
+                                SharedPreferences.Editor editor = Variables.SHARED_PREFERENCES.edit();
+                                editor.putStringSet(Variables.Rights.TAG, Variables.Rights.charge());
+                                editor.apply();
+                            }
+                        }
+                    })
+                    .addOnFailureListener(e -> Log.e(TAG, "loadCurrentChargen: no chargen in current semester " + current_semester_id, e));
+        }
+        updateProgressbar();
+        loadAdmins();
     }
 
     private void loadAdmins() {
-        Firebase.FIRESTORE
-                .collection("Editors")
-                .document("private")
-                .get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    try {
-                        Map<String, Object> admins = documentSnapshot.getData();
-                        if (admins != null && !admins.isEmpty()) {
-                            try {
-                                @SuppressWarnings("unchecked")
-                                Map<String, Object> list = (Map<String, Object>) admins.get("roles");
-                                //TODO save them somewhere
-                            } catch (Exception ignored) {
-                            }
+        if (Firebase.USER != null) {
+            Firebase.FIRESTORE
+                    .collection("Editors")
+                    .whereArrayContains("super-admin", Firebase.USER.getUid())
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "loadAdmins: user is an admin");
+                            SharedPreferences.Editor editor = Variables.SHARED_PREFERENCES.edit();
+                            editor.putStringSet(Variables.Rights.TAG, Variables.Rights.admin());
+                            editor.apply();
+                        } else {
+                            Log.d(TAG, "loadAdmins: user is NO admin");
                         }
-                        updateProgressbar(maxAmount / totalAsks);
-                    } catch (Exception ignored) {
-                    }
-                });
+                    });
+        }
+        updateProgressbar();
     }
 
-    private void updateProgressbar(int amount) {
-        downloadProgress += amount;
-        progressBar.setProgress(downloadProgress);
+    private void updateProgressbar() {
+        downloadProgress += (100f / totalAsks);
+        progressBar.setProgress((int) downloadProgress);
         Log.d(TAG, String.valueOf(downloadProgress));
-        if (downloadProgress == maxAmount) {
+        if (downloadProgress == 100) {
             onDone();
         }
     }
 
     public void onDone() {
-        if (downloadProgress == maxAmount) {
+        if (downloadProgress == 100) {
             downloadProgress = 0;
             /*Go to MainActivity */
             Intent mainIntent = new Intent(StartActivity.this, MainActivity.class);

@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import de.walhalla.app2.dialog.login.LoginDialog;
 import de.walhalla.app2.firebase.Firebase;
 import de.walhalla.app2.fragment.home.Fragment;
 import de.walhalla.app2.interfaces.AuthCustomListener;
@@ -296,8 +297,8 @@ public class MainActivity extends AppCompatActivity implements
             //SiteNav Left
             case R.string.menu_login:
                 itemName = getString(R.string.menu_login);
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new de.walhalla.app2.fragment.login.Fragment()).commit();
+                LoginDialog loginDialog = new LoginDialog();
+                loginDialog.show(getSupportFragmentManager(), TAG);
                 lastItem.setChecked(true);
                 break;
             case R.string.menu_logout:

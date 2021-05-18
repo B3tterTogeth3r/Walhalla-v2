@@ -19,7 +19,7 @@
             android:paddingEnd="16dp"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:contentInsetStartWithNavigation="0dp"
-            app:navigationIcon="@drawable/ic_arrow_left"
+            app:navigationIcon="@drawable/ic_close"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -28,7 +28,5 @@
         android:id="@+id/dialog_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/dialog_appbar"
-        android:orientation="vertical"
-        android:padding="10dp"></RelativeLayout>
+        android:paddingTop="?attr/actionBarSize"></RelativeLayout>
 </RelativeLayout>

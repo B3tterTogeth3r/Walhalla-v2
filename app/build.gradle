@@ -78,7 +78,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore'//Firebase Cloud FireStore kinda Database
     implementation 'com.google.firebase:firebase-storage' //Firebase Cloud Storage
     implementation 'com.google.firebase:firebase-database' //Firebase Realtime Database
-    implementation 'com.google.firebase:firebase-messaging' //Send and get Push-Messages
+    implementation 'com.google.firebase:firebase-messaging' //Firebase Cloud Messaging
+    implementation 'com.google.firebase:firebase-config' //Firebase Remote Config
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

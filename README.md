@@ -13,7 +13,8 @@ Select a  commit:
 - [Chargen](#chargen)
 - [Chargen_phil](#chargen_phil)
 - [News](#news)
-- [New Fragments and Functions](#new-fragments-and-functions) (latest)
+- [New Fragments and Functions](#new-fragments-and-functions)
+- [A lot again](#a-lot-again) (latest)
 
 ## ToDo List
 - [ ] Copy and rewrite all necessary code from the old app to enable all public accessible sites without an edit options.
@@ -117,4 +118,16 @@ Fragments that can edit their displayed content:
     
 ## Analytics
 17.05.2021 
+
 Enabled Analytics and put some custom events in the app. I right now just track how often a user is clicking on a event in the program fragment. Also logging which sites the user is opening and how long the user is staying on them.
+
+## A lot again
+18.05.2021 02:05
+1. SharedPreferences: 
+   - Try to use this method for storing extra data about the user on the device longer than just one session. Don't quite know yet how to format the data, but I will figure something out.
+2. Remote Config
+   - Enabled remote Config for the current semester. sometimes it still gets the "default" value, but I think, that was just a debug error. 
+3. Login
+   - Completely redesigned the login and register methods. There are more sites in the dialog now and the code is hopefully easier to read.
+4. StartActivity
+   - Changed the way the signed in user should get rights. The signed in user has "admin" rights, if its uid is to be found in the current chargen document in the firestore database. also a signed in user has admin rights, if its uid is in the "Editor.super-admin" document.

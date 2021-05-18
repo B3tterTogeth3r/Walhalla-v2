@@ -237,5 +237,28 @@
     <string name="internal">Intern</string>
     <string name="string_public">Öffentlich</string>
     <string name="menu_about_us_section_3">Kurz und knapp: Das findest du bei uns</string>
+    <string name="next">Weiter</string>
+    <string name="back">Zurück</string>
+    <string name="profile_mobile">Handynummer</string>
+    <string name="profile_address_city">Stadt</string>
+    <string name="profile_address_zip">PLZ</string>
+    <string name="profile_address_number">Nr</string>
+    <string name="profile_address_street">Straße</string>
+    <string name="profile_lastName">Nachname</string>
+    <string name="profile_first_name">Vorname</string>
+    <string name="login_set_password">Passwort setzen</string>
+    <string name="login_set_contact_data">Kontaktdaten</string>
+    <string name="login_set_frat_data">Daten für die Verbindung</string>
+    <string name="profile_pob">Herkunftsort</string>
+    <string name="profile_description_program_data">Für eine schöne Darstellung im Semesterprogramm sind folgende Daten benötigt:</string>
+    <string name="profile_dob">Geburtstag</string>
+    <string name="profile_in_loco">Bist du am Ort?</string>
+    <string name="profile_first_fraternity">Ist das dein Erstbund?</string>
+    <string name="profile_joined">Beitrittssemester</string>
+    <string name="profile_choose_rank">Wähle deinen Rang aus</string>
+    <string name="email_invalid">Dies ist keine gültige E-Mail-Adresse.</string>
+    <string name="error_login_password_insecure">Das Passwort muss mindestens ein Großbuchstaben, einen Kleinbuchstaben und eine Zahl beinhalten.</string>
+    <string name="error_login_password_length">Das Password muss mindestens 8 Zeichen lang sein.</string>
+    <string name="error_login_password_not_same">Die Passwörter stimmen nicht überein.</string>
 
 </resources>

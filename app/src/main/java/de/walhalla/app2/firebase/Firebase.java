@@ -1,6 +1,7 @@
 package de.walhalla.app2.firebase;
 
 import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -13,7 +14,12 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import de.walhalla.app2.App;
 import de.walhalla.app2.R;
@@ -29,16 +35,16 @@ public class Firebase {
     public static StorageReference RECEIPTS;
     public static FirebaseAuth AUTHENTICATION;
     public static boolean isUserLogin = false;
-    public static FirebaseUser user;
+    public static FirebaseUser USER;
     public static FirebaseFirestore FIRESTORE;
     public static FirebaseAnalytics ANALYTICS;
 
     public static boolean setFirebase() {
         setters[0] = Variables.setAllSemesters();
-        setters[1] = Firebase.setFirestoreDB();
-        setters[2] = Firebase.setAuth();
-        setters[3] = Firebase.setStorage();
-        setters[4] = Firebase.setAnalytics();
+        setters[1] = Firebase.setAnalytics();
+        setters[2] = Firebase.setFirestoreDB();
+        setters[3] = Firebase.setAuth();
+        setters[4] = Firebase.setStorage();
         //Log.d(TAG, "setFirebase: " + setters[0] + " " + setters[1] + " " + setters[2] + " " + setters[3] + " " + setters[4]);
         return (setters[0] && setters[1] && setters[2] && setters[3] && setters[4]);
     }
@@ -66,11 +72,11 @@ public class Firebase {
             AUTHENTICATION = FirebaseAuth.getInstance();
             //com.example.walhalla.firebase.Firebase
             AUTHENTICATION.addAuthStateListener(new AuthCustomListener());
-            Firebase.user = AUTHENTICATION.getCurrentUser();
-            if (user != null) {
+            Firebase.USER = AUTHENTICATION.getCurrentUser();
+            if (USER != null) {
                 Firebase.FIRESTORE
                         .collection("Person")
-                        .whereEqualTo("uid", user.getUid())
+                        .whereEqualTo("uid", USER.getUid())
                         .get()
                         .addOnSuccessListener(queryDocumentSnapshots -> {
                             if (!queryDocumentSnapshots.isEmpty()) {
@@ -84,14 +90,14 @@ public class Firebase {
                                         }
                                     } catch (Exception e) {
                                         AUTHENTICATION.signOut();
-                                        user = null;
+                                        USER = null;
                                     }
                                 }
                             }
                         });
             } else {
                 AUTHENTICATION.signOut();
-                user = null;
+                USER = null;
             }
         } catch (Exception e) {
             return false;
@@ -130,11 +136,9 @@ public class Firebase {
 
     public static class Messaging {
         private static final String TAG = "Firebase.Messaging";
-        private static final String SENDER_ID = "159729181477";
         private static final ArrayList<String> SUBSCRIBED_TO = new ArrayList<>();
         public static String TOPIC_INTERNAL = "internal";
         public static String TOPIC_DEFAULT = "public";
-        private static boolean appLaunch = true;
 
         public static void SubscribeTopic(String topic) {
             FirebaseMessaging.getInstance()
@@ -145,13 +149,12 @@ public class Firebase {
                             msg = App.getContext().getString(R.string.msg_subscribe_failed);
                         } else {
                             SUBSCRIBED_TO.add(topic);
+                            SharedPreferences.Editor editor = Variables.SHARED_PREFERENCES.edit();
+                            editor.putStringSet("Messaging", Firebase.Messaging.getSubscribedTo());
+                            editor.apply();
                         }
                         Log.d(TAG, "SubscribeTopic: " + topic + ": " + msg);
-                        if (!appLaunch) {
-                            Toast.makeText(App.getContext(), msg, Toast.LENGTH_SHORT).show();
-                        } else {
-                            appLaunch = false;
-                        }
+                        Toast.makeText(App.getContext(), msg, Toast.LENGTH_SHORT).show();
                     });
         }
 
@@ -164,12 +167,27 @@ public class Firebase {
                             msg = App.getContext().getString(R.string.msg_unsubscribe_failed);
                         } else {
                             SUBSCRIBED_TO.remove(topic);
+                            SharedPreferences.Editor editor = Variables.SHARED_PREFERENCES.edit();
+                            editor.putStringSet("Messaging", Firebase.Messaging.getSubscribedTo());
+                            editor.apply();
                         }
                         Log.d(TAG, "UnsubscribeTopic: " + topic + ": " + msg);
                         Toast.makeText(App.getContext(), msg, Toast.LENGTH_SHORT).show();
                     });
         }
 
+        @NotNull
+        @Contract(" -> new")
+        private static Set<String> getSubscribedTo() {
+            return new HashSet<>(SUBSCRIBED_TO);
+        }
+
+        /**
+         * test for a subscribed topic
+         *
+         * @param topic name to test
+         * @return if the user is subscribed to the topic
+         */
         public static boolean isSubscribed(String topic) {
             return SUBSCRIBED_TO.contains(topic);
         }

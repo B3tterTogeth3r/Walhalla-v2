@@ -1,15 +1,19 @@
 package de.walhalla.app2.utils;
 
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 
 import com.google.firebase.firestore.GeoPoint;
 
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 import de.walhalla.app2.App;
 import de.walhalla.app2.R;
@@ -19,8 +23,8 @@ public class Variables {
     public static final Locale LOCALE = new Locale("de", "DE");
     public static final String EDIT = "edit";
     public static final String ADD = "add";
-    public static final String DETAILS = "details";
     public static final String DELETE = "delete";
+    public static final String DETAILS = "details";
     public static final String SHOW = "show";
     public static final String[] MONTHS = {App.getContext().getString(R.string.month_jan),
             App.getContext().getString(R.string.month_feb), App.getContext().getString(R.string.month_mar),
@@ -33,6 +37,8 @@ public class Variables {
     public static final long ONE_MEGABYTE = 1024 * 1024 * 2;
     public static final float SCALE = App.getContext().getResources().getDisplayMetrics().density;
     public static ArrayList<Semester> SEMESTER_ARRAY_LIST;
+    public static SharedPreferences SHARED_PREFERENCES;
+    public static String SHARED_PREFERENCES_PATH_DEFAULT;
 
     public static boolean setAllSemesters() {
         try {
@@ -155,5 +161,25 @@ public class Variables {
         public static final String MENU_ITEM_CLICKED = "menu_item_clicked";
         public static final String EVENT_DETAILS = "event_details";
         public static final String EVENT_ID = "event_id";
+    }
+
+    public static class Rights {
+        public static final String TAG = "Rights";
+        public static final String ADD = "add";
+        public static final String EDIT = "edit";
+        public static final String DELETE = "delete";
+        public static final String WRITE = "write";
+
+        @NotNull
+        @Contract(" -> new")
+        public static Set<String> charge() {
+            return new HashSet<>(Arrays.asList(ADD, EDIT, DELETE));
+        }
+
+        @NotNull
+        @Contract(" -> new")
+        public static Set<String> admin() {
+            return new HashSet<>(Arrays.asList(ADD, EDIT, DELETE, WRITE));
+        }
     }
 }
