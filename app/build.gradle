@@ -10,8 +10,8 @@ android {
     defaultConfig {
         applicationId "de.walhalla.app2"
         minSdkVersion 26
-        versionCode 1_1_17052021
-        versionName "Alpha 1.1 17.05.2021"
+        versionCode 2_2_2605202
+        versionName "Alpha 2.2 26.05.2021"
         multiDexEnabled true
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"

@@ -53,7 +53,7 @@ public class Slider {
                     public void descriptionDone(String description) {
                         descriptionTV.setText(description);
                     }
-                }, imagePath, false, true).execute();
+                }, imagePath, true).execute();
                 if (size != 1) {
                     left.setVisibility(View.VISIBLE);
                     right.setVisibility(View.VISIBLE);
@@ -73,7 +73,7 @@ public class Slider {
                             public void descriptionDone(String description) {
                                 descriptionTV.setText(description);
                             }
-                        }, imagePath2, false, true).execute();
+                        }, imagePath2, true).execute();
                     });
                     right.setOnClickListener(v -> {
                         if (imagePosition == size - 1) {
@@ -91,7 +91,7 @@ public class Slider {
                             public void descriptionDone(String description) {
                                 descriptionTV.setText(description);
                             }
-                        }, imagePath2, false, true).execute();
+                        }, imagePath2, true).execute();
                     });
                     //TODO Swipe gestures
                     //TODO Automatic image change

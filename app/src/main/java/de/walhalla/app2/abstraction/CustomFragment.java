@@ -25,6 +25,20 @@ import de.walhalla.app2.firebase.Firebase;
 import de.walhalla.app2.interfaces.AuthCustomListener;
 import de.walhalla.app2.interfaces.SemesterListener;
 
+/**
+ * This class is so that every fragment inside the app looks the same,
+ * has similar runtime and a similar looking basic code for better understanding.
+ * Because every {@code fragment} inside the app needs the same start method,
+ * the same variable for the {@link #toolbar}, should register all its
+ * {@link #registration realtimelistener} in the same list, so they can be all
+ * stopped at {@link #onStop()} this super class was created.
+ *
+ * @author B3tterTogeth3r
+ * @version 1.4
+ * @see de.walhalla.app2.interfaces.AuthCustomListener.send
+ * @see de.walhalla.app2.interfaces.SemesterListener
+ * @since 1.7
+ */
 public abstract class CustomFragment extends Fragment implements AuthCustomListener.send, SemesterListener {
     public static AuthCustomListener.send authChange;
     protected final String TAG = "CustomFragment";
@@ -36,16 +50,6 @@ public abstract class CustomFragment extends Fragment implements AuthCustomListe
      * The top Toolbar of the whole application
      */
     public Toolbar toolbar;
-
-    @Override
-    public void onStart() {
-        try {
-            super.onStart();
-            registration = new ArrayList<>();
-        } finally {
-            start();
-        }
-    }
 
     /**
      * called after new {@link #registration} got reset and the site can start
@@ -84,7 +88,6 @@ public abstract class CustomFragment extends Fragment implements AuthCustomListe
     }
 
     @Nullable
-    @org.jetbrains.annotations.Nullable
     @Override
     public View onCreateView(@NonNull @NotNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment, container, false);
@@ -105,6 +108,34 @@ public abstract class CustomFragment extends Fragment implements AuthCustomListe
         } finally {
             viewCreated();
             toolbarContent();
+        }
+    }
+
+    @Override
+    public void onStart() {
+        try {
+            super.onStart();
+            registration = new ArrayList<>();
+        } finally {
+            start();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        try {
+            for (ListenerRegistration reg : registration) {
+                reg.remove();
+            }
+            registration.clear();
+        } catch (Exception e) {
+            Log.e(TAG, "Something went wrong while removing the snapshot listener", e);
+        } finally {
+            toolbar.getMenu().clear();
+            toolbar.setTitle(R.string.app_name);
+            toolbar.setSubtitle("");
+            stop();
         }
     }
 
@@ -145,24 +176,6 @@ public abstract class CustomFragment extends Fragment implements AuthCustomListe
      * Called if the user changed the semester to display the board or the program of
      */
     public abstract void displayChange();
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        try {
-            for (ListenerRegistration reg : registration) {
-                reg.remove();
-            }
-            registration.clear();
-        } catch (Exception e) {
-            Log.e(TAG, "Something went wrong while removing the snapshot listener", e);
-        } finally {
-            toolbar.getMenu().clear();
-            toolbar.setTitle(R.string.app_name);
-            toolbar.setSubtitle("");
-            stop();
-        }
-    }
 
     /**
      * Called when the Fragment is no longer started.  This is generally

@@ -17,6 +17,8 @@ Select a  commit:
 - [A lot again](#a-lot-again) (latest)
 
 ## ToDo List
+- [ ] Comment every method, function, constructor and class itself for better understandability in the future.
+- [ ] Find a way to save more data into Firebase Auth and Firestore and write a Cloud Function to connect them all.
 - [ ] Copy and rewrite all necessary code from the old app to enable all public accessible sites without an edit options.
 - [ ] read, copy, do and maybe extend old ToDo list from the [old account website](https://tobi.frdy.eu/neu/todo.php) by B3tterTogeth3r.
 - [ ] Find a way to save a checkbox in Firestore and recognise it in the app.
@@ -50,7 +52,7 @@ The names of the public fragments without their edit buttons and functions:
   - A list of news is shown. If a new one is written into Firestore, the user will get a push message or, if the app is open, the list will automatically update itself.
 - [x] own_history
 - [ ] program
-  - A list with all the events in the selected semester is shown. Every element is clickable. 
+  - [x] A list with all the events in the selected semester is shown. Every element is clickable. 
   - On click a dialog will open and show a detailed version of the event, including but not limited with the approximated end time and the locations address.
 - [x] rooms
 
@@ -131,3 +133,37 @@ Enabled Analytics and put some custom events in the app. I right now just track 
    - Completely redesigned the login and register methods. There are more sites in the dialog now and the code is hopefully easier to read.
 4. StartActivity
    - Changed the way the signed in user should get rights. The signed in user has "admin" rights, if its uid is to be found in the current chargen document in the firestore database. also a signed in user has admin rights, if its uid is in the "Editor.super-admin" document.
+
+## A little bit new and many, many comments.
+27.05.2021 01:03
+1. Remote config:
+   - Now using the variables for the donation IBANs and the current semester from RC.
+2. Image slider & ImageDownload:
+   - Changed the way a watermark gets displayed.
+3. Login, LoginDialog
+   - Finished the login routines. 
+4. ChangeSemesterDialog
+   - The design is new. It got a new headline. The user can choose the year and in the year the semester. Depending on the used constructor the Dialog changes the "chosenSemester" or joined semester of the user.
+5. Comments
+   1. Person.class
+      - commented every method, function, constructor and the class itself
+   2. Semester.class
+      - commented every method, function, constructor and the class itself
+   3. News.class
+      - commented every method, function, constructor and the class itself
+   4. Event.class
+      - commented every method, function, constructor and the class itself
+   5. Rank.class
+      - commented every method, function, constructor and the class itself
+   6. SocialMedia.class
+      - commented every method, function, constructor and the class itself
+   7. CustomFragment.class
+      - commented every method, function, constructor and the class itself
+   8. OpenExternal.class
+      - commented every listener 
+   9. PictureListener.class
+       - commented every listener and the interface itself
+6. Crashes
+   - because of some changes to the Person.class the app now crashes from time to time. This error has to be found in every class, the data structure in firestore adjusted and some other functions have to be adjusted to.
+7. TODO
+    - solved and added a couple of todos in some classes, the total amount is still the same

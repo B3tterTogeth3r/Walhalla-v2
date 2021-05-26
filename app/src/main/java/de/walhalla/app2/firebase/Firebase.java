@@ -81,8 +81,8 @@ public class Firebase {
                         .addOnSuccessListener(queryDocumentSnapshots -> {
                             if (!queryDocumentSnapshots.isEmpty()) {
                                 for (DocumentSnapshot snapshot : queryDocumentSnapshots) {
-                                    Person p = snapshot.toObject(Person.class);
                                     try {
+                                        Person p = snapshot.toObject(Person.class);
                                         if (p != null) {
                                             //TODO User.setData(p, Objects.requireNonNull(user.getEmail()));
                                         } else {

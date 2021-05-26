@@ -22,15 +22,14 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
-
 import de.walhalla.app2.firebase.Firebase;
 import de.walhalla.app2.model.Semester;
 import de.walhalla.app2.utils.Variables;
 
 public class StartActivity extends AppCompatActivity {
     private static final String TAG = "StartActivity";
-    private final int totalAsks = 8;
+    @SuppressWarnings("FieldCanBeLocal")
+    private final int totalAsks = 9;
     private final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.getInstance();
     private float downloadProgress = 0f;
     private ProgressBar progressBar;
@@ -44,19 +43,28 @@ public class StartActivity extends AppCompatActivity {
         Log.i(TAG, "onCreate: shield should now be shown");
         // [START Initialize SharedPreferences]
         Variables.SHARED_PREFERENCES = getSharedPreferences(Variables.SHARED_PREFERENCES_PATH_DEFAULT, MODE_PRIVATE);
+        if (Variables.SHARED_PREFERENCES.getAll() == null) {
+            Log.e(TAG, "onCreate: Fetching shared preferences did not work");
+            Toast.makeText(getApplicationContext(), "Fetching shared preferences did not work", Toast.LENGTH_LONG).show();
+        }
+        updateProgressbar();
         // [END Initialize SharedPreferences]
 
         // [START update Variables with Firebase Remote Config]
         FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
-                .setMinimumFetchIntervalInSeconds(3600)
+                .setMinimumFetchIntervalInSeconds(0)
                 .build();
         remoteConfig.setConfigSettingsAsync(configSettings);
-        HashMap<String, Object> defaults = new HashMap<>();
-        defaults.put("current_semester_id", 316);
-        remoteConfig.setDefaultsAsync(defaults);
-        remoteConfig.fetch()
-                .addOnSuccessListener(this, unused -> {
-                    remoteConfig.activate();
+        remoteConfig.setDefaultsAsync(R.xml.remote_config_defaults);
+        remoteConfig.fetchAndActivate()
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        boolean updated = task.getResult();
+                        Log.d(TAG, "onCreate: Config params updated: " + updated +
+                                "\nFetch and activate succeeded");
+                    } else {
+                        Log.e(TAG, "onCreate: Fetch failed");
+                    }
                     updateProgressbar();
                 });
         // [END update Variables with Firebase Remote Config]
@@ -152,19 +160,22 @@ public class StartActivity extends AppCompatActivity {
     }
 
     private void loadCurrentSemester() {
-        final String id = remoteConfig.getString("current_semester_id");
+        String id = remoteConfig.getString("current_semester_id");
+
         Firebase.FIRESTORE.collection("Semester")
                 .document(id)
                 .get()
-                .addOnSuccessListener(documentSnapshot1 -> {
-                    Semester sem = documentSnapshot1.toObject(Semester.class);
+                .addOnSuccessListener(documentSnapshot -> {
+                    Semester sem = documentSnapshot.toObject(Semester.class);
                     App.setCurrentSemester(sem);
+                    updateProgressbar();
+                    loadCurrentChargen();
                 });
-        updateProgressbar();
-        loadCurrentChargen(id);
     }
 
-    private void loadCurrentChargen(String current_semester_id) {
+    private void loadCurrentChargen() {
+        String current_semester_id = remoteConfig.getString("current_semester_id");
+
         if (Firebase.USER != null) {
             Firebase.FIRESTORE.collection("Semester")
                     .document(current_semester_id)
@@ -179,11 +190,18 @@ public class StartActivity extends AppCompatActivity {
                                 editor.apply();
                             }
                         }
+                        updateProgressbar();
+                        loadAdmins();
                     })
-                    .addOnFailureListener(e -> Log.e(TAG, "loadCurrentChargen: no chargen in current semester " + current_semester_id, e));
+                    .addOnFailureListener(e -> {
+                        updateProgressbar();
+                        loadAdmins();
+                        Log.e(TAG, "loadCurrentChargen: no chargen in current semester " + current_semester_id, e);
+                    });
+        } else {
+            updateProgressbar();
+            loadAdmins();
         }
-        updateProgressbar();
-        loadAdmins();
     }
 
     private void loadAdmins() {
@@ -201,9 +219,11 @@ public class StartActivity extends AppCompatActivity {
                         } else {
                             Log.d(TAG, "loadAdmins: user is NO admin");
                         }
+                        updateProgressbar();
                     });
+        } else {
+            updateProgressbar();
         }
-        updateProgressbar();
     }
 
     private void updateProgressbar() {
@@ -224,5 +244,4 @@ public class StartActivity extends AppCompatActivity {
             finish();
         }
     }
-
 }

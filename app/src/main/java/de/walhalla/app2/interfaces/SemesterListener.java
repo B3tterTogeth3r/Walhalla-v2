@@ -11,6 +11,6 @@ public interface SemesterListener {
         displayChangeDone();
     }
 
-    default void joinedSelectionDone() {
+    default void joinedSelectionDone(Semester chosenSemester) {
     }
 }

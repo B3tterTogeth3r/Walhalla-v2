@@ -10,6 +10,8 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+
 import org.jetbrains.annotations.NotNull;
 
 import de.walhalla.app2.R;
@@ -21,15 +23,14 @@ import de.walhalla.app2.abstraction.CustomFragment;
  */
 @SuppressLint({"StaticFieldLeak", "InflateParams"})
 public class Fragment extends CustomFragment {
-    @SuppressWarnings("unused")
     private static final String TAG = "donate.Fragment";
     public static ClipboardManager clipboardManager;
     protected static Button aktive, hbv, kstv, hbv_donate;
     protected static View view;
+    private final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.getInstance();
 
     @Override
     public void start() {
-
     }
 
     @Override
@@ -56,7 +57,15 @@ public class Fragment extends CustomFragment {
 
     @Override
     public void viewCreated() {
-
+        //Set button text with remote config variables
+        String iban_active = remoteConfig.getString("iban_active");
+        aktive.setText(iban_active);
+        String iban_hbv = remoteConfig.getString("iban_hbv");
+        hbv.setText(iban_hbv);
+        String iban_kstv = remoteConfig.getString("iban_kstv");
+        kstv.setText(iban_kstv);
+        String iban_donations = remoteConfig.getString("iban_donations");
+        hbv_donate.setText(iban_donations);
     }
 
     @Override

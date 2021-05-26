@@ -13,11 +13,11 @@ import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.StringDef;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -25,40 +25,47 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 import de.walhalla.app2.R;
+import de.walhalla.app2.interfaces.Kinds;
 import de.walhalla.app2.model.Person;
 
+import static de.walhalla.app2.interfaces.Kinds.CONTACT_INFORMATION;
+import static de.walhalla.app2.interfaces.Kinds.CONTROL_DATA;
+import static de.walhalla.app2.interfaces.Kinds.FRATERNITY_DATA;
+import static de.walhalla.app2.interfaces.Kinds.NameOfState;
+import static de.walhalla.app2.interfaces.Kinds.SET_IMAGE;
+import static de.walhalla.app2.interfaces.Kinds.SET_PASSWORD;
+import static de.walhalla.app2.interfaces.Kinds.SIGN_IN;
+import static de.walhalla.app2.interfaces.Kinds.START;
+
+/**
+ * @since 2.0
+ */
 @SuppressLint("StaticFieldLeak")
 public class LoginDialog extends DialogFragment {
-    public static final String START = "start";
-    public static final String SIGN_IN = "sign_in";
-    public static final String SET_PASSWORD = "set_password";
-    public static final String CONTACT_INFORMATION = "set_contact_information";
-    public static final String FRATERNITY_DATA = "set_fraternity_data";
-    public static final String SET_IMAGE = "set_image";
-    public static final String CONTROL_DATA = "control_data";
     private static final String TAG = "LoginDialog";
-    public static RelativeLayout layout;
-    public static LayoutInflater inflater;
-    public static ViewGroup root;
+    protected static RelativeLayout layout;
+    protected static LayoutInflater inflater;
+    protected static ViewGroup root;
     /**
-     * An icon to show the user that its input is in an ok format
+     * The icon to show the user that its input is in an ok format
      */
-    public static Drawable allGood;
+    protected static Drawable allGood;
     /**
-     * An icon to show the user that its input is <b>not</b> in an ok format
+     * The icon to show the user that its input is <b>not</b> in an ok format
      */
-    public static Drawable error;
-    public static String userPW;
-    public static Person user = new Person();
+    protected static Drawable error;
+    protected static String userPW;
+    protected static Person user = new Person();
+    protected static FragmentManager fragmentManager;
 
     /**
      * This function sets the UI for the user while trying to
-     * log in or sign up into the app. The String {@link StateName kind }
+     * log in or sign up into the app. The String {@link NameOfState kind }
      * has to be one of the set Variables for the ui to display
      * anything at all.
      */
     @Contract(pure = true)
-    public void setState(@NotNull @StateName String kind) {
+    protected void setState(@NotNull @Kinds.NameOfState String kind) {
         try {
             layout.removeAllViewsInLayout();
             layout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.
@@ -92,6 +99,7 @@ public class LoginDialog extends DialogFragment {
                 break;
             case FRATERNITY_DATA:
                 //set data, the frat needs like pob, major, joined semester and rank.
+                fragmentManager = getChildFragmentManager();
                 layout.addView(new Load(inflater, root).setFratData());
                 break;
             case SET_IMAGE:
@@ -107,7 +115,16 @@ public class LoginDialog extends DialogFragment {
     }
 
     /**
-     * Make the dialog full screen
+     * Make the dialog full screen with {@link #onStart()}
+     */
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.AppTheme_FullScreenDialog);
+    }
+
+    /**
+     * Make the dialog full screen with {@link #onCreate(Bundle)}
      */
     @Override
     public void onStart() {
@@ -119,12 +136,6 @@ public class LoginDialog extends DialogFragment {
             Objects.requireNonNull(DIALOG.getWindow()).setLayout(width, height);
             DIALOG.getWindow().setWindowAnimations(R.style.AppTheme_Slide);
         }
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setStyle(DialogFragment.STYLE_NORMAL, R.style.AppTheme_FullScreenDialog);
     }
 
     @Nullable
@@ -154,24 +165,6 @@ public class LoginDialog extends DialogFragment {
 
         error = DrawableCompat.wrap(Objects.requireNonNull(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_error_outline)));
         DrawableCompat.setTint(error, Color.RED);
-    }
-
-    /**
-     * To get less errors while programming I chose to make
-     * the function that way. The function does only work
-     * with a value of the following strings:
-     * <ul>
-     *     <li>START</li>
-     *     <li>SIGN_IN</li>
-     *     <li>SET_PASSWORD</li>
-     *     <li>CONTACT_INFORMATION</li>
-     *     <li>FRATERNITY_DATA</li>
-     *     <li>SET_IMAGE</li>
-     *     <li>CONTROL_DATA</li>
-     * </ul>
-     */
-    @StringDef({START, SIGN_IN, SET_PASSWORD, CONTACT_INFORMATION, FRATERNITY_DATA, SET_IMAGE, CONTROL_DATA})
-    public @interface StateName {
     }
 
 }

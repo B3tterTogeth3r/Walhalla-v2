@@ -29,15 +29,22 @@ import de.walhalla.app2.MainActivity;
 import de.walhalla.app2.R;
 import de.walhalla.app2.firebase.Firebase;
 import de.walhalla.app2.interfaces.SemesterListener;
+import de.walhalla.app2.model.Person;
 import de.walhalla.app2.model.Semester;
 
 public class ChangeSemesterDialog extends DialogFragment implements DialogInterface.OnClickListener {
     private static final String TAG = "ChangeSemesterDialog";
     private final SemesterListener listener;
     private NumberPicker np_right, np_center;
+    private String kind;
 
     public ChangeSemesterDialog(SemesterListener listener) {
         this.listener = listener;
+    }
+
+    public ChangeSemesterDialog(SemesterListener listener, String kind) {
+        this.listener = listener;
+        this.kind = kind;
     }
 
     @NonNull
@@ -137,7 +144,11 @@ public class ChangeSemesterDialog extends DialogFragment implements DialogInterf
                         if (documentSnapshot != null && documentSnapshot.exists()) {
                             try {
                                 Semester s = documentSnapshot.toObject(Semester.class);
-                                listener.selectorDone(s);
+                                if (kind.equals(Person.JOINED)) {
+                                    listener.joinedSelectionDone(s);
+                                } else {
+                                    listener.selectorDone(s);
+                                }
                             } catch (Exception e) {
                                 Log.e(TAG, "onSuccess: selected semester does not exist");
                                 Snackbar.make(MainActivity.parentLayout, R.string.error_semester_not_exist, Snackbar.LENGTH_LONG).show();

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<defaultsMap>
+    <entry>
+        <key>current_semester_id</key>
+        <value>316</value>
+    </entry>
+    <entry>
+        <key>iban_active</key>
+        <value>DE10 7509 0300 0103 0118 10</value>
+    </entry>
+    <entry>
+        <key>iban_hbv</key>
+        <value>DE80 7905 0000 0000 0679 59</value>
+    </entry>
+    <entry>
+        <key>iban_kstv</key>
+        <value>DE50 7905 0000 0000 2099 57</value>
+    </entry>
+    <entry>
+        <key>iban_donations</key>
+        <value>DE39 7905 0000 0047 3816 11</value>
+    </entry>
+</defaultsMap>

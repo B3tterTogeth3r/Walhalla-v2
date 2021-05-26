@@ -1,13 +1,17 @@
 package de.walhalla.app2.dialog.login;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -18,24 +22,47 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import de.walhalla.app2.App;
 import de.walhalla.app2.MainActivity;
 import de.walhalla.app2.R;
+import de.walhalla.app2.dialog.ChangeSemesterDialog;
 import de.walhalla.app2.firebase.Firebase;
+import de.walhalla.app2.interfaces.SemesterListener;
 import de.walhalla.app2.model.Person;
+import de.walhalla.app2.model.Rank;
+import de.walhalla.app2.model.Semester;
 import de.walhalla.app2.utils.Variables;
 
+import static de.walhalla.app2.interfaces.Kinds.CONTACT_INFORMATION;
+import static de.walhalla.app2.interfaces.Kinds.CONTROL_DATA;
+import static de.walhalla.app2.interfaces.Kinds.FRATERNITY_DATA;
+import static de.walhalla.app2.interfaces.Kinds.SET_PASSWORD;
+import static de.walhalla.app2.interfaces.Kinds.SIGN_IN;
+import static de.walhalla.app2.interfaces.Kinds.START;
+
+/**
+ * @since 2.1
+ */
 public class Load extends LoginDialog {
     private static final String TAG = "Load";
+    private final ArrayList<Rank> ranks = new ArrayList<>();
     LayoutInflater inflater;
     ViewGroup root;
+    private Button rank;
+    private LinearLayout settingsLayout;
 
+    /**
+     * @see #Load(LayoutInflater, ViewGroup)
+     */
     public Load() {
     }
 
@@ -49,6 +76,12 @@ public class Load extends LoginDialog {
         this.root = root;
     }
 
+    /**
+     * Checks via the android native pattern recognition the input
+     *
+     * @param email the input to check
+     * @return true, if the input is an email, false, if input isn't
+     */
     private boolean isValidEmail(CharSequence email) {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
@@ -137,6 +170,7 @@ public class Load extends LoginDialog {
                             if (task.isSuccessful()) {
                                 Log.d(TAG, "signIn: successful");
                                 Firebase.USER = Firebase.AUTHENTICATION.getCurrentUser();
+                                Objects.requireNonNull(getDialog()).dismiss();
                             } else {
                                 try {
                                     //noinspection ConstantConditions
@@ -315,6 +349,7 @@ public class Load extends LoginDialog {
     /**
      * This function create a view with the round shield at the top and
      * multiple inputs.
+     * <p>The user has to fill all fields for being able to continue the registration.
      *
      * @return The screen for the user to set some data the fraternity needs
      */
@@ -322,14 +357,58 @@ public class Load extends LoginDialog {
         LinearLayout view = (LinearLayout) inflater.inflate(R.layout.dialog_item_set_frat_data, root, false);
         view.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         Button next = view.findViewById(R.id.login_next);
-        next.setOnClickListener(v -> {
-            // if mail found send
-            //setState(SIGN_IN);
-            // if mail not found send
-            setState(CONTROL_DATA);
+        settingsLayout = view.findViewById(R.id.profile_settings);
+        settingsLayout.setVisibility(View.GONE);
+        Button joined = view.findViewById(R.id.profile_joined);
+        joined.setOnClickListener(v -> { // Select a semester the user joined.
+            ChangeSemesterDialog dialog = new ChangeSemesterDialog(new SemesterListener() {
+                @Override
+                public void displayChangeDone() {
+
+                }
+
+                @Override
+                public void joinedSelectionDone(Semester chosenSemester) {
+                    Log.d(TAG, "joinedSelectionDone: chosenSemester.getLong() == " + chosenSemester.getLong());
+                    user.setJoined(chosenSemester.getID());
+                }
+            }, Person.JOINED);
+            try {
+                dialog.show(LoginDialog.fragmentManager,
+                        TAG);
+            } catch (Exception e) {
+                Log.e(TAG, "setFratData: opening semester dialog did not work", e);
+            }
         });
+        rank = view.findViewById(R.id.profile_rank);
+        rank.setOnClickListener(v -> downloadRank());
         Button goBack = view.findViewById(R.id.login_previous);
         goBack.setOnClickListener(v -> setState(CONTACT_INFORMATION));
+        AtomicBoolean firstFrat = new AtomicBoolean(false);
+        (view.findViewById(R.id.profile_first_fraternity)).setOnClickListener(v -> {
+            if ((view.findViewById(R.id.profile_full_member_layout)).getVisibility() == View.VISIBLE) {
+                (view.findViewById(R.id.profile_full_member_layout)).setVisibility(View.VISIBLE);
+            } else {
+                (view.findViewById(R.id.profile_full_member_layout)).setVisibility(View.GONE);
+            }
+        });
+        TextView pob = view.findViewById(R.id.profile_pob);
+
+        next.setOnClickListener(v -> {
+            String pobStr = pob.getText().toString();
+            if (user.getJoined() != 0 && !user.getRank().isEmpty() && !pobStr.isEmpty()) {
+                boolean inLoco = ((Switch) view.findViewById(R.id.profile_in_loco)).isChecked();
+                boolean full_member = ((Switch) view.findViewById(R.id.profile_full_member)).isChecked();
+
+                Rank rank = user.getRankSetting();
+                rank.setFirst_fraternity(firstFrat.get());
+                rank.setFull_member(full_member);
+                rank.setIn_loco(inLoco);
+                user.setPoB(pobStr);
+                user.setRankSetting(rank);
+            }
+            setState(CONTROL_DATA);
+        });
         return view;
     }
 
@@ -351,5 +430,76 @@ public class Load extends LoginDialog {
             setState(SET_PASSWORD);
         });
         return view;
+    }
+
+    /**
+     * Download the ranks from the database. After that format them
+     * into an ArrayList and display the dialog for the user to select one.
+     */
+    @SuppressWarnings("unchecked")
+    private void downloadRank() {
+        Firebase.FIRESTORE
+                .collection("Kind")
+                .document("rank")
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        Map<String, Object> dataSet = documentSnapshot.getData();
+                        if (dataSet != null) {
+                            int size = dataSet.size();
+                            for (int i = 0; i < size; i++) {
+                                try {
+                                    Map<String, Object> data = (Map<String, Object>) dataSet.get(String.valueOf(i));
+                                    Rank r = new Rank();
+                                    r.setId(i);
+                                    r.setFirst_fraternity((boolean) data.get(Rank.FIRST_FRATERNITY));
+                                    r.setFull_member((boolean) data.get(Rank.FULL_MEMBER));
+                                    r.setIn_loco((boolean) data.get(Rank.IN_LOCO));
+                                    r.setPrice_semester((Map<String, Object>) data.get(Rank.PRICE));
+                                    r.setRank_name((String) data.get(Rank.NAME));
+                                    ranks.add(r);
+                                } catch (Exception e) {
+                                    Log.d(TAG, "Something went wrong", e);
+                                }
+                            }
+
+                            rankDialog(ranks)
+                                    .show();
+                        } else {
+                            Log.d(TAG, "2 something went wrong while downloading the ranks");
+                        }
+                    } else {
+                        Log.d(TAG, "1 something went wrong while downloading the ranks");
+                    }
+                });
+    }
+
+    /**
+     * Display the ranks a user can choose from
+     *
+     * @return The finished Builder.
+     */
+    @NotNull
+    private AlertDialog.Builder rankDialog(@NotNull ArrayList<Rank> ranks) {
+        String[] options = new String[ranks.size()];
+        for (int i = 0; i < ranks.size(); i++) {
+            options[i] = ranks.get(i).getRank_name();
+        }
+        AlertDialog.Builder rankPicker = new AlertDialog.Builder(inflater.getContext());
+        rankPicker.setTitle(R.string.profile_choose_rank)
+                .setCancelable(false)
+                .setNegativeButton(R.string.abort, (dialog, which) -> {
+                    rank.setText(R.string.profile_choose_rank);
+                    settingsLayout.setVisibility(View.GONE);
+                    dialog.dismiss();
+                })
+                .setItems(options, (dialog, which) -> {
+                    settingsLayout.setVisibility(View.VISIBLE);
+                    rank.setText(options[which]);
+                    Log.i(TAG, which + " is the selected value");
+                    user.setRank(options[which]);
+                    user.setRankSetting(ranks.get(which));
+                });
+        return rankPicker;
     }
 }

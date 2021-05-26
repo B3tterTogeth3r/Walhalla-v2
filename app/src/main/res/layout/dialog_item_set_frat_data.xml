@@ -6,136 +6,169 @@
     android:id="@+id/login_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="10dp"
-    android:visibility="visible">
+    android:orientation="vertical">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:contentDescription="@string/image_description"
-        android:padding="16dp"
-        android:src="@drawable/wappen_round" />
-
-    <TextView
-        style="@style/Custom.Title"
-        android:gravity="center"
-        android:padding="16dp"
-        android:text="@string/login_set_frat_data" />
-
-    <TextView
-        android:layout_width="match_parent"
+    <ScrollView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="@string/profile_description_program_data" />
+        android:padding="10dp">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        app:boxBackgroundColor="@color/background">
-
-        <EditText
-            android:id="@+id/profile_pob"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/profile_pob"
-            android:importantForAutofill="no"
-            android:inputType="text" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:orientation="vertical">
 
-
-    <Button
-        android:id="@+id/profile_joined"
-        style="@style/Custom.Button"
-        android:layout_width="match_parent"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:text="@string/profile_joined" />
-
-    <Button
-        android:id="@+id/profile_rank"
-        style="@style/Custom.Button"
-        android:layout_width="match_parent"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:text="@string/profile_choose_rank" />
-
-    <LinearLayout
-        android:id="@+id/profile_settings"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="visible">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="10dp">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:contentDescription="@string/image_description"
+                android:padding="16dp"
+                android:src="@drawable/wappen_round" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_toStartOf="@id/profile_first_fraternity"
-                android:padding="10dp"
-                android:text="@string/profile_first_fraternity" />
-
-            <Switch
-                android:id="@+id/profile_first_fraternity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:padding="10dp"
-                tools:ignore="UseSwitchCompatOrMaterialXml" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/profile_in_loco_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="10dp">
+                style="@style/Custom.Title"
+                android:gravity="center"
+                android:padding="16dp"
+                android:text="@string/login_set_frat_data" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_toStartOf="@id/profile_in_loco"
-                android:padding="10dp"
-                android:text="@string/profile_in_loco" />
+                android:layout_margin="10dp"
+                android:text="@string/profile_description_program_data" />
 
-            <Switch
-                android:id="@+id/profile_in_loco"
-                android:layout_width="wrap_content"
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:padding="10dp"
-                tools:ignore="UseSwitchCompatOrMaterialXml" />
+                android:layout_marginBottom="10dp"
+                app:boxBackgroundColor="@color/background">
 
-        </RelativeLayout>
+                <EditText
+                    android:id="@+id/profile_pob"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/profile_pob"
+                    android:importantForAutofill="no"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
             <Button
-                android:id="@+id/login_next"
+                android:id="@+id/profile_joined"
                 style="@style/Custom.Button"
-                android:layout_width="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:text="@string/next" />
+                android:layout_width="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/profile_joined" />
 
             <Button
-                android:id="@+id/login_previous"
+                android:id="@+id/profile_rank"
                 style="@style/Custom.Button"
-                android:layout_width="wrap_content"
-                android:layout_alignParentEnd="false"
-                android:text="@string/back" />
-        </RelativeLayout>
+                android:layout_width="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/profile_choose_rank" />
+
+            <LinearLayout
+                android:id="@+id/profile_settings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_toStartOf="@id/profile_first_fraternity"
+                        android:padding="10dp"
+                        android:text="@string/profile_first_fraternity" />
+
+                    <Switch
+                        android:id="@+id/profile_first_fraternity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:padding="10dp"
+                        tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/profile_full_member_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_toStartOf="@id/profile_full_member"
+                        android:padding="10dp"
+                        android:text="@string/profile_full_member" />
+
+                    <Switch
+                        android:id="@+id/profile_full_member"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:padding="10dp"
+                        tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/profile_in_loco_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_toStartOf="@id/profile_in_loco"
+                        android:padding="10dp"
+                        android:text="@string/profile_in_loco" />
+
+                    <Switch
+                        android:id="@+id/profile_in_loco"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:padding="10dp"
+                        tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/login_next"
+                        style="@style/Custom.Button"
+                        android:layout_width="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:text="@string/next" />
+
+                    <Button
+                        android:id="@+id/login_previous"
+                        style="@style/Custom.Button"
+                        android:layout_width="wrap_content"
+                        android:layout_alignParentEnd="false"
+                        android:text="@string/back" />
+                </RelativeLayout>
 
 
-    </LinearLayout>
-
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

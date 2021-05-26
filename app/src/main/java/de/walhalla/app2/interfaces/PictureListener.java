@@ -4,12 +4,18 @@ import android.graphics.Bitmap;
 
 /**
  * An interface for the {@link de.walhalla.app2.utils.ImageDownload ImageDownload.class}
- * <p>has 5 methods
- * <br>{@link #downloadDone}
- * <br>{@link #setProgressBar}
- * <br>{@link #descriptionDone(String)}
- * <br>{@link #nextImage()}
- * <br>{@link #previousImage()}
+ * <p>has the following methods:
+ * <ul>
+ *     <li>{@link #downloadDone}</li>
+ *     <li>{@link #setProgressBar}</li>
+ *     <li>{@link #descriptionDone(String)}</li>
+ *     <li>{@link #nextImage()}</li>
+ *     <li>{@link #previousImage()}</li>
+ * </ul>
+ *
+ * @author B3tterTogeth3r
+ * @version 1.0
+ * @since 2.0
  */
 public interface PictureListener {
     /**
@@ -37,9 +43,15 @@ public interface PictureListener {
     default void descriptionDone(String description) {
     }
 
+    /**
+     * The next image is to be loaded and shown
+     */
     default void nextImage() {
     }
 
+    /**
+     * The previous image is to be loaded and shown
+     */
     default void previousImage() {
     }
 }
