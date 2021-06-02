@@ -83,7 +83,8 @@ public abstract class CustomFragment extends Fragment implements AuthCustomListe
                             .show();
                 }
             }
-        } catch (Exception ignored) {
+        } catch (Exception exception) {
+            Firebase.CRASHLYTICS.recordException(exception);
         }
     }
 
@@ -131,6 +132,8 @@ public abstract class CustomFragment extends Fragment implements AuthCustomListe
             registration.clear();
         } catch (Exception e) {
             Log.e(TAG, "Something went wrong while removing the snapshot listener", e);
+            Firebase.CRASHLYTICS.log("Something went wrong while removing the snapshot listener");
+            Firebase.CRASHLYTICS.recordException(e);
         } finally {
             toolbar.getMenu().clear();
             toolbar.setTitle(R.string.app_name);

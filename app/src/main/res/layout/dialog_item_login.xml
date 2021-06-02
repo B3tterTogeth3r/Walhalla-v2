@@ -16,6 +16,11 @@
         android:padding="16dp"
         android:src="@drawable/wappen_round" />
 
+    <TextView
+        style="@style/Custom.Title"
+        android:gravity="center"
+        android:text="@string/menu_login" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -156,6 +156,11 @@
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
     </style>
 
+    <style name="Custom.Text.Profile">
+        <item name="android:layout_marginStart">140dp</item>
+        <item name="android:layout_marginEnd">30dp</item>
+    </style>
+
     <style name="Custom.TableLayout.Horizontal">
         <item name="android:layout_width">500dp</item>
         <item name="android:layout_height">wrap_content</item>
@@ -173,6 +178,24 @@
         <item name="android:background">@drawable/border_bottom_black</item>
         <item name="android:padding">0dp</item>
         <item name="android:layout_margin">0dp</item>
+    </style>
+
+    <style name="Custom.TableRow.Profile">
+        <item name="android:layout_margin">4dp</item>
+    </style>
+
+    <style name="Custom.ImageView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">4dp</item>
+    </style>
+
+    <style name="Custom.ImageView.Profile">
+        <item name="android:layout_width">30dp</item>
+        <item name="android:layout_height">30dp</item>
+        <item name="android:layout_alignParentEnd">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:src">@drawable/ic_arrow_right</item>
     </style>
 
     <style name="Custom.Layout">

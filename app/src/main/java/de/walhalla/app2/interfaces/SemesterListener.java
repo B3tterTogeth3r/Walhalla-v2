@@ -3,6 +3,7 @@ package de.walhalla.app2.interfaces;
 import de.walhalla.app2.App;
 import de.walhalla.app2.model.Semester;
 
+//TODO Comment interface
 public interface SemesterListener {
     void displayChangeDone();
 

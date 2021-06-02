@@ -5,6 +5,15 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * This activity is just to remove the white loading screen and wait until all the necessary
+ * values and methods are loaded before going to {@link StartActivity}
+ *
+ * @author B3tterTogeth3r
+ * @version 1.0
+ * @see AppCompatActivity
+ * @since 1.6
+ */
 public class SplashActivity extends AppCompatActivity {
     private static final String TAG = "SplashActivity";
 

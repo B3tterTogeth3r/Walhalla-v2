@@ -4,9 +4,8 @@ import androidx.annotation.NonNull;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
-import java.util.List;
 
 import de.walhalla.app2.MainActivity;
 import de.walhalla.app2.abstraction.CustomFragment;
@@ -29,7 +28,10 @@ public class AuthCustomListener extends Firebase.AuthCustom {
                             QuerySnapshot snapshot = task.getResult();
                             if (!snapshot.isEmpty()) {
                                 try {
-                                    List<Person> p = snapshot.toObjects(Person.class);
+                                    for (DocumentSnapshot d : snapshot) {
+                                        Person p = d.toObject(Person.class);
+                                        //TODO Set p as userdata
+                                    }
                                     MainActivity.authChange.onAuthChange();
                                     CustomFragment.authChange.onAuthChange();
                                 } catch (Exception ignored) {

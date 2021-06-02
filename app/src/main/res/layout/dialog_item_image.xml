@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="UselessParent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:contentDescription="@string/image_description"
+                android:padding="16dp"
+                android:src="@drawable/wappen_round" />
+
+            <TextView
+                style="@style/Custom.Title"
+                android:gravity="center"
+                android:text="@string/login_image" />
+
+            <TextView
+                style="@style/Custom.Subtitle"
+                android:text="@string/login_image_head" />
+
+
+            <LinearLayout
+                android:id="@+id/login_image_select"
+                style="@style/Custom.Layout"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="12dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/login_profile_image"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:src="@drawable/wappen_herz"
+                    app:civ_border_color="@color/black"
+                    app:civ_border_overlay="false"
+                    app:civ_border_width="1dp"
+                    app:civ_circle_background_color="@color/black" />
+
+                <TextView
+                    style="@style/Custom.Subtitle2"
+                    android:layout_width="wrap_content"
+                    android:text="@string/login_image" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/login_next"
+                    style="@style/Custom.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="@string/next" />
+
+                <Button
+                    android:id="@+id/login_previous"
+                    style="@style/Custom.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_alignParentEnd="false"
+                    android:text="@string/back" />
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

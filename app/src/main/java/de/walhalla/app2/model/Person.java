@@ -29,7 +29,7 @@ public class Person implements Cloneable {
     public static final String ADDRESS = "address";
     public static final String ADDRESS_2 = "address_2";
     public static final String BALANCE = "balance";
-    public static final String DOB = "DoB";
+    public static final String DOB = "doB";
     public static final String FIRST_NAME = "first_Name";
     public static final String JOINED = "joined";
     public static final String LAST_NAME = "last_Name";
@@ -37,8 +37,9 @@ public class Person implements Cloneable {
     public static final String MAJOR = "major";
     public static final String MOBILE = "mobile";
     public static final String PICTURE_PATH = "picture_path";
-    public static final String POB = "PoB";
+    public static final String POB = "poB";
     public static final String RANK = "rank";
+    public static final String RANK_SETTINGS = "rankSettings";
     public static final String UID = "uid";
     public static final String ADDRESS_CITY = "city";
     public static final String ADDRESS_NUMBER = "number";
@@ -93,7 +94,7 @@ public class Person implements Cloneable {
      */
     public Person(String id, String poB, String first_Name, String last_Name, String mail, String mobile, String rank, String uid, String major, Map<String, Object> address, Map<String, Object> address_2, int joined, Timestamp doB, float balance, String picture_path, Map<String, Object> rankSettings) {
         this.id = id;
-        PoB = poB;
+        this.PoB = poB;
         this.first_Name = first_Name;
         this.last_Name = last_Name;
         this.mail = mail;
@@ -104,7 +105,7 @@ public class Person implements Cloneable {
         this.address = address;
         this.address_2 = address_2;
         this.joined = joined;
-        DoB = doB;
+        this.DoB = doB;
         this.balance = balance;
         this.picture_path = picture_path;
         this.rankSettings = rankSettings;
@@ -148,9 +149,12 @@ public class Person implements Cloneable {
      * Get the users place of birth or origin.
      *
      * @return where the user is from
+     * @throws UnsupportedOperationException if value <tt>null</tt> or empty
      * @since 1.7
      */
-    public String getPoB() {
+    public String getPoB() throws UnsupportedOperationException {
+        if (PoB == null || PoB.length() == 0)
+            throw new UnsupportedOperationException("User has no PoB");
         return PoB;
     }
 
@@ -197,7 +201,7 @@ public class Person implements Cloneable {
      */
     public String getLast_Name() throws UnsupportedOperationException {
         if (last_Name == null || last_Name.isEmpty()) {
-            throw new UnsupportedOperationException("User has no surname");
+            throw new UnsupportedOperationException("User has no surname.");
         }
         return last_Name;
     }
@@ -227,8 +231,11 @@ public class Person implements Cloneable {
 
     /**
      * @return mobile number of user
+     * @throws UnsupportedOperationException if value <tt>null</tt> or empty
      */
-    public String getMobile() {
+    public String getMobile() throws UnsupportedOperationException {
+        if (mobile == null || mobile.length() == 0)
+            throw new UnsupportedOperationException("User has no mobile number.");
         return mobile;
     }
 
@@ -356,7 +363,7 @@ public class Person implements Cloneable {
      * @since 1.1
      */
     public int getJoined() throws IndexOutOfBoundsException {
-        if (joined >= 0) {
+        if (Integer.compare(joined, 0) == -1) {
             throw new IndexOutOfBoundsException("User has no joined semester");
         }
         return joined;
@@ -364,12 +371,12 @@ public class Person implements Cloneable {
 
     /**
      * @param joined the number of the semester
-     * @throws IndexOutOfBoundsException if {@code joined} is smaller than 2
+     * @throws IndexOutOfBoundsException if {@code joined} is smaller than 0
      * @since 1.0
      */
     public void setJoined(int joined) throws IndexOutOfBoundsException {
-        if (joined > 2) {
-            throw new IndexOutOfBoundsException("This semester does not exist");
+        if (Integer.compare(joined, 0) == -1) {
+            throw new IndexOutOfBoundsException("joined index too small");
         }
         this.joined = joined;
     }
@@ -426,9 +433,12 @@ public class Person implements Cloneable {
 
     /**
      * @return value of the major subject of the person
+     * @throws UnsupportedOperationException if value <tt>null</tt> or empty
      * @since 1.4
      */
-    public String getMajor() {
+    public String getMajor() throws UnsupportedOperationException {
+        if (major == null || major.length() == 0)
+            throw new UnsupportedOperationException("User has no major or occupation");
         return major;
     }
 
@@ -483,54 +493,64 @@ public class Person implements Cloneable {
 
     /**
      * @return value of {@code first_Name} and {@code last_Name} combined with a space
+     * @throws UnsupportedOperationException if one of the values is <tt>null</tt> or empty
+     * @see #getFirst_Name()
+     * @see #getLast_Name()
      * @since 1.1
      */
     @NotNull
     @Exclude
-    public String getFullName() {
-        return getFirst_Name() + " " + getLast_Name();
+    public String getFullName() throws UnsupportedOperationException {
+        try {
+            return getFirst_Name() + " " + getLast_Name();
+        } catch (UnsupportedOperationException e) {
+            throw e;
+        }
     }
 
     /**
      * @return a cloned instance of this class.
-     * @throws CloneNotSupportedException Thrown to indicate that the <code>clone</code> method in class
-     *                                    <code>Object</code> has been called to clone an object, but that
-     *                                    the object's class does not implement the <code>Cloneable</code>
-     *                                    interface.
+     * @throws CloneNotSupportedException    Thrown to indicate that the <code>clone</code> method in class
+     *                                       <code>Object</code> has been called to clone an object, but that
+     *                                       the object's class does not implement the <code>Cloneable</code>
+     *                                       interface.
+     * @throws UnsupportedOperationException Thrown if any of the sub functions throw this error
      * @see java.lang.CloneNotSupportedException
+     * @see UnsupportedOperationException
      * @see java.lang.Cloneable
      * @see java.lang.Object#clone()
      * @since 1.7
      */
     @Exclude
     @NotNull
-    public Object clone() throws CloneNotSupportedException {
+    public Object clone() throws CloneNotSupportedException, UnsupportedOperationException {
         return super.clone();
     }
 
     /**
+     * needed because update of custom classes to firebase is impossible
+     *
      * @return mapped values of the {@link #Person()}
-     * @deprecated not needed anymore since 2.0 because upload
-     * of custom classes to firebase is now possible
      */
     @Exclude
     public Map<String, Object> toMap() {
         Map<String, Object> data = new HashMap<>();
 
-        data.put(DOB, getDoB());
-        data.put(POB, getPoB());
         data.put(ADDRESS, getAddress());
         data.put(ADDRESS_2, getAddress_2());
         data.put(BALANCE, getBalance());
+        data.put(DOB, getDoB());
         data.put(FIRST_NAME, getFirst_Name());
         data.put(JOINED, getJoined());
         data.put(LAST_NAME, getLast_Name());
         data.put(MAIL, getMail());
+        data.put(MAJOR, getMajor());
         data.put(MOBILE, getMobile());
         data.put(PICTURE_PATH, getPicture_path());
+        data.put(POB, getPoB());
         data.put(RANK, getRank());
+        data.put(RANK_SETTINGS, getRankSettings());
         data.put(UID, getUid());
-        data.put(MAJOR, getMajor());
 
         return data;
     }
@@ -543,6 +563,7 @@ public class Person implements Cloneable {
      * </pre></blockquote>
      *
      * @return value of the address as a String
+     * @see #getAddress()
      */
     @NotNull
     @Exclude
@@ -561,6 +582,7 @@ public class Person implements Cloneable {
      * </pre></blockquote>
      *
      * @return value of the date
+     * @see #getDoB()
      */
     @NotNull
     @Exclude

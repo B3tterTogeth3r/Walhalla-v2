@@ -2,6 +2,7 @@ package de.walhalla.app2.utils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -10,6 +11,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.io.InputStream;
+import java.net.HttpURLConnection;
 
 import de.walhalla.app2.firebase.Firebase;
 import de.walhalla.app2.interfaces.PictureListener;
@@ -31,6 +35,7 @@ public class ImageDownload extends AsyncTask<Void, Integer, Void> {
     private final String reference;
     private final boolean loadDescription;
     private Bitmap imageBitmap;
+    private boolean isUrl = false;
 
     /**
      * Constructor of the {@link ImageDownload ImageDownload.class} with the most params.
@@ -66,6 +71,13 @@ public class ImageDownload extends AsyncTask<Void, Integer, Void> {
         this.loadDescription = false;
     }
 
+    public ImageDownload(PictureListener listener, @NotNull Uri photoUrl) {
+        this.listener = listener;
+        this.reference = photoUrl.toString();
+        this.loadDescription = false;
+        this.isUrl = true;
+    }
+
     /**
      * downloads the image, if the {@link #listener} is not null.
      *
@@ -75,19 +87,34 @@ public class ImageDownload extends AsyncTask<Void, Integer, Void> {
     @Override
     protected Void doInBackground(Void... voids) {
         if (listener != null) {
-            StorageReference image = FirebaseStorage.getInstance().getReference(reference);
-            image.getBytes(Variables.ONE_MEGABYTE)
-                    .addOnSuccessListener(bytes -> {
-                        imageBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                        //send download result to the starting listener
-                        listener.downloadDone(imageBitmap);
-                        if (loadDescription) {
-                            loadImageDescription();
-                        }
-                    })
-                    .addOnFailureListener(e ->
-                            Log.e(TAG, "image download unsuccessful", e))
-                    .addOnCanceledListener(() -> Log.d(TAG, "onCanceled"));
+            if (!isUrl) {
+                StorageReference image = FirebaseStorage.getInstance().getReference(reference);
+                image.getBytes(Variables.ONE_MEGABYTE)
+                        .addOnSuccessListener(bytes -> {
+                            imageBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                            //send download result to the starting listener
+                            listener.downloadDone(imageBitmap);
+                            if (loadDescription) {
+                                loadImageDescription();
+                            }
+                        })
+                        .addOnFailureListener(e ->
+                                Log.e(TAG, "image download unsuccessful", e))
+                        .addOnCanceledListener(() -> Log.d(TAG, "onCanceled"));
+            } else {
+                try {
+                    java.net.URL url = new java.net.URL(reference);
+                    HttpURLConnection connection = (HttpURLConnection) url
+                            .openConnection();
+                    connection.setDoInput(true);
+                    connection.connect();
+                    InputStream input = connection.getInputStream();
+                    Bitmap myBitmap = BitmapFactory.decodeStream(input);
+                    listener.downloadDone(myBitmap);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         } else {
             Log.d(TAG, "run: no listener available");
         }

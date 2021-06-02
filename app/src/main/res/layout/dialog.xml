@@ -28,5 +28,5 @@
         android:id="@+id/dialog_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="?attr/actionBarSize"></RelativeLayout>
+        android:paddingTop="?attr/actionBarSize" />
 </RelativeLayout>

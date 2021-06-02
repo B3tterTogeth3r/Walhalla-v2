@@ -190,6 +190,8 @@ public class Event implements Cloneable {
     }
 
     /**
+     * Only values possible are: io, o, ho
+     *
      * @param collar set the needed collar for that event
      * @since 1.0
      */
@@ -231,15 +233,19 @@ public class Event implements Cloneable {
 
     /**
      * @return value of punctuality
+     * @since 1.0
      */
     public String getPunctuality() {
         return punctuality;
     }
 
     /**
-     * @param punctuality TODO strictly CT or ST
+     * strictly CT or ST if time is to be displayed. otherwise can be TIME_WHOLE_DAY, TIME_LATER, TIME_INFO, TIME_TITLE
+     *
+     * @param punctuality value to be set
+     * @since 1.0
      */
-    public void setPunctuality(String punctuality) {
+    public void setPunctuality(@Kinds.Punctuality String punctuality) {
         this.punctuality = punctuality;
     }
 
@@ -317,6 +323,7 @@ public class Event implements Cloneable {
     public void setMeeting(boolean meeting) {
         this.meeting = meeting;
     }
+
 
     /**
      * @return the day of the event start

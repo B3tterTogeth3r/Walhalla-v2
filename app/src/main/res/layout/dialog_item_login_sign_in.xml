@@ -66,5 +66,11 @@
 
     </RelativeLayout>
 
+    <TextView
+        android:id="@+id/login_forgot_password"
+        style="@style/Custom.Text"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/login_forgot_password" />
 
 </LinearLayout>

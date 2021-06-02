@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ProgressBar
+            android:id="@+id/profile_loader"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/profile_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/profile_title_image"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:contentDescription="@string/image_description"
+                android:padding="16dp"
+                android:src="@drawable/wappen_round" />
+
+            <TextView
+                android:id="@+id/profile_title_text"
+                style="@style/Custom.Title"
+                android:gravity="center"
+                android:text="@string/menu_profile_edit" />
+
+            <RelativeLayout
+                android:id="@+id/profile_email_layout"
+                style="@style/Custom.TableRow.Profile">
+
+                <TextView
+                    style="@style/Custom.Subtitle2"
+                    android:layout_width="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/profile_mail"
+                    tools:ignore="RelativeOverlap" />
+
+                <TextView
+                    android:id="@+id/profile_mail"
+                    style="@style/Custom.Text.Profile" />
+
+                <ImageView
+                    android:id="@+id/profile_email_arrow"
+                    style="@style/Custom.ImageView.Profile"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@string/image_description" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/profile_name_layout"
+                style="@style/Custom.TableRow.Profile">
+
+                <TextView
+                    style="@style/Custom.Subtitle2"
+                    android:layout_width="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/profile_name"
+                    tools:ignore="RelativeOverlap" />
+
+                <TextView
+                    android:id="@+id/profile_name"
+                    style="@style/Custom.Text.Profile"
+                    android:layout_centerVertical="true" />
+
+                <ImageView
+                    style="@style/Custom.ImageView.Profile"
+                    android:contentDescription="@string/image_description" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/profile_address_layout"
+                style="@style/Custom.TableRow.Profile">
+
+                <TextView
+                    style="@style/Custom.Subtitle2"
+                    android:layout_width="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/profile_address"
+                    tools:ignore="RelativeOverlap" />
+
+                <TextView
+                    android:id="@+id/profile_address"
+                    style="@style/Custom.Text.Profile"
+                    android:text="\n"
+                    tools:ignore="HardcodedText" />
+
+                <ImageView
+                    style="@style/Custom.ImageView.Profile"
+                    android:contentDescription="@string/image_description" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/profile_dob_layout"
+                style="@style/Custom.TableRow.Profile">
+
+                <TextView
+                    style="@style/Custom.Subtitle2"
+                    android:layout_width="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/profile_dob"
+                    tools:ignore="RelativeOverlap" />
+
+                <TextView
+                    android:id="@+id/profile_dob"
+                    style="@style/Custom.Text.Profile"
+                    android:layout_centerVertical="true" />
+
+                <ImageView
+                    style="@style/Custom.ImageView.Profile"
+                    android:contentDescription="@string/image_description" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/profile_mobile_layout"
+                style="@style/Custom.TableRow.Profile">
+
+                <TextView
+                    style="@style/Custom.Subtitle2"
+                    android:layout_width="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/profile_mobile"
+                    tools:ignore="RelativeOverlap" />
+
+                <TextView
+                    android:id="@+id/profile_mobile"
+                    style="@style/Custom.Text.Profile"
+                    android:layout_centerVertical="true" />
+
+                <ImageView
+                    style="@style/Custom.ImageView.Profile"
+                    android:contentDescription="@string/image_description" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/profile_pob_layout"
+                style="@style/Custom.TableRow.Profile">
+
+                <TextView
+                    style="@style/Custom.Subtitle2"
+                    android:layout_width="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/profile_pob"
+                    tools:ignore="RelativeOverlap" />
+
+                <TextView
+                    android:id="@+id/profile_pob"
+                    style="@style/Custom.Text.Profile"
+                    android:layout_centerVertical="true" />
+
+                <ImageView
+                    style="@style/Custom.ImageView.Profile"
+                    android:contentDescription="@string/image_description" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/profile_major_layout"
+                style="@style/Custom.TableRow.Profile">
+
+                <TextView
+                    style="@style/Custom.Subtitle2"
+                    android:layout_width="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/profile_major"
+                    tools:ignore="RelativeOverlap" />
+
+                <TextView
+                    android:id="@+id/profile_major"
+                    style="@style/Custom.Text.Profile"
+                    android:layout_centerVertical="true" />
+
+                <ImageView
+                    style="@style/Custom.ImageView.Profile"
+                    android:contentDescription="@string/image_description" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/profile_rank_layout"
+                style="@style/Custom.TableRow.Profile">
+
+                <TextView
+                    style="@style/Custom.Subtitle2"
+                    android:layout_width="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/profile_rank"
+                    tools:ignore="RelativeOverlap" />
+
+                <TextView
+                    android:id="@+id/profile_rank"
+                    style="@style/Custom.Text.Profile"
+                    android:layout_centerVertical="true" />
+
+                <ImageView
+                    style="@style/Custom.ImageView.Profile"
+                    android:contentDescription="@string/image_description" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/profile_joined_layout"
+                style="@style/Custom.TableRow.Profile">
+
+                <TextView
+                    style="@style/Custom.Subtitle2"
+                    android:layout_width="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/profile_joined"
+                    tools:ignore="RelativeOverlap" />
+
+                <TextView
+                    android:id="@+id/profile_joined"
+                    style="@style/Custom.Text.Profile"
+                    android:layout_centerVertical="true" />
+
+                <ImageView
+                    style="@style/Custom.ImageView.Profile"
+                    android:contentDescription="@string/image_description" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/login_profile_image_layout"
+                style="@style/Custom.TableRow.Profile">
+
+                <TextView
+                    style="@style/Custom.Subtitle2"
+                    android:layout_width="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/login_image" />
+
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/login_profile_image"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="140dp"
+                    android:layout_marginEnd="30dp"
+                    android:paddingBottom="8dp"
+                    android:src="@drawable/wappen_herz"
+                    app:civ_border_color="@color/black"
+                    app:civ_border_overlay="false"
+                    app:civ_border_width="1dp"
+                    app:civ_circle_background_color="@color/black" />
+
+                <ImageView
+                    style="@style/Custom.ImageView.Profile"
+                    android:contentDescription="@string/image_description" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/button_row"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/login_back"
+                    style="@style/Custom.Button"
+                    android:layout_width="wrap_content"
+                    android:text="@string/back" />
+
+                <Button
+                    android:id="@+id/login_register"
+                    style="@style/Custom.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_alignEnd="@id/login_back"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="end"
+                    android:text="@string/menu_register" />
+            </RelativeLayout>
+        </LinearLayout>
+    </RelativeLayout>
+</ScrollView>

@@ -81,8 +81,6 @@ public class Details extends DialogFragment implements OnMapReadyCallback {
         int duration = (int) (end_date.getTime() - start_date.getTime() / 1000);
         analyticsData.putString(Variables.Analytics.DURATION, duration + " seconds");
         ANALYTICS.logEvent(Variables.Analytics.EVENT_DETAILS, analyticsData);
-
-        start_date = Calendar.getInstance(Variables.LOCALE).getTime();
     }
 
     @Override
@@ -189,6 +187,7 @@ public class Details extends DialogFragment implements OnMapReadyCallback {
             Objects.requireNonNull(DIALOG.getWindow()).setLayout(width, height);
             DIALOG.getWindow().setWindowAnimations(R.style.AppTheme_Slide);
         }
+        start_date = Calendar.getInstance(Variables.LOCALE).getTime();
     }
 
     @Override

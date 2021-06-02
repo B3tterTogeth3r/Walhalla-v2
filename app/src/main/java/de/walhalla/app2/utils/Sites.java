@@ -23,6 +23,7 @@ import java.util.Map;
 import de.walhalla.app2.MainActivity;
 import de.walhalla.app2.R;
 
+//TODO Comment class
 @SuppressWarnings("unchecked")
 public class Sites {
     private static final String TAG = "Sites";

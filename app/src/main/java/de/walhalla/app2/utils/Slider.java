@@ -93,8 +93,8 @@ public class Slider {
                             }
                         }, imagePath2, true).execute();
                     });
-                    //TODO Swipe gestures
-                    //TODO Automatic image change
+                    //Swipe gestures
+                    //Automatic image change
                 }
             } catch (Exception e) {
                 Log.e(TAG, "load: wrong layout used in creation", e);

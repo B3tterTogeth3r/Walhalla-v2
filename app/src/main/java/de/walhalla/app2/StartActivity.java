@@ -15,6 +15,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
@@ -23,13 +24,24 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import org.jetbrains.annotations.NotNull;
 
 import de.walhalla.app2.firebase.Firebase;
+import de.walhalla.app2.model.Person;
 import de.walhalla.app2.model.Semester;
 import de.walhalla.app2.utils.Variables;
 
+/**
+ * This Activity is the loading screen of the app. Every needed data is being loaded and the user
+ * is displayed a progressbar. If an error occurred, the user gets an alert dialog with that error.
+ * Also most variables, that could change over time are created here.
+ *
+ * @author B3tterTogeth3r
+ * @version 2.2
+ * @see AppCompatActivity
+ * @since 1.1
+ */
 public class StartActivity extends AppCompatActivity {
     private static final String TAG = "StartActivity";
     @SuppressWarnings("FieldCanBeLocal")
-    private final int totalAsks = 9;
+    private final int totalAsks = 10;
     private final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.getInstance();
     private float downloadProgress = 0f;
     private ProgressBar progressBar;
@@ -112,24 +124,56 @@ public class StartActivity extends AppCompatActivity {
         // [End Ask for CAMERA permission]
 
         // [START check Firebase.setFirebase() results]
-        if (!Firebase.setFirebase()) {
+        while (!Firebase.setFirebase()) {
             Log.e(TAG, "onCreate: error setting the firebase");
+            //error();
+        }
+        try {
+            // [START get current Semester]
+            loadCurrentSemester();
+            // [END get current Semester]
+            updateProgressbar();
+        } catch (Exception e) {
+            Log.d(TAG, "Error loading data from firestore", e);
             error();
-        } else {
-            try {
-                //Log.d(TAG, "Creating successfully finished.");
-                // [START get current Semester]
-                loadCurrentSemester();
-                // [END get current Semester]
-                updateProgressbar();
-            } catch (Exception e) {
-                Log.d(TAG, "Error loading data from firestore", e);
-                error();
-            }
         }
         // [END check Firebase.setFirebase() results]
+
+        // [START Firebase Analytics Audience set up]
+        if (Firebase.USER == null) {
+            Firebase.ANALYTICS.setUserProperty("user_rank", "guest");
+        } else {
+            Firebase.FIRESTORE.collection("Person")
+                    .whereEqualTo("uid", Firebase.USER.getUid())
+                    .limit(1)
+                    .get()
+                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                        for (DocumentSnapshot d : queryDocumentSnapshots) {
+                            try {
+                                User userdata = new User();
+                                Person p = d.toObject(Person.class);
+                                userdata.setId(d.getId());
+                                userdata.setUid(Firebase.USER.getUid());
+                                userdata.setImage(Firebase.USER.getPhotoUrl());
+                                userdata.setEmail(Firebase.USER.getEmail());
+                                userdata.setData(p);
+                                Firebase.ANALYTICS.setUserProperty("user_rank", p.getRank());
+                                App.setUser(userdata);
+                            } catch (Exception e) {
+                                Log.e(TAG, "onCreate: loading the userdata did not work", e);
+                                Firebase.CRASHLYTICS.log("StartActivity.onCreate: loading the userdata did not work");
+                                Firebase.CRASHLYTICS.recordException(e);
+                            }
+                        }
+                    });
+        }
+        updateProgressbar();
+        // [END Firebase Analytics Audience set up]
     }
 
+    /**
+     * Display an error message if any error occurred while loading.
+     */
     private void error() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
         builder.setTitle(R.string.error_title)
@@ -142,6 +186,11 @@ public class StartActivity extends AppCompatActivity {
         builder.show();
     }
 
+    /**
+     * Check if user has given the app the permission to take pictures.
+     * Right now not activated because no function needs to take a picture. all just read from
+     * the device storage.
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NotNull String[] permissions, @NotNull int[] grantResults) {
         if (requestCode == Variables.REQUEST_CODE_ASK_PERMISSIONS) {
@@ -159,6 +208,9 @@ public class StartActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Downloading the data of the current semester from Firestore.
+     */
     private void loadCurrentSemester() {
         String id = remoteConfig.getString("current_semester_id");
 
@@ -173,6 +225,9 @@ public class StartActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * If the user has a charge in the current semester, it is saved in the cash of the device.
+     */
     private void loadCurrentChargen() {
         String current_semester_id = remoteConfig.getString("current_semester_id");
 
@@ -183,11 +238,20 @@ public class StartActivity extends AppCompatActivity {
                     .get()
                     .addOnSuccessListener(queryDocumentSnapshots -> {
                         for (QueryDocumentSnapshot s : queryDocumentSnapshots) {
-                            if (Firebase.USER.getUid().equals(s.getString("uid"))) {
-                                //give the user editorial rights
-                                SharedPreferences.Editor editor = Variables.SHARED_PREFERENCES.edit();
-                                editor.putStringSet(Variables.Rights.TAG, Variables.Rights.charge());
-                                editor.apply();
+                            Firebase.CRASHLYTICS.log("Finding chargen");
+                            try {
+                                if (Firebase.USER.getUid().equals(s.getString("uid"))) {
+                                    //give the user editorial rights
+                                    SharedPreferences.Editor editor = Variables.SHARED_PREFERENCES.edit();
+                                    editor.putStringSet(Variables.Rights.TAG, Variables.Rights.charge());
+                                    editor.apply();
+                                }
+                            } catch (NullPointerException nullPointerException) {
+                                Log.e(TAG, "loadCurrentChargen: user has no uid", nullPointerException);
+                                Firebase.CRASHLYTICS.recordException(nullPointerException);
+                            } catch (Exception exception) {
+                                Log.e(TAG, "loadCurrentChargen: Exception", exception);
+                                Firebase.CRASHLYTICS.recordException(exception);
                             }
                         }
                         updateProgressbar();
@@ -204,6 +268,9 @@ public class StartActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * If the user is in the super-admin list, this is to be saved in the cash of the device.
+     */
     private void loadAdmins() {
         if (Firebase.USER != null) {
             Firebase.FIRESTORE
@@ -226,16 +293,14 @@ public class StartActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Updating the value of the progress bar. If the bar is complete, this activity gets distroyed
+     * and the {@link MainActivity} gets displayed.
+     */
     private void updateProgressbar() {
         downloadProgress += (100f / totalAsks);
         progressBar.setProgress((int) downloadProgress);
         Log.d(TAG, String.valueOf(downloadProgress));
-        if (downloadProgress == 100) {
-            onDone();
-        }
-    }
-
-    public void onDone() {
         if (downloadProgress == 100) {
             downloadProgress = 0;
             /*Go to MainActivity */

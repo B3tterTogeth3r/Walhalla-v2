@@ -36,7 +36,6 @@ public class Rank {
      *
      * @return the id
      * @since 1.0
-     * @deprecated not needed anymore
      */
     public int getId() {
         return id;
@@ -47,7 +46,6 @@ public class Rank {
      *
      * @param id value of the identifier
      * @since 1.0
-     * @deprecated not needed anymore
      */
     public void setId(int id) {
         this.id = id;

@@ -35,16 +35,24 @@ import de.walhalla.app2.model.Semester;
 public class ChangeSemesterDialog extends DialogFragment implements DialogInterface.OnClickListener {
     private static final String TAG = "ChangeSemesterDialog";
     private final SemesterListener listener;
+    private final String kind;
     private NumberPicker np_right, np_center;
-    private String kind;
+    private int startId = 0;
 
     public ChangeSemesterDialog(SemesterListener listener) {
         this.listener = listener;
+        this.kind = "";
     }
 
     public ChangeSemesterDialog(SemesterListener listener, String kind) {
         this.listener = listener;
         this.kind = kind;
+    }
+
+    public ChangeSemesterDialog(SemesterListener listener, String kind, int startId) {
+        this.listener = listener;
+        this.kind = kind;
+        this.startId = startId;
     }
 
     @NonNull
@@ -78,20 +86,39 @@ public class ChangeSemesterDialog extends DialogFragment implements DialogInterf
         np_right.setValue(year.length - 1);
         np_right.setDisplayedValues(year);
         np_right.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
-        if ((App.getChosenSemester().getID() % 2) == 0) {
-            np_center.setValue(1);
-            np_right.setValue((App.getChosenSemester().getID() / 2) - 1);
-        } else {
-            np_right.setDisplayedValues(createYearsWS());
-            np_right.setValue(((int) (App.getChosenSemester().getID() / 2f) - 1));
-        }
-        np_center.setOnValueChangedListener((picker, oldVal, newVal) -> {
-            if (newVal == 0) {
+        //Select also a previous joined semester
+        if (kind.equals(Person.JOINED)) {
+            Log.d(TAG, "onCreateDialog: startId == " + startId + " - kind == " + kind);
+            if ((startId % 2) == 0) {
+                np_center.setValue(1);
+                np_right.setValue((startId / 2) - 1);
+            } else {
                 np_right.setDisplayedValues(createYearsWS());
-            } else if (newVal == 1) {
-                np_right.setDisplayedValues(createYears());
+                np_right.setValue(((int) (startId / 2f) - 1));
             }
-        });
+            np_center.setOnValueChangedListener((picker, oldVal, newVal) -> {
+                if (newVal == 0) {
+                    np_right.setDisplayedValues(createYearsWS());
+                } else if (newVal == 1) {
+                    np_right.setDisplayedValues(createYears());
+                }
+            });
+        } else {
+            if ((App.getChosenSemester().getID() % 2) == 0) {
+                np_center.setValue(1);
+                np_right.setValue((App.getChosenSemester().getID() / 2) - 1);
+            } else {
+                np_right.setDisplayedValues(createYearsWS());
+                np_right.setValue(((int) (App.getChosenSemester().getID() / 2f) - 1));
+            }
+            np_center.setOnValueChangedListener((picker, oldVal, newVal) -> {
+                if (newVal == 0) {
+                    np_right.setDisplayedValues(createYearsWS());
+                } else if (newVal == 1) {
+                    np_right.setDisplayedValues(createYears());
+                }
+            });
+        }
         builder.setView(view)
                 .setPositiveButton(R.string.send, this)
                 .setNeutralButton(R.string.abort, this);
@@ -144,10 +171,15 @@ public class ChangeSemesterDialog extends DialogFragment implements DialogInterf
                         if (documentSnapshot != null && documentSnapshot.exists()) {
                             try {
                                 Semester s = documentSnapshot.toObject(Semester.class);
-                                if (kind.equals(Person.JOINED)) {
-                                    listener.joinedSelectionDone(s);
-                                } else {
-                                    listener.selectorDone(s);
+                                s.setID(semesterID);
+                                try {
+                                    if (kind.equals(Person.JOINED)) {
+                                        listener.joinedSelectionDone(s);
+                                    } else {
+                                        listener.selectorDone(s);
+                                    }
+                                } catch (Exception e) {
+                                    Log.e(TAG, "onClick: if-else", e);
                                 }
                             } catch (Exception e) {
                                 Log.e(TAG, "onSuccess: selected semester does not exist");

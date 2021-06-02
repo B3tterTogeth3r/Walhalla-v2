@@ -9,11 +9,13 @@ import org.jetbrains.annotations.NotNull;
 
 import de.walhalla.app2.model.Semester;
 
+//TODO Comment top level class and its functions
 @SuppressLint("StaticFieldLeak")
 public class App extends Application {
     //private static final String TAG = "App";
     private static Context context;
     private static Semester currentSemester, chosenSemester;
+    private static User user;
 
     public App() {
     }
@@ -44,6 +46,14 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         context = this;
+    }
+
+    public static User getUser() {
+        return user;
+    }
+
+    public static void setUser(User user) {
+        App.user = user;
     }
 
 }

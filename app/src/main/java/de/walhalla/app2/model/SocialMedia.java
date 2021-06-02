@@ -13,11 +13,11 @@ package de.walhalla.app2.model;
  * them in the future.
  *
  * @author B3tterTogeth3r
- * @version 1.0
+ * @version 1.1
  * @since 2.0
  */
 @SuppressWarnings("unused")
-public final class SocialMedia {
+public class SocialMedia {
     private String icon, link, name;
 
     /**

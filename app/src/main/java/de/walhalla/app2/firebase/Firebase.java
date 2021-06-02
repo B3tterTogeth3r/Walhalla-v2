@@ -5,9 +5,11 @@ import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.firebase.Timestamp;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -19,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import de.walhalla.app2.App;
@@ -30,7 +33,6 @@ import de.walhalla.app2.utils.Variables;
 @SuppressLint("StaticFieldLeak")
 public class Firebase {
     private static final String TAG = "Firebase";
-    private static final boolean[] setters = new boolean[5];
     public static StorageReference IMAGES;
     public static StorageReference RECEIPTS;
     public static FirebaseAuth AUTHENTICATION;
@@ -38,36 +40,56 @@ public class Firebase {
     public static FirebaseUser USER;
     public static FirebaseFirestore FIRESTORE;
     public static FirebaseAnalytics ANALYTICS;
+    public static FirebaseCrashlytics CRASHLYTICS;
+    private static int counter = -1;
 
     public static boolean setFirebase() {
-        setters[0] = Variables.setAllSemesters();
-        setters[1] = Firebase.setAnalytics();
-        setters[2] = Firebase.setFirestoreDB();
-        setters[3] = Firebase.setAuth();
-        setters[4] = Firebase.setStorage();
         //Log.d(TAG, "setFirebase: " + setters[0] + " " + setters[1] + " " + setters[2] + " " + setters[3] + " " + setters[4]);
-        return (setters[0] && setters[1] && setters[2] && setters[3] && setters[4]);
+        return (initNext());
     }
 
-    private static boolean setAnalytics() {
-        try {
-            ANALYTICS = FirebaseAnalytics.getInstance(App.getContext());
-        } catch (Exception e) {
-            return false;
+    public static boolean initNext() {
+        counter++;
+        Log.d(TAG, "initNext: counter = " + counter);
+        switch (counter) {
+            case 0:
+                Log.d(TAG, "initNext: creating all semesters");
+                Variables.setAllSemesters();
+                break;
+            case 1:
+                Log.d(TAG, "initNext: setting firebase auth");
+                setAuth();
+                break;
+            case 2:
+                Log.d(TAG, "initNext: setting firebase/google analytics");
+                ANALYTICS = FirebaseAnalytics.getInstance(App.getContext());
+                initNext();
+                break;
+            case 3:
+                Log.d(TAG, "initNext: setting firebase cloud firestore");
+                FIRESTORE = FirebaseFirestore.getInstance();
+                initNext();
+                break;
+            case 4:
+                Log.d(TAG, "initNext: setting firebase storage");
+                FirebaseStorage storage = FirebaseStorage.getInstance("gs://walhallaapp.appspot.com");
+                IMAGES = storage.getReference().child("pictures");
+                RECEIPTS = storage.getReference().child("receipts");
+                initNext();
+                break;
+            case 5:
+                Log.d(TAG, "initNext: setting firebase Crashlytics");
+                CRASHLYTICS = FirebaseCrashlytics.getInstance();
+                initNext();
+                break;
+            default:
+                return true;
         }
-        return true;
+        return false;
     }
 
-    private static boolean setFirestoreDB() {
-        try {
-            FIRESTORE = FirebaseFirestore.getInstance();
-        } catch (Exception e) {
-            return false;
-        }
-        return true;
-    }
-
-    public static boolean setAuth() {
+    @SuppressWarnings({"unchecked", "ConstantConditions"})
+    public static void setAuth() {
         try {
             AUTHENTICATION = FirebaseAuth.getInstance();
             //com.example.walhalla.firebase.Firebase
@@ -82,7 +104,97 @@ public class Firebase {
                             if (!queryDocumentSnapshots.isEmpty()) {
                                 for (DocumentSnapshot snapshot : queryDocumentSnapshots) {
                                     try {
-                                        Person p = snapshot.toObject(Person.class);
+                                        Person p = new Person();
+                                        try {
+                                            p.setAddress((Map<String, Object>) snapshot.get(Person.ADDRESS));
+                                        } catch (Exception e) {
+                                            CRASHLYTICS.recordException(e);
+                                            Log.e(TAG, "setAuth: ", e);
+                                        }
+                                        try {
+                                            p.setAddress_2((Map<String, Object>) snapshot.get(Person.ADDRESS_2));
+                                        } catch (Exception e) {
+                                            CRASHLYTICS.recordException(e);
+                                            Log.e(TAG, "setAuth: ", e);
+                                        }
+                                        try {
+                                            p.setBalance(((Double) snapshot.get(Person.BALANCE)).floatValue());
+                                        } catch (Exception e) {
+                                            CRASHLYTICS.recordException(e);
+                                            Log.e(TAG, "setAuth: ", e);
+                                        }
+                                        try {
+                                            p.setDoB((Timestamp) snapshot.get(Person.DOB));
+                                        } catch (Exception e) {
+                                            CRASHLYTICS.recordException(e);
+                                            Log.e(TAG, "setAuth: ", e);
+                                        }
+                                        try {
+                                            p.setFirst_Name((String) snapshot.get(Person.FIRST_NAME));
+                                        } catch (Exception e) {
+                                            CRASHLYTICS.recordException(e);
+                                            Log.e(TAG, "setAuth: ", e);
+                                        }
+                                        try {
+                                            p.setJoined(((Long) snapshot.get(Person.JOINED)).intValue());
+                                        } catch (Exception e) {
+                                            CRASHLYTICS.recordException(e);
+                                            Log.e(TAG, "setAuth: ", e);
+                                        }
+                                        try {
+                                            p.setLast_Name((String) snapshot.get(Person.LAST_NAME));
+                                        } catch (Exception e) {
+                                            CRASHLYTICS.recordException(e);
+                                            Log.e(TAG, "setAuth: ", e);
+                                        }
+                                        try {
+                                            p.setMail((String) snapshot.get(Person.MAIL));
+                                        } catch (Exception e) {
+                                            CRASHLYTICS.recordException(e);
+                                            Log.e(TAG, "setAuth: ", e);
+                                        }
+                                        try {
+                                            p.setMajor((String) snapshot.get(Person.MAJOR));
+                                        } catch (Exception e) {
+                                            CRASHLYTICS.recordException(e);
+                                            Log.e(TAG, "setAuth: ", e);
+                                        }
+                                        try {
+                                            p.setMobile((String) snapshot.get(Person.MOBILE));
+                                        } catch (Exception e) {
+                                            CRASHLYTICS.recordException(e);
+                                            Log.e(TAG, "setAuth: ", e);
+                                        }
+                                        try {
+                                            p.setPicture_path((String) snapshot.get(Person.PICTURE_PATH));
+                                        } catch (Exception e) {
+                                            CRASHLYTICS.recordException(e);
+                                            Log.e(TAG, "setAuth: ", e);
+                                        }
+                                        try {
+                                            p.setPoB((String) snapshot.get(Person.POB));
+                                        } catch (Exception e) {
+                                            CRASHLYTICS.recordException(e);
+                                            Log.e(TAG, "setAuth: ", e);
+                                        }
+                                        try {
+                                            p.setRank((String) snapshot.get(Person.RANK));
+                                        } catch (Exception e) {
+                                            CRASHLYTICS.recordException(e);
+                                            Log.e(TAG, "setAuth: ", e);
+                                        }
+                                        try {
+                                            p.setRankSettings((Map<String, Object>) snapshot.get(Person.RANK_SETTINGS));
+                                        } catch (Exception e) {
+                                            CRASHLYTICS.recordException(e);
+                                            Log.e(TAG, "setAuth: ", e);
+                                        }
+                                        try {
+                                            p.setUid((String) snapshot.get(Person.UID));
+                                        } catch (Exception e) {
+                                            CRASHLYTICS.recordException(e);
+                                            Log.e(TAG, "setAuth: ", e);
+                                        }
                                         if (p != null) {
                                             //TODO User.setData(p, Objects.requireNonNull(user.getEmail()));
                                         } else {
@@ -94,26 +206,14 @@ public class Firebase {
                                     }
                                 }
                             }
+                            initNext();
                         });
             } else {
                 AUTHENTICATION.signOut();
                 USER = null;
             }
-        } catch (Exception e) {
-            return false;
+        } catch (Exception ignored) {
         }
-        return true;
-    }
-
-    public static boolean setStorage() {
-        FirebaseStorage storage = FirebaseStorage.getInstance("gs://walhallaapp.appspot.com");
-        try {
-            IMAGES = storage.getReference().child("pictures");
-            RECEIPTS = storage.getReference().child("receipts");
-        } catch (Exception e) {
-            return false;
-        }
-        return true;
     }
 
     public interface Event {

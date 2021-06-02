@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/dialog_appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:elevation="0dp">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/dialog_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_alignParentStart="true"
+            android:paddingStart="6dp"
+            android:paddingEnd="16dp"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:contentInsetStartWithNavigation="0dp"
+            app:navigationIcon="@drawable/ic_close"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <RelativeLayout
+        android:id="@+id/dialog_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="8dp"
+        android:paddingTop="?attr/actionBarSize"
+        android:paddingEnd="8dp">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/profile_address_street_input"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            app:boxBackgroundColor="@color/background">
+
+            <EditText
+                android:id="@+id/profile_address_street"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/profile_address_street"
+                tools:ignore="Autofill,LabelFor,TextFields" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_toEndOf="@id/profile_address_street_input"
+            app:boxBackgroundColor="@color/background">
+
+            <EditText
+                android:id="@+id/profile_address_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/profile_address_number"
+                android:inputType="text|number"
+                tools:ignore="Autofill,LabelFor,TextFields" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/profile_address_zip_input"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/profile_address_street_input"
+            android:layout_margin="10dp"
+            app:boxBackgroundColor="@color/background">
+
+            <EditText
+                android:id="@+id/profile_address_zip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/profile_address_zip"
+                android:inputType="number|text"
+                tools:ignore="Autofill,LabelFor,TextFields" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/profile_address_street_input"
+            android:layout_margin="10dp"
+            android:layout_toEndOf="@id/profile_address_zip_input"
+            app:boxBackgroundColor="@color/background">
+
+            <EditText
+                android:id="@+id/profile_address_city"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/profile_address_city"
+                tools:ignore="Autofill,LabelFor,TextFields" />
+        </com.google.android.material.textfield.TextInputLayout>
+    </RelativeLayout>
+</RelativeLayout>

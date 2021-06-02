@@ -17,6 +17,7 @@ import java.util.Set;
 
 import de.walhalla.app2.App;
 import de.walhalla.app2.R;
+import de.walhalla.app2.firebase.Firebase;
 import de.walhalla.app2.model.Semester;
 
 public class Variables {
@@ -36,11 +37,13 @@ public class Variables {
     public static final int REQUEST_CODE_ASK_PERMISSIONS = 123;
     public static final long ONE_MEGABYTE = 1024 * 1024 * 2;
     public static final float SCALE = App.getContext().getResources().getDisplayMetrics().density;
+    public static final String START_PAGE = "start_page";
+    public static final String START_PAGE_VALUE = "home";
     public static ArrayList<Semester> SEMESTER_ARRAY_LIST;
     public static SharedPreferences SHARED_PREFERENCES;
     public static String SHARED_PREFERENCES_PATH_DEFAULT;
 
-    public static boolean setAllSemesters() {
+    public static void setAllSemesters() {
         try {
             SEMESTER_ARRAY_LIST = new ArrayList<>();
             Semester current = new Semester();
@@ -91,11 +94,10 @@ public class Variables {
                 SEMESTER_ARRAY_LIST.add(ss);
             }
             //Log.i("CreateSem", "size: " + SEMESTER_ARRAY_LIST.size());
+            Firebase.initNext();
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
         }
-        return true;
     }
 
     private static void setCurrent(@NotNull Semester current) {

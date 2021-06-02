@@ -73,12 +73,12 @@ public class Fragment extends CustomFragment {
                         for (DocumentSnapshot snapshot : value) {
                             try {
                                 Person p = new Person();
-                                p.setFirst_Name((String) snapshot.get(Person.FIRST_NAME));
-                                p.setLast_Name((String) snapshot.get(Person.LAST_NAME));
-                                p.setPoB((String) snapshot.get(Person.POB));
-                                p.setMobile((String) snapshot.get(Person.MOBILE));
-                                p.setMajor((String) snapshot.get(Person.MAJOR));
-                                p.setPicture_path((String) snapshot.get(Person.PICTURE_PATH));
+                                p.setFirst_Name(snapshot.getString(Person.FIRST_NAME));
+                                p.setLast_Name(snapshot.getString(Person.LAST_NAME));
+                                p.setPoB(snapshot.getString(Person.POB));
+                                p.setMobile(snapshot.getString(Person.MOBILE));
+                                p.setMajor(snapshot.getString(Person.MAJOR));
+                                p.setPicture_path(snapshot.getString(Person.PICTURE_PATH));
                                 p.setAddress((Map<String, Object>) snapshot.get(Person.ADDRESS));
                                 board.add(p);
                             } catch (Exception ignored) {

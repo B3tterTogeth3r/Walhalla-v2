@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -48,11 +49,13 @@ import de.walhalla.app2.fragment.home.Fragment;
 import de.walhalla.app2.interfaces.AuthCustomListener;
 import de.walhalla.app2.interfaces.OpenExternal;
 import de.walhalla.app2.model.SocialMedia;
+import de.walhalla.app2.utils.ImageDownload;
 import de.walhalla.app2.utils.Variables;
 import io.github.douglasjunior.androidSimpleTooltip.SimpleTooltip;
 
 import static de.walhalla.app2.firebase.Firebase.ANALYTICS;
 
+//TODO Comment functions, methods and everything else in here.
 @SuppressLint("StaticFieldLeak")
 public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
@@ -80,6 +83,71 @@ public class MainActivity extends AppCompatActivity implements
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             } catch (Exception ignored) {
             }
+        }
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //Set user data if any is still signed in
+        try {
+            if (Firebase.AUTHENTICATION.getCurrentUser() != null) {
+                Firebase.setAuth();
+                Firebase.isUserLogin = true;
+            } else {
+                Firebase.isUserLogin = false;
+            }
+        } catch (Exception e) {
+            Firebase.isUserLogin = false;
+        }
+        //For easier access to this view for Toast and SnackBar messages
+        parentLayout = findViewById(android.R.id.content);
+        //Set the View
+        setContentView(R.layout.activity_main);
+
+        //Initialize Toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        drawerlayout = findViewById(R.id.drawer_layout);
+
+        //The left site navigation controller
+        appBarConfiguration = new AppBarConfiguration.Builder().build();
+        navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        fillSideNav();
+
+        //ButtonNavigationView
+        BottomNavigationViewEx bnve = findViewById(R.id.bottom_nav_view);
+        bnve.enableShiftingMode(false);
+        bnve.enableItemShiftingMode(false);
+        bnve.setTextVisibility(true);
+        bnve.setOnNavigationItemSelectedListener(this);
+        share = findViewById(R.id.menu_share);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerlayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        toggle.syncState();
+
+        /* Open Fragment on Start */
+        if (savedInstanceState == null) {
+            //DEFAULT: getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+            String value = PreferenceManager
+                    .getDefaultSharedPreferences(this)
+                    .getString(Variables.START_PAGE, "");
+            androidx.fragment.app.Fragment home;
+            switch (value) {
+                case "program":
+                    home = new de.walhalla.app2.fragment.program.Fragment();
+                    break;
+                case "news":
+                    home = new de.walhalla.app2.fragment.news.Fragment();
+                    break;
+                case "home":
+                default:
+                    home = new Fragment();
+                    break;
+            }
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, home).commit();
         }
     }
 
@@ -127,51 +195,6 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        //Set user data if any is still signed in
-        try {
-            if (Firebase.AUTHENTICATION.getCurrentUser() != null) {
-                Firebase.setAuth();
-                Firebase.isUserLogin = true;
-            } else {
-                Firebase.isUserLogin = false;
-            }
-        } catch (Exception e) {
-            Firebase.isUserLogin = false;
-        }
-        parentLayout = findViewById(android.R.id.content);
-        setContentView(R.layout.activity_main);
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        drawerlayout = findViewById(R.id.drawer_layout);
-
-        appBarConfiguration = new AppBarConfiguration.Builder().build();
-        navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        fillSideNav();
-
-        //ButtonNavigationView
-        BottomNavigationViewEx bnve = findViewById(R.id.bottom_nav_view);
-        bnve.enableShiftingMode(false);
-        bnve.enableItemShiftingMode(false);
-        bnve.setTextVisibility(true);
-        bnve.setOnNavigationItemSelectedListener(this);
-        share = findViewById(R.id.menu_share);
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerlayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        toggle.syncState();
-
-        /* Open Fragment on Start */
-        if (savedInstanceState == null) {
-            //DEFAULT: getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Fragment()).commit();
-        }
-    }
-
-    @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, appBarConfiguration)
@@ -194,8 +217,21 @@ public class MainActivity extends AppCompatActivity implements
         TextView city = view.findViewById(R.id.nav_city);
         if (isLogin) {
             try {
-                image.setImageResource(R.drawable.wappen_round);
-                //TODO Set Userdata
+                //download image
+                if (Firebase.USER.getPhotoUrl() != null) {
+                    try {
+                        new ImageDownload(image::setImageBitmap, Firebase.USER.getPhotoUrl()).execute();
+                    } catch (Exception e) {
+                        Firebase.CRASHLYTICS.log("profile picture download failed");
+                        Firebase.CRASHLYTICS.recordException(e);
+                        Log.e(TAG, "fillSideNav: profile picture download failed", e);
+                    }
+                } else {
+                    image.setImageResource(R.drawable.wappen_herz);
+                }
+                title.setText(Firebase.USER.getDisplayName());
+                street.setText(String.format("%s:", getString(R.string.login_email)));
+                city.setText(Firebase.USER.getEmail());
             } catch (Exception ignored) {
             }
         } else {
@@ -305,14 +341,22 @@ public class MainActivity extends AppCompatActivity implements
                 itemName = getString(R.string.menu_logout);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new de.walhalla.app2.fragment.home.Fragment()).commit();
-                Firebase.AUTHENTICATION.signOut();
-                Firebase.Messaging.UnsubscribeTopic(Firebase.Messaging.TOPIC_INTERNAL);
+                try {
+                    Firebase.AUTHENTICATION.signOut();
+                    ANALYTICS.setUserProperty("user_rank", "guest");
+                    Firebase.Messaging.UnsubscribeTopic(Firebase.Messaging.TOPIC_INTERNAL);
 
-                Snackbar.make(parentLayout, R.string.login_logout_successful, Snackbar.LENGTH_LONG)
-                        .setAction(R.string.close, v -> {
-                        })
-                        .setActionTextColor(App.getContext().getResources().getColor(R.color.colorPrimaryDark, null))
-                        .show();
+                    App.setUser(new User());
+                    Snackbar.make(parentLayout, R.string.login_logout_successful, Snackbar.LENGTH_LONG)
+                            .setAction(R.string.close, v -> {
+                            })
+                            .setActionTextColor(App.getContext().getResources().getColor(R.color.colorPrimaryDark, null))
+                            .show();
+                } catch (Exception e) {
+                    Log.e(TAG, "NavSelect.Logout: some error occurred.", e);
+                    Firebase.CRASHLYTICS.log("NavSelect.Logout: some  error occurred.");
+                    Firebase.CRASHLYTICS.recordException(e);
+                }
                 lastItem.setChecked(true);
                 break;
             case R.id.menu_home:
@@ -352,7 +396,7 @@ public class MainActivity extends AppCompatActivity implements
             case R.string.menu_profile:
                 itemName = getString(R.string.menu_profile);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new de.walhalla.app2.fragment.profile.Fragment()).commit();//TODO null)).commit();
+                        new de.walhalla.app2.fragment.profile.Fragment()).commit();
                 break;
             case R.string.menu_beer:
                 itemName = getString(R.string.menu_beer);

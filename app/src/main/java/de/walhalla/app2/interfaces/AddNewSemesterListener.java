@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import de.walhalla.app2.model.Event;
 import de.walhalla.app2.model.Semester;
 
+//TODO Comment interface
 public interface AddNewSemesterListener {
     void semesterDone(@NotNull Semester semester);
 
