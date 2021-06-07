@@ -275,5 +275,6 @@
     <string name="error_no_name">Der Name ist zu kurz.</string>
     <string name="save">Speichern</string>
     <string name="register_complete">Nur noch die E-Mail bestätigen, dann ist die Registrierung abgeschlossen.</string>
+    <string name="menu_add_person">Person hinzufügen</string>
 
 </resources>

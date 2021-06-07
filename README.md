@@ -247,3 +247,8 @@ As always some I found some bugs and fixed hopefully all of them. But of course 
   changeable. For the password the user still has to use login form and select "forgot password".
 10. ChangeSemesterDialog
     - can now show a past semester as starting value
+
+## Fixed bugs
+07.06.2021 19:45<br>
+*Version code:* `2_3_070621` *- Version name:* `Alpha 2.3 07.06.2021`<br>
+Fixed some bugs which occurred while registering new users.

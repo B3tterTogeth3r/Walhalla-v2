@@ -80,12 +80,11 @@ public class Load extends LoginDialog {
     private final AtomicBoolean imageGotSelected = new AtomicBoolean(false);
     private LayoutInflater inflater;
     private ViewGroup root;
-    private Uri image_uri;
     private TextView rank;
     private LinearLayout settingsLayout;
     private String image_path = "";
     private int stepNumber = 0;
-    private float downloadProgress = 0;
+    private float uploadProgress = 0;
     private ProgressBar progressBar;
 
     /**
@@ -302,7 +301,7 @@ public class Load extends LoginDialog {
             if (pw1.getText().toString().equals(pw2.getText().toString())) {
                 password = pw1.getText().toString();
                 if (!password.isEmpty() && 7 < password.length()) {
-                    Log.d(TAG, "setPassword: " + pw1.getText().toString());
+                    Log.d(TAG, "setPassword: ********");// + pw1.getText().toString());
                     // Save the password
                     userPW = pw1.getText().toString();
                     setState(PROFILE_DATA);
@@ -605,7 +604,7 @@ public class Load extends LoginDialog {
         View view = inflater.inflate(R.layout.item_profile, null);
         view.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
-        view.findViewById(R.id.button_row).setVisibility(View.GONE);
+        view.findViewById(R.id.button_row).setVisibility(View.VISIBLE);
         view.findViewById(R.id.profile_title_image).setVisibility(View.GONE);
         view.findViewById(R.id.profile_title_text).setVisibility(View.GONE);
         TextView email = view.findViewById(R.id.profile_mail);
@@ -1001,7 +1000,7 @@ public class Load extends LoginDialog {
                         }
                     }, Person.JOINED, user.getJoined());
                     try {
-                        dialog.show(getChildFragmentManager(),
+                        dialog.show(LoginDialog.fragmentManager,
                                 TAG);
                     } catch (Exception e) {
                         Log.e(TAG, "setFratData: opening semester dialog did not work", e);
@@ -1018,7 +1017,7 @@ public class Load extends LoginDialog {
         // [END profile picture]
 
         // [START register button]
-        view.findViewById(R.id.button_sign_in)
+        view.findViewById(R.id.login_register)
                 .setOnClickListener(v -> {
                     //Check that all fields are filled
                     boolean errorExists = false;
@@ -1063,10 +1062,10 @@ public class Load extends LoginDialog {
                         errorExists = true;
                     }
                     if (errorExists) {
-                        Toast.makeText(requireContext(), R.string.error_fill_all_fields, Toast.LENGTH_LONG).show();
+                        Toast.makeText(App.getContext(), R.string.error_fill_all_fields, Toast.LENGTH_LONG).show();
                     } else {
-                        //TODO show progress bar, disable all other fields (greyisch color over the whole screen
-                        // or something like that
+                        //show progress bar, disable all other fields (grayish color over the
+                        // whole screen or something like that)
                         progressBar.setVisibility(View.VISIBLE);
                         LinearLayout layout = view.findViewById(R.id.profile_layout);
                         layout.setBackgroundResource(R.color.darkGray);
@@ -1081,6 +1080,8 @@ public class Load extends LoginDialog {
                         view.findViewById(R.id.profile_joined_layout).setOnClickListener(null);
                         view.findViewById(R.id.login_profile_image_layout).setOnClickListener(null);
                         view.findViewById(R.id.login_register).setOnClickListener(null);
+                        stepNumber = -1;
+                        uploadProgress = 0f;
                         uploadData();
                     }
                 });
@@ -1099,55 +1100,17 @@ public class Load extends LoginDialog {
      * @since 1.8
      */
     private void uploadData() {
+        AtomicReference<Uri> image_uri = new AtomicReference<>(null);
+        updateProgressbar();
         stepNumber++;
-        // [START Upload Image]
-        if (stepNumber == 0) {
-            if (imageGotSelected.get()) {
-                String imagePath = (user.getFirst_Name()).replace(" ", "_");
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                byte[] data = baos.toByteArray();
-                Firebase.IMAGES.child(imagePath).putBytes(data)
-                        .addOnFailureListener(e -> {
-                            //Upload failed
-                            Firebase.CRASHLYTICS.log("ProfileFragment.onStop: upload of user data failed");
-                            Firebase.CRASHLYTICS.recordException(e);
-                            Log.e(TAG, "stop: upload failed", e);
-                        }).addOnCompleteListener(task -> {
-                    //Set uri to User and update Auth user
-                    Firebase.IMAGES.child(imagePath).getDownloadUrl()
-                            .addOnSuccessListener(uri -> {
-                                this.image_uri = uri;
-                                user.setPicture_path(imagePath);
-                                uploadData();
-                            });
-                });
-            } else {
-                uploadData();
-            }
-        }
-        // [END Upload image]
-
         // [START Create user in Firebase Auth]
-        if (stepNumber == 1) {
+        if (stepNumber == 0) {
             //Create user in Firebase Auth and set uid to user.setUid()
             Firebase.AUTHENTICATION.createUserWithEmailAndPassword(user.getMail(), userPW)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
-                            Firebase.USER = Firebase.AUTHENTICATION.getCurrentUser();
-                            user.setUid(Firebase.USER.getUid());
-                            UserProfileChangeRequest.Builder profileUpdates =
-                                    new UserProfileChangeRequest.Builder()
-                                            .setDisplayName(user.getFullName());
-                            if (image_uri.toString().length() != 0) {
-                                profileUpdates.setPhotoUri(image_uri);
-                            }
-                            Firebase.USER.updateProfile(profileUpdates.build())
-                                    .addOnSuccessListener(unused ->
-                                            Log.d(TAG, "onSuccess: auth profile updated.")
-                                    );
                             uploadData();
                         } else {
                             // If sign in fails, display a message to the user.
@@ -1159,23 +1122,101 @@ public class Load extends LoginDialog {
         }
         // [END Create user in Firebase Auth]
 
-        // [START Upload user data]
+        // [START Update uid in user]
+        if (stepNumber == 1) {
+            try {
+                Firebase.USER = FirebaseAuth.getInstance().getCurrentUser();
+                user.setUid(Firebase.USER.getUid());
+            } catch (Exception e){
+                Log.e(TAG, "uploadData: getting uid did not work.", e);
+                Firebase.CRASHLYTICS.log(TAG + "uploadData: getting uid after " +
+                        "registration did not work");
+                Firebase.CRASHLYTICS.recordException(e);
+            }
+            uploadData();
+        }
+        // [END Update uid in user]
+
+        // [START Upload Image]
         if (stepNumber == 2) {
+            if (imageGotSelected.get()) {
+                String imagePath = (user.getFullName()).replace(" ", "_") + ".jpg";
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                byte[] data = baos.toByteArray();
+                Firebase.IMAGES.child(imagePath).putBytes(data)
+                        .addOnFailureListener(e -> {
+                            //Upload failed
+                            Log.e(TAG, "stop: upload failed", e);
+                            Firebase.CRASHLYTICS.log("ProfileFragment.onStop: upload of user data failed");
+                            Firebase.CRASHLYTICS.recordException(e);
+                            uploadData();
+                        }).addOnCompleteListener(task -> {
+                    //Set uri to User and update Auth user
+                    Firebase.IMAGES.child(imagePath).getDownloadUrl()
+                            .addOnSuccessListener(uri -> {
+                                user.setPicture_path(imagePath);
+                                image_uri.set(uri);
+                                uploadData();
+                            });
+                });
+            } else {
+                uploadData();
+            }
+        }
+        // [END Upload image]
+
+        // [START Update Auth profile]
+        if (stepNumber == 3) {
+            UserProfileChangeRequest.Builder profileUpdates =
+                    new UserProfileChangeRequest.Builder()
+                            .setDisplayName(user.getFullName());
+            if (image_uri.get() != null && image_uri.toString().length() != 0) {
+                profileUpdates.setPhotoUri(image_uri.get());
+            }
+            Firebase.USER.updateProfile(profileUpdates.build())
+                    .addOnSuccessListener(unused -> {
+                                Log.d(TAG, "onSuccess: auth profile updated.");
+                                uploadData();
+                            }
+                    ).addOnFailureListener(e -> {
+                        Log.e(TAG, "uploadData: updating profile did not work.", e);
+                        Firebase.CRASHLYTICS.log(TAG + "uploadData: updating profile " +
+                                "did not work");
+                        Firebase.CRASHLYTICS.recordException(e);
+                        uploadData();
+                    });
+
+        }
+        // [END Update Auth profile]
+
+        // [START Upload user data]
+        if (stepNumber == 4) {
             Firebase.FIRESTORE.collection("Person")
                     .add(user)
-                    .addOnSuccessListener(unused -> {
+                    .addOnCompleteListener(task -> {
+                        if(task.isSuccessful()){
+                            Log.d(TAG, "onSuccess: user registered.");
+                        } else{
+                            Log.e(TAG, "uploadData: user couldn't be uploaded.", task.getException());
+                            Firebase.CRASHLYTICS.log(TAG + "uploadData: user couldn't be uploaded.");
+                            Firebase.CRASHLYTICS.recordException(Objects.requireNonNull(task.getException()));
+                        }
                         uploadData();
-                        Log.d(TAG, "onSuccess: user registered.");
                     });
         }
         // [END Upload user data]
 
         // [START Send mail for confirmation]
-        if (stepNumber == 3) {
+        if (stepNumber == 5) {
             Firebase.USER.sendEmailVerification()
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             Log.d(TAG, "onComplete: email send.");
+                        } else {
+                            Log.e(TAG, "uploadData: sendEmailVerification failed.", task.getException());
+                            Firebase.CRASHLYTICS.log(TAG + "uploadData: sendEmailVerification failed");
+                            Firebase.CRASHLYTICS.recordException(Objects.requireNonNull(task.getException()));
                         }
                         uploadData();
                     });
@@ -1183,7 +1224,7 @@ public class Load extends LoginDialog {
         // [END Send mail for confirmation]
 
         // [START Load the new user data into the app]
-        if (stepNumber == 4) {
+        if (stepNumber == 6) {
             Firebase.FIRESTORE.collection("Person")
                     .whereEqualTo("uid", Firebase.USER.getUid())
                     .limit(1)
@@ -1200,25 +1241,26 @@ public class Load extends LoginDialog {
                                 userdata.setData(p);
                                 Firebase.ANALYTICS.setUserProperty("user_rank", p.getRank());
                                 App.setUser(userdata);
-                                uploadData();
                             } catch (Exception e) {
                                 Log.e(TAG, "uploadUserData: loading the userdata did not work", e);
                                 Firebase.CRASHLYTICS.log(TAG + "uploadUserData: loading the userdata did not work");
                                 Firebase.CRASHLYTICS.recordException(e);
                             }
+                            uploadData();
                         }
                     });
         }
         // [END Load the new user data into the app]
-        updateProgressbar();
     }
 
     private void updateProgressbar() {
-        downloadProgress += (100f / 5);
-        progressBar.setProgress((int) downloadProgress);
-        Log.d(TAG, String.valueOf(downloadProgress));
-        if (downloadProgress == 100) {
+        uploadProgress += (100f / 8);
+        progressBar.setProgress((int) uploadProgress);
+        Log.d(TAG, String.valueOf(uploadProgress));
+        if (uploadProgress == 100) {
             progressBar.setVisibility(View.GONE);
+            Firebase.USER = FirebaseAuth.getInstance().getCurrentUser();
+            MainActivity.authChange.onAuthChange();
             Snackbar.make(MainActivity.parentLayout, R.string.register_complete, Snackbar.LENGTH_LONG).show();
             LoginDialog.customDialogListener.dismissDialog();
         }

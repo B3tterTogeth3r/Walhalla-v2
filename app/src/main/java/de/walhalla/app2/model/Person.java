@@ -327,11 +327,9 @@ public class Person implements Cloneable {
      * @return map of address_2
      * @throws UnsupportedOperationException if {@code address_2} is empty
      * @since 2.0
+     * @deprecated only one address is needed.
      */
-    public Map<String, Object> getAddress_2() throws UnsupportedOperationException {
-        if (address_2.isEmpty()) {
-            throw new UnsupportedOperationException("Person.address_2 is not set");
-        }
+    public Map<String, Object> getAddress_2() {
         return address_2;
     }
 
@@ -346,20 +344,15 @@ public class Person implements Cloneable {
      *                                           <li>not contains {@link #ADDRESS_CITY}</li>
      *                                       </ul>
      * @since 2.0
+     * @deprecated only one address is needed and set.
      */
-    public void setAddress_2(Map<String, Object> address_2) throws UnsupportedOperationException {
-        if (address_2 != null && !address_2.containsKey(ADDRESS_STREET)
-                && !address_2.containsKey(ADDRESS_NUMBER)
-                && !address_2.containsKey(ADDRESS_ZIP_CODE)
-                && !address_2.containsKey(ADDRESS_CITY)) {
-            throw new UnsupportedOperationException("Address_2: Not all fields all are filled");
-        }
+    public void setAddress_2(Map<String, Object> address_2){
         this.address_2 = address_2;
     }
 
     /**
      * @return number of joined semester
-     * @throws IndexOutOfBoundsException if {@code joined} is 0 or smaler
+     * @throws IndexOutOfBoundsException if {@code joined} is 0 or smaller
      * @since 1.1
      */
     public int getJoined() throws IndexOutOfBoundsException {
@@ -501,11 +494,7 @@ public class Person implements Cloneable {
     @NotNull
     @Exclude
     public String getFullName() throws UnsupportedOperationException {
-        try {
-            return getFirst_Name() + " " + getLast_Name();
-        } catch (UnsupportedOperationException e) {
-            throw e;
-        }
+        return getFirst_Name() + " " + getLast_Name();
     }
 
     /**
@@ -537,7 +526,6 @@ public class Person implements Cloneable {
         Map<String, Object> data = new HashMap<>();
 
         data.put(ADDRESS, getAddress());
-        data.put(ADDRESS_2, getAddress_2());
         data.put(BALANCE, getBalance());
         data.put(DOB, getDoB());
         data.put(FIRST_NAME, getFirst_Name());

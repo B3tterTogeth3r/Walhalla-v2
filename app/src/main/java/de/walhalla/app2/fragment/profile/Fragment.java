@@ -55,6 +55,9 @@ import de.walhalla.app2.utils.Variables;
 
 import static android.app.Activity.RESULT_OK;
 
+/**
+ * This fragment displays the profile of the currently signed in user. The user can edit everything
+ */
 public class Fragment extends CustomFragment {
     private static final String TAG = "profile.Fragment";
     private final ArrayList<Rank> ranks = new ArrayList<>();
