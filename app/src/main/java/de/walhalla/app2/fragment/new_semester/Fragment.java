@@ -1,5 +1,6 @@
 package de.walhalla.app2.fragment.new_semester;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -8,6 +9,7 @@ import androidx.annotation.NonNull;
 import org.jetbrains.annotations.NotNull;
 
 import de.walhalla.app2.abstraction.CustomFragment;
+import de.walhalla.app2.utils.goHome;
 
 public class Fragment extends CustomFragment {
     private static final String TAG = "new_semester.Fragment";
@@ -34,7 +36,12 @@ public class Fragment extends CustomFragment {
 
     @Override
     public void authChange() {
-
+        //Go to home
+        try {
+            new goHome(getParentFragmentManager());
+        } catch (Exception e) {
+            Log.e(TAG, "onCreate: ", e);
+        }
     }
 
     @Override

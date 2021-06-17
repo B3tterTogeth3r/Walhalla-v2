@@ -39,6 +39,7 @@ public class Variables {
     public static final float SCALE = App.getContext().getResources().getDisplayMetrics().density;
     public static final String START_PAGE = "start_page";
     public static final String START_PAGE_VALUE = "home";
+    public static final String GOT_NEWS = "new_news";
     public static ArrayList<Semester> SEMESTER_ARRAY_LIST;
     public static SharedPreferences SHARED_PREFERENCES;
     public static String SHARED_PREFERENCES_PATH_DEFAULT;

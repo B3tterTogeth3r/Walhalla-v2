@@ -1,5 +1,6 @@
 package de.walhalla.app2.fragment.new_person;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -10,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 import de.walhalla.app2.R;
 import de.walhalla.app2.abstraction.CustomFragment;
+import de.walhalla.app2.utils.goHome;
 
 /**
  * This fragment is so a signed in admin or charge can add a new person. This new person than does
@@ -48,7 +50,12 @@ public class Fragment extends CustomFragment {
 
     @Override
     public void authChange() {
-
+        //Go to home
+        try {
+            new goHome(getParentFragmentManager());
+        } catch (Exception e) {
+            Log.e(TAG, "onCreate: ", e);
+        }
     }
 
     @Override

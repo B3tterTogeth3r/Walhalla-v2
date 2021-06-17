@@ -86,6 +86,7 @@ public class Load extends LoginDialog {
     private int stepNumber = 0;
     private float uploadProgress = 0;
     private ProgressBar progressBar;
+    AtomicReference<Uri> image_uri = new AtomicReference<>(null);
 
     /**
      * @see #Load(LayoutInflater, ViewGroup)
@@ -222,6 +223,7 @@ public class Load extends LoginDialog {
                                                         userdata.setUid(Firebase.USER.getUid());
                                                         userdata.setImage(Firebase.USER.getPhotoUrl());
                                                         userdata.setEmail(Firebase.USER.getEmail());
+                                                        userdata.setId(d.getId());
                                                         userdata.setData(p);
                                                         Firebase.ANALYTICS.setUserProperty("user_rank", p.getRank());
                                                         App.setUser(userdata);
@@ -1100,7 +1102,6 @@ public class Load extends LoginDialog {
      * @since 1.8
      */
     private void uploadData() {
-        AtomicReference<Uri> image_uri = new AtomicReference<>(null);
         updateProgressbar();
         stepNumber++;
         // [START Create user in Firebase Auth]

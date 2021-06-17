@@ -7,4 +7,6 @@
     <item name="diashow_description" type="id" />
     <item name="diashow_image" type="id" />
     <item name="numberpicker" type="id" />
+    <item name="txt_amount" type="id" />
+    <item name="txt_description" type="id" />
 </resources>

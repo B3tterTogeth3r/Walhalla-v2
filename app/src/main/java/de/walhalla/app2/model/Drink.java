@@ -1,67 +1,59 @@
 package de.walhalla.app2.model;
 
+import com.google.firebase.Timestamp;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @IgnoreExtraProperties
 public class Drink implements Cloneable {
-    private boolean available = false;
-    private String name;
-    private float priceBuy = 0;
-    private Map<String, Float> priceSell = new HashMap<>();
-    public final static String AKTIVE ="Aktive";
-    public final static String AH = "Alter Herr";
-    public final static String FUX ="Fux";
-    public final static String GAST = "Gast";
+    private int amount = 0;
+    private Timestamp date;
+    private float price = 0f;
+    private String uid;
+    private String kind;
 
     public Drink() {
-        priceSell.put(AKTIVE, 0f);
-        priceSell.put(AH, 0f);
-        priceSell.put(FUX, 0f);
-        priceSell.put(GAST, 0f);
     }
 
-    public Drink(boolean available, String name, float priceBuy, Map<String, Float> priceSell) {
-        this.available = available;
-        this.name = name;
-        this.priceBuy = priceBuy;
-        this.priceSell = priceSell;
+    public int getAmount() {
+        return amount;
     }
 
-    public boolean isAvailable() {
-        return available;
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 
-    public void setAvailable(boolean available) {
-        this.available = available;
+    public Timestamp getDate() {
+        return date;
     }
 
-    public String getName() {
-        return name;
+    public void setDate(Timestamp date) {
+        this.date = date;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public float getPrice() {
+        return price;
     }
 
-    public float getPriceBuy() {
-        return priceBuy;
+    public void setPrice(float price) {
+        this.price = price;
     }
 
-    public void setPriceBuy(float priceBuy) {
-        this.priceBuy = priceBuy;
+    public String getUid() {
+        return uid;
     }
 
-    public Map<String, Float> getPriceSell() {
-        return priceSell;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
-    public void setPriceSell(Map<String, Float> priceSell) {
-        this.priceSell = priceSell;
+    public String getKind() {
+        return kind;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind;
     }
 
     @NotNull

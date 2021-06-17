@@ -118,7 +118,7 @@ public class Firebase {
                                             Log.e(TAG, "setAuth: ", e);
                                         }
                                         try {
-                                            p.setBalance(((Double) snapshot.get(Person.BALANCE)).floatValue());
+                                            p.setBalance(((Double) snapshot.get(Person.BALANCE)).longValue());
                                         } catch (Exception e) {
                                             CRASHLYTICS.recordException(e);
                                             Log.e(TAG, "setAuth: ", e);

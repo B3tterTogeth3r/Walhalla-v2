@@ -3,6 +3,7 @@ package de.walhalla.app2;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -130,10 +131,20 @@ public class MainActivity extends AppCompatActivity implements
 
         /* Open Fragment on Start */
         if (savedInstanceState == null) {
-            //DEFAULT: getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
             String value = PreferenceManager
                     .getDefaultSharedPreferences(this)
                     .getString(Variables.START_PAGE, "");
+            String gotNews = Variables
+                    .SHARED_PREFERENCES
+                    .getString(Variables.GOT_NEWS, "");
+            Log.e(TAG, "onCreate: " + gotNews);
+            if (!gotNews.equals("")) {
+                value = "news";
+                Variables.SHARED_PREFERENCES
+                        .edit()
+                        .putString(Variables.GOT_NEWS, "")
+                        .apply();
+            }
             androidx.fragment.app.Fragment home;
             switch (value) {
                 case "program":
@@ -141,6 +152,9 @@ public class MainActivity extends AppCompatActivity implements
                     break;
                 case "news":
                     home = new de.walhalla.app2.fragment.news.Fragment();
+                    break;
+                case "drink":
+                    home = new de.walhalla.app2.fragment.drink.Fragment();
                     break;
                 case "home":
                 default:
@@ -222,9 +236,9 @@ public class MainActivity extends AppCompatActivity implements
                     try {
                         new ImageDownload(image::setImageBitmap, Firebase.USER.getPhotoUrl()).execute();
                     } catch (Exception e) {
+                        Log.e(TAG, "fillSideNav: profile picture download failed", e);
                         Firebase.CRASHLYTICS.log("profile picture download failed");
                         Firebase.CRASHLYTICS.recordException(e);
-                        Log.e(TAG, "fillSideNav: profile picture download failed", e);
                     }
                 } else {
                     image.setImageResource(R.drawable.wappen_herz);
@@ -272,6 +286,7 @@ public class MainActivity extends AppCompatActivity implements
 
             loginMenu.add(0, R.string.menu_beer, 0, R.string.menu_beer) //Change appearance depending on who is logged in
                     .setIcon(R.drawable.ic_beer);
+            loginMenu.add(0, R.string.menu_balance, 0, R.string.menu_balance);
 
             //Only visible to members of the fraternity
             Menu menuLogin = menu.addSubMenu(R.string.menu_intern);
@@ -283,11 +298,11 @@ public class MainActivity extends AppCompatActivity implements
             //Only visible to a active board member of the current semester
             //if (User.hasCharge()) {
             Menu menuCharge = menu.addSubMenu(R.string.menu_board_only);
-                /*menuCharge.add(0, R.string.menu_new_person, 0, R.string.menu_new_person)
-                        .setIcon(R.drawable.ic_person_add);
-                menuCharge.add(0, R.string.menu_user, 0, R.string.menu_user)
-                        .setIcon(R.drawable.ic_home);
-                menuCharge.add(0, R.string.menu_account, 0, R.string.menu_account)
+            menuCharge.add(0, R.string.menu_new_person, 0, R.string.menu_new_person)
+                    .setIcon(R.drawable.ic_person_add);
+                /*menuCharge.add(0, R.string.menu_user, 0, R.string.menu_user)
+                        .setIcon(R.drawable.ic_user_add);
+                /*menuCharge.add(0, R.string.menu_account, 0, R.string.menu_account)
                         .setIcon(R.drawable.ic_account);*/
             menuCharge.add(0, R.string.menu_new_semester, 0, R.string.menu_new_semester);
             //}
@@ -339,12 +354,15 @@ public class MainActivity extends AppCompatActivity implements
                 break;
             case R.string.menu_logout:
                 itemName = getString(R.string.menu_logout);
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new de.walhalla.app2.fragment.home.Fragment()).commit();
                 try {
                     Firebase.AUTHENTICATION.signOut();
                     ANALYTICS.setUserProperty("user_rank", "guest");
                     Firebase.Messaging.UnsubscribeTopic(Firebase.Messaging.TOPIC_INTERNAL);
+
+                    //remove any rights the user had
+                    SharedPreferences.Editor editor = Variables.SHARED_PREFERENCES.edit();
+                    editor.putStringSet(Variables.Rights.TAG, null);
+                    editor.apply();
 
                     App.setUser(new User());
                     Snackbar.make(parentLayout, R.string.login_logout_successful, Snackbar.LENGTH_LONG)
@@ -402,6 +420,11 @@ public class MainActivity extends AppCompatActivity implements
                 itemName = getString(R.string.menu_beer);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new de.walhalla.app2.fragment.drink.Fragment()).commit();
+                break;
+            case R.string.menu_balance:
+                itemName = getString(R.string.menu_balance);
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new de.walhalla.app2.fragment.balance.Fragment()).commit();
                 break;
             case R.string.menu_kartei:
                 itemName = "toast";

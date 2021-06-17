@@ -25,6 +25,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import org.jetbrains.annotations.NotNull;
@@ -52,11 +53,19 @@ import de.walhalla.app2.model.Rank;
 import de.walhalla.app2.model.Semester;
 import de.walhalla.app2.utils.ImageDownload;
 import de.walhalla.app2.utils.Variables;
+import de.walhalla.app2.utils.goHome;
 
 import static android.app.Activity.RESULT_OK;
 
 /**
- * This fragment displays the profile of the currently signed in user. The user can edit everything
+ * In this fragment the currently sigend in user can edit its profile. The user can edit everything
+ * except the email address and the password, since the email is necessary for firebase auth. The
+ * password can be edited via the {@link de.walhalla.app2.dialog.login.LoginDialog Login} screen.
+ * The data will be uploaded to Firestore, if the user hits the save button in the top right corner.
+ *
+ * @author B3tterTogeth3r
+ * @version 1.2
+ * @since 2.2
  */
 public class Fragment extends CustomFragment {
     private static final String TAG = "profile.Fragment";
@@ -170,12 +179,17 @@ public class Fragment extends CustomFragment {
 
     @Override
     public void authChange() {
-        displayChange();
+        //Go to home
+        try {
+            new goHome(getParentFragmentManager());
+        } catch (Exception e) {
+            Log.e(TAG, "onCreate: ", e);
+        }
     }
 
     @Override
     public void displayChange() {
-        //TODO Redirect to home
+        toolbarContent();
     }
 
     @Override
@@ -193,6 +207,8 @@ public class Fragment extends CustomFragment {
      */
     private void uploadData() {
         stepNumber++;
+
+        updateProgressbar();
         // [START Upload Image]
         if (stepNumber == 0) {
             if (imageGotClicked.get()) {
@@ -263,20 +279,40 @@ public class Fragment extends CustomFragment {
                     });
         }
         // [END Load the new user data into the app]
-        try {
-            updateProgressbar();
-        } catch (Exception e) {
-            Log.e(TAG, "uploadData: ", e);
+
+        // [START Update Auth profile]
+        if (stepNumber == 3) {
+            UserProfileChangeRequest.Builder profileUpdates =
+                    new UserProfileChangeRequest.Builder()
+                            .setDisplayName(user.getFullName());
+            if (image_uri != null && image_uri.toString().length() != 0) {
+                profileUpdates.setPhotoUri(image_uri);
+            }
+            Firebase.USER.updateProfile(profileUpdates.build())
+                    .addOnSuccessListener(unused -> {
+                                Log.d(TAG, "onSuccess: auth profile updated.");
+                                uploadData();
+                            }
+                    ).addOnFailureListener(e -> {
+                Log.e(TAG, "uploadData: updating profile did not work.", e);
+                Firebase.CRASHLYTICS.log(TAG + "uploadData: updating profile " +
+                        "did not work");
+                Firebase.CRASHLYTICS.recordException(e);
+                uploadData();
+            });
+
         }
+        // [END Update Auth profile]
     }
 
     private void updateProgressbar() {
-        downloadProgress += (100f / 4);
+        downloadProgress += (100f / 5);
         progressBar.setProgress((int) downloadProgress);
         Log.d(TAG, String.valueOf(downloadProgress));
         if (downloadProgress == 100) {
             progressBar.setVisibility(View.GONE);
             Snackbar.make(MainActivity.parentLayout, R.string.upload_complete, Snackbar.LENGTH_LONG).show();
+            MainActivity.authChange.onAuthChange();
             //Better reload fragment
             try {
                 getParentFragmentManager().beginTransaction().replace(R.id.fragment_container,

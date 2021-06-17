@@ -1,8 +1,8 @@
 # Walhalla-v2
-<p>I started the app as a simple web tool to manage the account easier. Soon I realized that having the
- account was not enough for events like a trip to another fraternity or something like that. Because
-  I already needed the semesters program inside, I choose to make that part public accessible. For 
-  drives or a drink calculation and its billing I also needed to have all the members of the 
+<p>I started the app as a simple web tool to manage the account easier. Soon I realized that having
+ the account was not enough for events like a trip to another fraternity or something like that. 
+ Because I already needed the semesters program inside, I choose to make that part public accessible.
+ For drives or a drink calculation and its billing I also needed to have all the members of the 
   fraternity at least by name. Also I did not want to do all of that by myself so I had to give
   certain permissions to add/edit/delete events, bills and drinks to certain people, the "chargen" 
   of the current semester. Programming all of that I realized, I do not want to delete public data
@@ -24,14 +24,15 @@
   After showing the `Alpha 2.x` to Felix and Ansgar, both said they wanted to write some code for
   it. Felix wants to write a chat, Ansgar still has to learn a lot about coding in Java, so maybe
   someday in the near future he can choose a inner project for himself.</p>
-  <p>
-  I copied all the public and some private texts and images from the current website 
-  (http://walhalla-wuerzburg.de/index.php) to add some more text and public sites to the app, but
-  they have to be rewritten. Some have to get shortened or just completely redesigned for a mobile 
-  app. Nearly nobody wants to read a 5 A4 page long text inside an app from the beginning.</p>
-  
-## Rules to that file:
-Add every push and commit message in here, because sometimes parts of messages disappear. Format them like that:
+<p>
+I copied all the public and some private texts and images from the current website 
+(http://walhalla-wuerzburg.de/) to add some more text and public sites to the app, but they have to 
+be rewritten. Some have to get shortened or just completely redesigned for a mobile app. Nearly 
+nobody wants to read a 5 A4 page long text inside an app from the beginning.</p>
+
+## Rules to this file:
+Add every push and commit message in here, because sometimes parts of messages disappear. 
+Format them like that:
 \## Title\<br><br>
 \*\*Time\*\*\<br><br>
 \*Version code:\* \``ReleaseNumber` _ `ReleaseVersion` _ `ddMMyy`\` \*- Version name:\* \`name\`\<br><br> 
@@ -49,14 +50,19 @@ Select a  commit:
 - [New Fragments and Functions](#new-fragments-and-functions)
 - [A lot again](#a-lot-again) 
 - [A little bit new and many, many comments](#a-little-bit-new-and-many-many-comments) 
-- [Registration and comments again](#registration-and-comments-again) (latest)
+- [Registration, profile, ana- and crashlytics, design and comments](#registration-profile-ana--and-crashlytics-design-and-comments)
+- [Some new Stuff and more ToDos](#some-new-stuff-and-more-todos)
+- [Fixed bugs and some more functional fragments](#fixed-bugs-and-some-more-functional-fragments) (latest)
 
 ## ToDo List
-- [ ] Comment every method, function, constructor and class itself for better understandability in the future.
+- [ ] Comment every method, function, constructor and class itself for better understandability
+ in the future.
 - [ ] A signed in user has to be in the audience according to his rank.
-- [ ] Find a way to save more data into Firebase Auth and Firestore and write a Cloud Function to connect them all.
-- [ ] Copy and rewrite all necessary code from the old app to enable all public accessible sites without an edit options.
-- [ ] read, copy, do and maybe extend old ToDo list from the [old account website](https://tobi.frdy.eu/neu/todo.php) by B3tterTogeth3r.
+- [ ] Find a way to save more data into Firebase Auth and Firestore and write a Cloud Function 
+to connect them all.
+- [ ] Copy and rewrite all necessary code from the old app to enable all public accessible sites 
+without an edit options.
+- [ ] read, copy, do and maybe extend old ToDo list from the [old accounting website](https://tobi.frdy.eu/neu/todo.php) by B3tterTogeth3r.
 - [ ] Find a way to save a checkbox in Firestore and recognise it in the app.
 
 - [ ] Program: 
@@ -80,41 +86,47 @@ Select a  commit:
   - [ ] display a table with members sorted by amount consumed
 - [ ] Transcript:
   - add/edit/delete new transcripts to events
-  - read existing transcripts only while chosenSemester > joinedSemester
-  
+  - read existing transcripts only while chosenSemester > joinedSemester  
 
 ## Fragments
 The names of the public fragments without their edit buttons and functions:
 - [x] about_us
   - A description of the fraternity, the place, the ways to the uni.
 - [x] chargen
-  - On first selection it just displays the current student board. By click on the top toolbar the user can change the displayed semester.
+  - On first selection it just displays the current student board. By click on the top toolbar
+   the user can change the displayed semester.
 - [x] chargen_phil
-  - On first selection it just displays the current "philister"-board. By click on the top toolbar the user can change the displayed semester.
+  - On first selection it just displays the current "philister"-board. By click on the top toolbar
+   the user can change the displayed semester.
 - [x] donate
-  - The IBANs to donate money to the fraternity are shown. If the user clicks on one IBAN, it will be copied to the clipboard. 
+  - The IBANs to donate money to the fraternity are shown. If the user clicks on one IBAN, 
+  it will be copied to the clipboard. 
 - [x] frat_ger
-  - Displays a short history of fraternities in Germany. Below is a list with the biggest fraternity umbrella organisation. 
+  - Displays a short history of fraternities in Germany. Below is a list with the biggest 
+  fraternity umbrella organisation. 
 - [x] frat_wue
   - Show a map and a table with all fraternities in Wuerzburg
 - [x] home
-  - displays the greeting of the current semester. below that is a slide show with images. Below the slide show is a list of all the notes of the _Semesterprogramm_.
+  - displays the greeting of the current semester. below that is a slide show with images. Below 
+  the slide show is a list of all the notes of the _Semesterprogramm_.
 - [x] news
-  - A list of news is shown. If a new one is written into Firestore, the user will get a push message or, if the app is open, the list will automatically update itself.
+  - A list of news is shown. If a new one is written into Firestore, the user will get a push 
+  message or, if the app is open, the list will automatically update itself.
 - [x] own_history
 - [ ] program
   - [x] A list with all the events in the selected semester is shown. Every element is clickable. 
-  - [ ] On click a dialog will open and show a detailed version of the event, including but not limited with the approximated end time and the locations address.
+  - [ ] On click a dialog will open and show a detailed version of the event, including but not 
+  limited to the approximated end time and the locations address.
 - [x] rooms
 
 The names of the private fragments
-- [ ] balance
+- [x] balance
 - [ ] drink
 - [ ] new_person
 - [ ] new_semester
 - [ ] transcript
 - [ ] user_control
-- [ ] profile
+- [x] profile
 - [ ] settings
 
 Fragments that can edit their displayed content:
@@ -131,32 +143,41 @@ Fragments that can edit their displayed content:
 - [ ] rooms
 
 ## New App
-I had to start a new App, because, after updates of Windows and AndroidStudio, the saved password to create signed apks was wrong and resulting in a new encryption key the SHA fingerprints changed.
+I had to start a new App, because, after updates of Windows and AndroidStudio, the saved password 
+to create signed apks was wrong and resulting in a new encryption key the SHA fingerprints changed.
 
 ## Whats new:
-- Filled the home.fragment with some custom functions. Cleaned up the code by extending the abstraction of CustomFragment.java with more abstract functions. Started to comment every function and public accessible variables for better code understanding. Changed the display of the image_slider.xml
+- Filled the home.fragment with some custom functions. Cleaned up the code by extending the 
+abstraction of CustomFragment.java with more abstract functions. Started to comment every function 
+and public accessible variables for better code understanding. Changed the display of the image_slider.xml
 - ImageDownload does not block the UI thread anymore.
-- Re-added the program.fragment, removed the add/edit site, because it is ugly to read in code and the ui.
+- Re-added the program.fragment, removed the add/edit site, because it is ugly to read in code and 
+the ui.
 - Redesigned code and ui of semester picker for better readability.
 - Created dialog.xml to use for every dialog. In it inflate e.g. dialog_item_sem_change.xml
 
 ## Chargen
 - Changed a bit of the old chargen.fragment code, because of the new design of CustomFragment.class
-- Added ability of ChangeSemesterDialog to start with the chosen semester. Also it changes the year depending on the users choice for WS or SS.
+- Added ability of ChangeSemesterDialog to start with the chosen semester. Also it changes the year
+ depending on the users choice for WS or SS.
 
 ## Chargen_phil
-- Changed_phil a bit of the old chargen_phil.fragment code, because of the new design of CustomFragment.class
+Changed_phil a bit of the old chargen_phil.fragment code, because of the new design of CustomFragment.class
 
 ## News
 13.05.2021 13:51
-- Copied news.fragment from the old app. The dialog including the menu and onclick functions are still disabled, because of the yet missing auth functions I still have to redo in order to create, edit and delete users from inside the app.
+Copied news.fragment from the old app. The dialog including the menu and onclick functions are still
+ disabled, because of the yet missing auth functions I still have to redo in order to create, edit 
+ and delete users from inside the app.
  
 ## New Fragments and Functions
 17.05.2021 00:30
 1. About Us
-   - Added content to about_us.Fragment. compared to the old one the data is now completely formatted and then displayed via Sites.java
+   - Added content to about_us.Fragment. compared to the old one the data is now completely 
+   formatted and then displayed via Sites.java
 2. utils.Sites.create()
-   - Creates a Layout with the given data. Using this class all displayed data will always look the same on the ui.
+   - Creates a Layout with the given data. Using this class all displayed data will always look the
+    same on the ui.
 3. utils.Slider.load()
    - Fills the given relative layout with the given amount of images. Here are 2 new ToDo items.
 4. Updated annotations in CustomFragment.java
@@ -173,20 +194,26 @@ I had to start a new App, because, after updates of Windows and AndroidStudio, t
     - Filled the content, fitted the new design, removed some unnecessary code.
     
 ## Analytics
-17.05.2021 
-
-Enabled Analytics and put some custom events in the app. I right now just track how often a user is clicking on a event in the program fragment. Also logging which sites the user is opening and how long the user is staying on them.
+17.05.2021<br>
+Enabled Analytics and put some custom events in the app. I right now just track how often a user is 
+clicking on a event in the program fragment. Also logging which sites the user is opening and how 
+long the user is staying on them.
 
 ## A lot again
 18.05.2021 02:05
 1. SharedPreferences: 
-   - Try to use this method for storing extra data about the user on the device longer than just one session. Don't quite know yet how to format the data, but I will figure something out.
+   - Try to use this method for storing extra data about the user on the device longer than just 
+   one session. Don't quite know yet how to format the data, but I will figure something out.
 2. Remote Config
-   - Enabled remote Config for the current semester. sometimes it still gets the "default" value, but I think, that was just a debug error. 
+   - Enabled remote Config for the current semester. sometimes it still gets the "default" value, 
+   but I think, that was just a debug error. 
 3. Login
-   - Completely redesigned the login and register methods. There are more sites in the dialog now and the code is hopefully easier to read.
+   - Completely redesigned the login and register methods. There are more sites in the dialog now 
+   and the code is hopefully easier to read.
 4. StartActivity
-   - Changed the way the signed in user should get rights. The signed in user has "admin" rights, if its uid is to be found in the current chargen document in the firestore database. also a signed in user has admin rights, if its uid is in the "Editor.super-admin" document.
+   - Changed the way the signed in user should get rights. The signed in user has "admin" rights, 
+   if its uid is to be found in the current chargen document in the firestore database. also a 
+   signed in user has admin rights, if its uid is in the "Editor.super-admin" document.
 
 ## A little bit new and many, many comments.
 27.05.2021 01:03
@@ -197,7 +224,9 @@ Enabled Analytics and put some custom events in the app. I right now just track 
 3. Login, LoginDialog
    - Finished the login routines. 
 4. ChangeSemesterDialog
-   - The design is new. It got a new headline. The user can choose the year and in the year the semester. Depending on the used constructor the Dialog changes the "chosenSemester" or joined semester of the user.
+   - The design is new. It got a new headline. The user can choose the year and in the year the 
+   semester. Depending on the used constructor the Dialog changes the "chosenSemester" or joined 
+   semester of the user.
 5. Comments
    1. Person.class
       - commented every method, function, constructor and the class itself
@@ -218,7 +247,9 @@ Enabled Analytics and put some custom events in the app. I right now just track 
    9. PictureListener.class
       - commented every listener and the interface itself
 6. Crashes
-   - because of some changes to the Person.class the app now crashes from time to time. This error has to be found in every class, the data structure in firestore adjusted and some other functions have to be adjusted to.
+   - because of some changes to the Person.class the app now crashes from time to time. This error 
+   has to be found in every class, the data structure in firestore adjusted and some other functions
+    have to be adjusted to.
 7. TODO
     - solved and added a couple of todos in some classes, the total amount is still the same
 
@@ -248,7 +279,29 @@ As always some I found some bugs and fixed hopefully all of them. But of course 
 10. ChangeSemesterDialog
     - can now show a past semester as starting value
 
-## Fixed bugs
-07.06.2021 19:45<br>
+## Some new Stuff and more ToDos
+05.06.2021 00:00<br>
 *Version code:* `2_3_070621` *- Version name:* `Alpha 2.3 07.06.2021`<br>
-Fixed some bugs which occurred while registering new users.
+First of all, I fixed some bugs occurring while registration. <br>
+The user can access now the settings page. In it the user can decide what page the one at the start 
+of the app shall be. also the user can subscribe to specific event types, not all of them, just some
+like i.g. "party", "lecture", "kneipe".<br>
+I am thinking about adding some small adds into the app. Like after each month in the program-fragment,
+the bottom of event details, every 5-8 news entries and at the bottom of the board. But I have to
+check out how that looks. Maybe less. They shouldn't be annoying. But if I do that I have to make a 
+new page with privacy policy, terms of use and all that bullshit for a private app. Maybe all that 
+crap can be put on a web site which is just linked to by the app.<br>
+Also I have to reorganize the "private" parts of the side nav. "internal" and "user management" do
+not describe there submenu points well anymore.<br>
+Sometimes the side nav does not display the email address of the signed in user. Why??
+
+## Fixed bugs and some more functional fragments
+17.06.2021 03:14<br>
+*Version code:* `2_4_170621` *- Version name:* `Alpha 2.4 17.06.2021`<br>
+- Fixed some bugs which occurred while registering new users.
+- Fixed a bug with changing the profile picture
+- Changed the formations in this file.
+- Added balance Fragment to the side nav of signed in users. In it the current balance of the 
+current user is displayed and refreshed in real time.
+- Added new function goHome. It can be called from anywhere with a fragment manager. Its purpose is
+to send the user back to his in app home screen.

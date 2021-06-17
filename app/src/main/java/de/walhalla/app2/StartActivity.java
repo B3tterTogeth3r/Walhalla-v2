@@ -139,7 +139,7 @@ public class StartActivity extends AppCompatActivity {
         }
         // [END check Firebase.setFirebase() results]
 
-        // [START Firebase Analytics Audience set up]
+        // [START Firebase Analytics Audience set up and get full Userdata]
         if (Firebase.USER == null) {
             Firebase.ANALYTICS.setUserProperty("user_rank", "guest");
         } else {
@@ -168,7 +168,7 @@ public class StartActivity extends AppCompatActivity {
                     });
         }
         updateProgressbar();
-        // [END Firebase Analytics Audience set up]
+        // [END Firebase Analytics Audience set up and get full Userdata]
     }
 
     /**

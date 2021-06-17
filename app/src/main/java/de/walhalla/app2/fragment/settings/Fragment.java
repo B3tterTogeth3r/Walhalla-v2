@@ -12,13 +12,24 @@ import androidx.appcompat.app.AlertDialog;
 
 import org.jetbrains.annotations.NotNull;
 
+import de.walhalla.app2.App;
 import de.walhalla.app2.R;
 import de.walhalla.app2.abstraction.CustomFragment;
 import de.walhalla.app2.firebase.Firebase;
 import de.walhalla.app2.utils.Variables;
 
+/**
+ * In this fragment the user has the possibility to change some settings. Like which kind of
+ * messages he wants to receive, which page the app should start to and maybe more in the future.
+ *
+ * @author B3tterTogeth3r
+ * @version 1.1
+ * @since 2.1
+ */
 public class Fragment extends CustomFragment {
     private static final String TAG = "settings.Fragment";
+    private final String[] sites = {"home", "program", "news", "drink"};
+    private String[] choices;
 
     @Override
     public void start() {
@@ -33,13 +44,23 @@ public class Fragment extends CustomFragment {
         LinearLayout layout = new LinearLayout(getContext());
         layout.setOrientation(LinearLayout.VERTICAL);
 
-        final String[] choices = {"home", "program", "news"};
+        if (Firebase.USER != null) {
+            try {
+                if (App.getUser().getData().getRank().equals("Aktiver") || App.getUser().getData().getRank().equals("Alter Herr")) {
+                    choices = new String[]{"Start", "Semesterprogramm", "Mitteilungen", "Getränke"};
+                }
+            } catch (Exception ignored) {
+                choices = new String[]{"Start", "Semesterprogramm", "Mitteilungen"};
+            }
+        } else {
+            choices = new String[]{"Start", "Semesterprogramm", "Mitteilungen"};
+        }
 
         AlertDialog ad = new AlertDialog.Builder(requireContext())
                 .setCancelable(false)
                 .setTitle(R.string.menu_settings)
                 .setItems(choices, (dialog, which) -> {
-                    String food = choices[which];
+                    String food = sites[which];
                     setStartSite(food);
                 }).create();
         ad.show();

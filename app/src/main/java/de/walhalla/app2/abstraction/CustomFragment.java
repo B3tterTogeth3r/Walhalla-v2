@@ -149,6 +149,7 @@ public abstract class CustomFragment extends Fragment implements AuthCustomListe
      *
      * @param view     inflated View created in {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}
      * @param inflater LayoutInflater for inflating new Layouts into the view
+     * @see #onViewCreated(View, Bundle)
      */
     public abstract void createView(@NonNull @NotNull View view, @NonNull @NotNull LayoutInflater inflater);
 

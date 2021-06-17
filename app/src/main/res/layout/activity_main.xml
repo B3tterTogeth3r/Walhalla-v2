@@ -122,6 +122,7 @@
         android:alpha="0.4"
         android:animateLayoutChanges="true"
         android:background="#000000"
+        android:padding="160dp"
         android:visibility="gone" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

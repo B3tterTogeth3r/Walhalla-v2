@@ -10,12 +10,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:id="@+id/fragment_container"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="4dp"
-        tools:ignore="UselessLeaf" />
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="4dp"
+            tools:ignore="UselessLeaf" />
+    </ScrollView>
 
 </RelativeLayout>
