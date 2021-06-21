@@ -174,7 +174,7 @@ public class Details extends DialogFragment implements OnMapReadyCallback {
                 " " + getResources().getString(R.string.clock);
         time.setText(helper);
 
-        //TODO Show Helper with there task at the bottom
+        //TODO Show Helpers with theire task at the bottom
     }
 
     @Override
@@ -266,8 +266,8 @@ public class Details extends DialogFragment implements OnMapReadyCallback {
                     .setData(CalendarContract.Events.CONTENT_URI)
                     .putExtra(CalendarContract.Events.ORGANIZER, Variables.Walhalla.MAIL_SENIOR)
                     .putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, false)
-                    .putExtra("dtstart", ((int) toSave.getStart().toDate().getTime()))// Only date part is considered when ALL_DAY is true
-                    .putExtra(CalendarContract.Events.DTEND, toSave.getEnd().toDate().getTime()) // Only date part is considered when ALL_DAY is true
+                    .putExtra(CalendarContract.Events.DTSTART, calStart)// Only date part is considered when ALL_DAY is true
+                    .putExtra(CalendarContract.Events.DTEND, calEnd) // Only date part is considered when ALL_DAY is true
                     .putExtra(CalendarContract.Events.TITLE, toSave.getTitle())
                     .putExtra(CalendarContract.Events.DESCRIPTION, toSave.getDescription())
                     .putExtra(CalendarContract.Events.EVENT_TIMEZONE, tz.getID())

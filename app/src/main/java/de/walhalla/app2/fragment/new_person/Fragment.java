@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 import de.walhalla.app2.R;
 import de.walhalla.app2.abstraction.CustomFragment;
+import de.walhalla.app2.firebase.Firebase;
 import de.walhalla.app2.utils.goHome;
 
 /**
@@ -52,7 +53,9 @@ public class Fragment extends CustomFragment {
     public void authChange() {
         //Go to home
         try {
-            new goHome(getParentFragmentManager());
+            if (Firebase.AUTHENTICATION.getCurrentUser() == null) {
+                new goHome(getParentFragmentManager());
+            }
         } catch (Exception e) {
             Log.e(TAG, "onCreate: ", e);
         }

@@ -32,15 +32,40 @@ public interface Kinds {
      */
     String CONTROL_DATA = "control_data";
     String PROFILE_DATA = "profile_data";
+
     String COLLAR_IO = "io";
     String COLLAR_O = "o";
     String COLLAR_HO = "ho";
+
     String PUNCTUALITY_CT = "ct";
     String PUNCTUALITY_ST = "st";
+
     String TIME_WHOLE_DAY = "whole_day";
     String TIME_LATER = "later";
     String TIME_INFO = "info";
     String TIME_TITLE = "title";
+
+    String DRINK_INVOICE = "invoice";
+    String DRINK_PAYMENT = "payment";
+    String DRINK_FINE = "fine";
+
+    String RANK_ACTIVE = "Aktiver";
+    String RANK_AH = "Alter Herr";
+    String RANK_GONE = "Ausgetreten";
+    String RANK_GUEST = "Gast";
+
+    /**
+     * To restrict wrong inputs and parsing errors only the following are allowed:
+     * <ul>
+     *     <li>RANK_ACTIVE</li>
+     *     <li>RANK_AH</li>
+     *     <li>RANK_GONE</li>
+     *     <li>RANK_GUEST</li>
+     * </ul>
+     */
+    @StringDef({RANK_ACTIVE, RANK_AH, RANK_GONE, RANK_GUEST})
+    @interface NameOfRank {
+    }
 
     /**
      * To restrict wrong inputs while trying to sign in or register
@@ -72,5 +97,15 @@ public interface Kinds {
      */
     @StringDef({PUNCTUALITY_CT, PUNCTUALITY_ST, TIME_WHOLE_DAY, TIME_LATER, TIME_INFO, TIME_TITLE})
     @interface Punctuality {
+    }
+
+    /**
+     * To restrict wrong inputs and parsing errors only the following are allowed:
+     * <ul>
+     *     <li>DRINK_INVOICE</li>
+     * </ul>
+     */
+    @StringDef({DRINK_INVOICE})
+    @interface Search {
     }
 }

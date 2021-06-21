@@ -5,6 +5,14 @@ import com.google.firebase.database.IgnoreExtraProperties;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Date;
+
+/**
+ * @author B3tterTogeth3r
+ * @version 1.0
+ * @see java.lang.Cloneable
+ * @since 2.5
+ */
 @IgnoreExtraProperties
 public class Drink implements Cloneable {
     private int amount = 0;
@@ -13,7 +21,28 @@ public class Drink implements Cloneable {
     private String uid;
     private String kind;
 
+    /**
+     * empty constructor
+     *
+     * @see #Drink(int, float, String, String) full constructor
+     * @since 1.0
+     */
     public Drink() {
+    }
+
+    /**
+     * @param totalAmount the amount of bottles
+     * @param priceEach   the price per bottle
+     * @param uid         the uid of the user
+     * @param name        the name of the drink
+     * @since 1.0
+     */
+    public Drink(int totalAmount, float priceEach, String uid, String name) {
+        this.amount = totalAmount;
+        this.date = new Timestamp(new Date());
+        this.price = priceEach;
+        this.uid = uid;
+        this.kind = name;
     }
 
     public int getAmount() {

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="8dp">
 
@@ -21,8 +21,7 @@
         <Button
             android:id="@+id/konto_aktive"
             style="@style/Custom.Button"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/footer_sub_1_content" />
+            android:layout_gravity="center_horizontal" />
 
         <TextView
             style="@style/Custom.Title"
@@ -32,8 +31,7 @@
         <Button
             android:id="@+id/konto_hbv"
             style="@style/Custom.Button"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/footer_sub_2_content" />
+            android:layout_gravity="center_horizontal" />
 
         <TextView
             style="@style/Custom.Title"
@@ -43,8 +41,7 @@
         <Button
             android:id="@+id/konto_kstv"
             style="@style/Custom.Button"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/footer_sub_3_content" />
+            android:layout_gravity="center_horizontal" />
 
         <TextView
             style="@style/Custom.Title"
@@ -54,8 +51,7 @@
         <Button
             android:id="@+id/konto_hbd_donate"
             style="@style/Custom.Button"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/footer_sub_4_content" />
+            android:layout_gravity="center_horizontal" />
 
     </LinearLayout>
-</RelativeLayout>
+</ScrollView>

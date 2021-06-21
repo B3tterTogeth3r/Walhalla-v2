@@ -124,7 +124,9 @@ public class Fragment extends CustomFragment {
     public void authChange() {
         //Go to home
         try {
-            new goHome(getParentFragmentManager());
+            if (Firebase.AUTHENTICATION.getCurrentUser() == null) {
+                new goHome(getParentFragmentManager());
+            }
         } catch (Exception e) {
             Log.e(TAG, "onCreate: ", e);
         }

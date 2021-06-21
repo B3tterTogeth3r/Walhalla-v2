@@ -103,6 +103,7 @@ public abstract class CustomFragment extends Fragment implements AuthCustomListe
             toolbar = requireActivity().findViewById(R.id.toolbar);
             toolbar.findViewById(R.id.custom_title).setVisibility(View.GONE);
             toolbar.setTitle("Walhalla");
+            toolbar.getMenu().clear();
             super.onViewCreated(view, savedInstanceState);
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="HardcodedText">
+
+    <Button
+        android:id="@+id/drink_kind_plus_ten"
+        style="@style/Custom.Button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@id/drink_kind_plus"
+        android:text="++" />
+
+    <Button
+        android:id="@+id/drink_kind_plus"
+        style="@style/Custom.Button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@id/drink_kind_stub"
+        android:text="+" />
+
+    <RelativeLayout
+        android:id="@+id/drink_kind_stub"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/drink_kind_name"
+            style="@style/Custom.Subtitle2"
+            android:layout_width="93dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="Martinsbräu Weizen"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/drink_kind_counter"
+            style="@style/Custom.Subtitle2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/drink_kind_name"
+            android:layout_centerHorizontal="true"
+            android:text="0"
+            android:textAlignment="center" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/drink_kind_minus"
+        style="@style/Custom.Button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerVertical="true"
+        android:layout_toStartOf="@id/drink_kind_stub"
+        android:text="-" />
+
+    <Button
+        android:id="@+id/drink_kind_minus_ten"
+        style="@style/Custom.Button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerVertical="true"
+        android:layout_toStartOf="@id/drink_kind_minus"
+        android:text="--" />
+</RelativeLayout>

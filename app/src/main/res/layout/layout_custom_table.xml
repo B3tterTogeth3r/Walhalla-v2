@@ -8,6 +8,8 @@
     android:layout_marginBottom="4dp"
     android:background="@drawable/border_round">
 
-    <TableLayout style="@style/Custom.TableLayout"/>
+    <TableLayout
+        android:id="@+id/table"
+        style="@style/Custom.TableLayout" />
 
 </HorizontalScrollView>

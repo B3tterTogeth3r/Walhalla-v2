@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="HardcodedText">
+
+    <TextView
+        android:id="@+id/drink_title"
+        style="@style/Custom.Subtitle2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="@string/drink_value" />
+
+    <EditText
+        android:id="@+id/drink_kind_counter"
+        style="@style/Custom.Subtitle2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/drink_title"
+        android:layout_centerHorizontal="true"
+        android:autofillHints="0"
+        android:ems="5"
+        android:hint="@string/menu_drink_amount"
+        android:inputType="number|numberDecimal|numberSigned"
+        android:text="0"
+        android:textAlignment="center" />
+
+    <EditText
+        android:id="@+id/drink_kind_description"
+        style="@style/Custom.Subtitle2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/drink_kind_counter"
+        android:layout_centerHorizontal="true"
+        android:autofillHints="0"
+        android:ems="8"
+        android:hint="@string/description"
+        android:inputType="text|textNoSuggestions"
+        android:textAlignment="center"
+        android:visibility="gone" />
+</RelativeLayout>

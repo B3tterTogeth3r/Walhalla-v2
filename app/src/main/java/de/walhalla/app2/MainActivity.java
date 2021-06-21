@@ -37,6 +37,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
@@ -49,6 +50,7 @@ import de.walhalla.app2.firebase.Firebase;
 import de.walhalla.app2.fragment.home.Fragment;
 import de.walhalla.app2.interfaces.AuthCustomListener;
 import de.walhalla.app2.interfaces.OpenExternal;
+import de.walhalla.app2.model.Person;
 import de.walhalla.app2.model.SocialMedia;
 import de.walhalla.app2.utils.ImageDownload;
 import de.walhalla.app2.utils.Variables;
@@ -56,7 +58,18 @@ import io.github.douglasjunior.androidSimpleTooltip.SimpleTooltip;
 
 import static de.walhalla.app2.firebase.Firebase.ANALYTICS;
 
-//TODO Comment functions, methods and everything else in here.
+/**
+ * The main activity of the whole app. The other activities are just for loading right now. All the
+ * data for the whole app is loaded here or in the {@link StartActivity}.
+ *
+ * @author B3tterTogeth3r
+ * @version 1.9
+ * @see de.walhalla.app2.interfaces.AuthCustomListener.send CustomAuthListener
+ * @see de.walhalla.app2.interfaces.OpenExternal OpenExternal
+ * @see NavigationView.OnNavigationItemSelectedListener NavigationView
+ * @see BottomNavigationView.OnNavigationItemSelectedListener BottomNavigation
+ * @since 1.0
+ */
 @SuppressLint("StaticFieldLeak")
 public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
@@ -131,40 +144,19 @@ public class MainActivity extends AppCompatActivity implements
 
         /* Open Fragment on Start */
         if (savedInstanceState == null) {
-            String value = PreferenceManager
-                    .getDefaultSharedPreferences(this)
-                    .getString(Variables.START_PAGE, "");
-            String gotNews = Variables
-                    .SHARED_PREFERENCES
-                    .getString(Variables.GOT_NEWS, "");
-            Log.e(TAG, "onCreate: " + gotNews);
-            if (!gotNews.equals("")) {
-                value = "news";
-                Variables.SHARED_PREFERENCES
-                        .edit()
-                        .putString(Variables.GOT_NEWS, "")
-                        .apply();
-            }
-            androidx.fragment.app.Fragment home;
-            switch (value) {
-                case "program":
-                    home = new de.walhalla.app2.fragment.program.Fragment();
-                    break;
-                case "news":
-                    home = new de.walhalla.app2.fragment.news.Fragment();
-                    break;
-                case "drink":
-                    home = new de.walhalla.app2.fragment.drink.Fragment();
-                    break;
-                case "home":
-                default:
-                    home = new Fragment();
-                    break;
-            }
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, home).commit();
+            // [TODO DEFAULT]
+            // getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, findStartPage()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new de.walhalla.app2.fragment.drink.Fragment()).commit();
         }
     }
 
+    /**
+     * loading the social media links from the database
+     *
+     * @analytics setting the start time
+     * @since 1.2
+     */
     @Override
     protected void onStart() {
         super.onStart();
@@ -194,9 +186,12 @@ public class MainActivity extends AppCompatActivity implements
         //Set beginning values for the analyticsData
         start_date = Calendar.getInstance(Variables.LOCALE).getTime();
         analyticsData.putString(FirebaseAnalytics.Param.START_DATE, start_date.toString());
-        analyticsData.putString(Variables.Analytics.MENU_ITEM_NAME, "home");
     }
 
+    /**
+     * removing any listeners, if any is still there. Than hiding the keyboard. Afterwards closing
+     * the app.
+     */
     @Override
     public void onStop() {
         super.onStop();
@@ -215,6 +210,39 @@ public class MainActivity extends AppCompatActivity implements
                 || super.onSupportNavigateUp();
     }
 
+    /**
+     * Finding the page the app should start with.
+     *
+     * @return the fragment to display
+     * @analytics setting the current page to that.
+     */
+    private androidx.fragment.app.Fragment findStartPage() {
+        String value = PreferenceManager
+                .getDefaultSharedPreferences(this)
+                .getString(Variables.START_PAGE, "");
+        androidx.fragment.app.Fragment home;
+        switch (value) {
+            case "program":
+                home = new de.walhalla.app2.fragment.program.Fragment();
+                break;
+            case "news":
+                home = new de.walhalla.app2.fragment.news.Fragment();
+                break;
+            case "drink":
+                home = new de.walhalla.app2.fragment.drink.Fragment();
+                break;
+            case "home":
+            default:
+                home = new Fragment();
+                break;
+        }
+        analyticsData.putString(Variables.Analytics.MENU_ITEM_NAME, value);
+        return home;
+    }
+
+    /**
+     * Filling the left side nav with data
+     */
     private void fillSideNav() {
         boolean isLogin = false;
         try {
@@ -239,6 +267,7 @@ public class MainActivity extends AppCompatActivity implements
                         Log.e(TAG, "fillSideNav: profile picture download failed", e);
                         Firebase.CRASHLYTICS.log("profile picture download failed");
                         Firebase.CRASHLYTICS.recordException(e);
+                        image.setImageResource(R.drawable.wappen_herz);
                     }
                 } else {
                     image.setImageResource(R.drawable.wappen_herz);
@@ -284,7 +313,7 @@ public class MainActivity extends AppCompatActivity implements
             loginMenu.add(0, R.string.menu_profile, 0, R.string.menu_profile)
                     .setIcon(R.drawable.ic_person);
 
-            loginMenu.add(0, R.string.menu_beer, 0, R.string.menu_beer) //Change appearance depending on who is logged in
+            loginMenu.add(0, R.string.menu_drinks, 0, R.string.menu_drinks) //Change appearance depending on who is logged in
                     .setIcon(R.drawable.ic_beer);
             loginMenu.add(0, R.string.menu_balance, 0, R.string.menu_balance);
 
@@ -330,6 +359,13 @@ public class MainActivity extends AppCompatActivity implements
         navigationView.invalidate();
     }
 
+    /**
+     * Reacting to the click on a item in the left side menu.
+     *
+     * @param item value of the selected MenuItem
+     * @return side change successful or not
+     * @analytics setting the analytics data for the clicked menu item and uploading them.
+     */
     @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -355,6 +391,12 @@ public class MainActivity extends AppCompatActivity implements
             case R.string.menu_logout:
                 itemName = getString(R.string.menu_logout);
                 try {
+                    //Remove fcm key from user
+                    Firebase.FIRESTORE
+                            .collection("Person")
+                            .document(App.getUser().getId())
+                            .update(Person.FCM_TOKEN, FieldValue.delete());
+
                     Firebase.AUTHENTICATION.signOut();
                     ANALYTICS.setUserProperty("user_rank", "guest");
                     Firebase.Messaging.UnsubscribeTopic(Firebase.Messaging.TOPIC_INTERNAL);
@@ -416,8 +458,8 @@ public class MainActivity extends AppCompatActivity implements
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new de.walhalla.app2.fragment.profile.Fragment()).commit();
                 break;
-            case R.string.menu_beer:
-                itemName = getString(R.string.menu_beer);
+            case R.string.menu_drinks:
+                itemName = getString(R.string.menu_drinks);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new de.walhalla.app2.fragment.drink.Fragment()).commit();
                 break;
@@ -570,6 +612,10 @@ public class MainActivity extends AppCompatActivity implements
         return false;
     }
 
+    /**
+     * If the user presses the back button, the side menu is going to be opened. If the menu is
+     * already open, the user can press the button again to close the app.
+     */
     @Override
     public void onBackPressed() {
         //If drawer is open, show possibility to close the app via the back-button.
@@ -588,6 +634,10 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     * If the status of Firebase Authentication changes, the {@link #fillSideNav()} will be run
+     * again
+     */
     @Override
     public void onAuthChange() {
         runOnUiThread(this::fillSideNav);

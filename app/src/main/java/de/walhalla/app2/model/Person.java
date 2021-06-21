@@ -11,6 +11,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.walhalla.app2.interfaces.Kinds;
+
 /**
  * The {@code Person} class represents persons with their full
  * data needed for the app to work properly. The class has an empty
@@ -31,6 +33,7 @@ public class Person implements Cloneable {
     public static final String BALANCE = "balance";
     public static final String DOB = "doB";
     public static final String FIRST_NAME = "first_Name";
+    public static final String FCM_TOKEN = "fcm_token";
     public static final String JOINED = "joined";
     public static final String LAST_NAME = "last_Name";
     public static final String MAIL = "mail";
@@ -62,12 +65,13 @@ public class Person implements Cloneable {
     private float balance = 0f;
     private String picture_path;
     private Map<String, Object> rankSettings = new HashMap<>();
+    private String fcm_token;
 
     /**
      * creating a new person with no values.
      *
      * @see Person Class description
-     * @see #Person(String, String, String, String, String, String, String, String, String, Map, Map, int, Timestamp, float, String, Map) Complete Constructor
+     * @see #Person(String, String, String, String, String, String, String, String, String, Map, Map, int, Timestamp, float, String, Map, String) Complete Constructor
      */
     public Person() {
     }
@@ -91,8 +95,10 @@ public class Person implements Cloneable {
      * @param major        the major or the occupation title
      * @param id           id of the user
      * @param rankSettings the customised settings by the user
+     * @param fcm_token    the tokens used to send push messages to this user.
      */
-    public Person(String id, String poB, String first_Name, String last_Name, String mail, String mobile, String rank, String uid, String major, Map<String, Object> address, Map<String, Object> address_2, int joined, Timestamp doB, float balance, String picture_path, Map<String, Object> rankSettings) {
+    public Person(String id, String poB, String first_Name, String last_Name, String mail, String mobile, String rank, String uid, String major, Map<String, Object> address, Map<String, Object> address_2, int joined, Timestamp doB, float balance, String picture_path, Map<String, Object> rankSettings, String fcm_token) {
+        this.fcm_token = fcm_token;
         this.id = id;
         this.PoB = poB;
         this.first_Name = first_Name;
@@ -262,7 +268,7 @@ public class Person implements Cloneable {
      * @param rank name of the rank
      * @since 1.0
      */
-    public void setRank(String rank) {
+    public void setRank(@Kinds.NameOfRank String rank) {
         this.rank = rank;
     }
 
@@ -346,7 +352,7 @@ public class Person implements Cloneable {
      * @since 2.0
      * @deprecated only one address is needed and set.
      */
-    public void setAddress_2(Map<String, Object> address_2){
+    public void setAddress_2(Map<String, Object> address_2) {
         this.address_2 = address_2;
     }
 
@@ -375,6 +381,8 @@ public class Person implements Cloneable {
     }
 
     /**
+     * The <code>default</code> value is 0
+     *
      * @return value of the persons balance
      * @since 1.0
      */
@@ -396,7 +404,7 @@ public class Person implements Cloneable {
      */
     @Exclude
     public void addToBalance(float value) {
-        balance -= value;
+        balance = balance - value;
     }
 
     /**
@@ -405,7 +413,7 @@ public class Person implements Cloneable {
      */
     @Exclude
     public void personPaid(float amount) {
-        balance += amount;
+        balance = balance + amount;
     }
 
     /**
@@ -484,6 +492,14 @@ public class Person implements Cloneable {
         this.rankSettings = rankSettings.toMap();
     }
 
+    public String getFcm_token() {
+        return fcm_token;
+    }
+
+    public void setFcm_token(String fcm_token) {
+        this.fcm_token = fcm_token;
+    }
+
     /**
      * @return value of {@code first_Name} and {@code last_Name} combined with a space
      * @throws UnsupportedOperationException if one of the values is <tt>null</tt> or empty
@@ -539,6 +555,7 @@ public class Person implements Cloneable {
         data.put(RANK, getRank());
         data.put(RANK_SETTINGS, getRankSettings());
         data.put(UID, getUid());
+        data.put(FCM_TOKEN, getFcm_token());
 
         return data;
     }

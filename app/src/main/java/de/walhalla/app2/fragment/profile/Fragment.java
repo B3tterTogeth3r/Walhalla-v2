@@ -181,7 +181,9 @@ public class Fragment extends CustomFragment {
     public void authChange() {
         //Go to home
         try {
-            new goHome(getParentFragmentManager());
+            if (Firebase.AUTHENTICATION.getCurrentUser() == null) {
+                new goHome(getParentFragmentManager());
+            }
         } catch (Exception e) {
             Log.e(TAG, "onCreate: ", e);
         }
@@ -306,10 +308,10 @@ public class Fragment extends CustomFragment {
     }
 
     private void updateProgressbar() {
-        downloadProgress += (100f / 5);
+        downloadProgress += (100f / 6) + 1;
         progressBar.setProgress((int) downloadProgress);
         Log.d(TAG, String.valueOf(downloadProgress));
-        if (downloadProgress == 100) {
+        if (downloadProgress >= 100) {
             progressBar.setVisibility(View.GONE);
             Snackbar.make(MainActivity.parentLayout, R.string.upload_complete, Snackbar.LENGTH_LONG).show();
             MainActivity.authChange.onAuthChange();

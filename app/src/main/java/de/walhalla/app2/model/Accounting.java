@@ -1,36 +1,54 @@
 package de.walhalla.app2.model;
 
-import androidx.annotation.Nullable;
-
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.IgnoreExtraProperties;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import de.walhalla.app2.utils.Variables;
 
+/**
+ * @author B3tterTogeth3r
+ * @version 1.0
+ * @see java.lang.Cloneable
+ * @since 2.5
+ */
 @IgnoreExtraProperties
 public class Accounting implements Cloneable {
-    private int id;
-    private String date;
-    private float income;
-    private float expense;
+    private String id;
+    private Timestamp date;
+    private float income = 0f;
+    private float expense = 0f;
     private String event;
     private String purpose;
     private String add;
     private int recipe;
 
+    /** public empty constructor
+     * @see #Accounting(Timestamp, float, float, String, String) Accounting.drinks
+     * @see #Accounting(Timestamp, float, float, String, String, String) Accounting.expense
+     * @see #Accounting(Timestamp, float, float, String, String, String, int) Accounting.complete
+     */
     public Accounting() {
     }
 
-    public Accounting(int id, String date, float expense, float income, String event, String purpose, String add, int recipe) {
-        this.id = id;
+    /**
+     * An entry formatted to put an account movement into the collection <b>with</b> a recipe
+     *
+     * @param date    the date of the entry
+     * @param expense amount of expense taken
+     * @param income  amount of income gotten
+     * @param event   id of the event
+     * @param purpose description of the expense/income
+     * @param add     additional description, mostly used for expenses/incomes outside of events
+     * @param recipe  to every expense should be a recipe with a number
+     * @since 1.0
+     */
+    public Accounting(Timestamp date, float expense, float income, String event, String purpose, String add, int recipe) {
         this.date = date;
         this.expense = expense;
         this.income = income;
@@ -40,47 +58,61 @@ public class Accounting implements Cloneable {
         this.recipe = recipe;
     }
 
+    /**
+     * An entry formatted to put account movements into the collection <b>without</b> a recipe
+     *
+     * @param date    the date of the entry
+     * @param expense amount of expense taken
+     * @param income  amount of income gotten
+     * @param event   id of the event
+     * @param purpose description of the expense/income
+     * @param add     additional description, mostly used for expenses/incomes outside of events
+     * @since 1.0
+     */
+    public Accounting(Timestamp date, float expense, float income, String event, String purpose, String add) {
+        this.date = date;
+        this.expense = expense;
+        this.income = income;
+        this.event = event;
+        this.purpose = purpose;
+        this.add = add;
+    }
+
+    /**
+     * An entry formatted to put drinks into the account collection of firestore.
+     *
+     * @param date    the date of the entry
+     * @param expense amount of expense taken
+     * @param income  amount of income gotten
+     * @param purpose description of the expense/income
+     * @param add     additional description, mostly used for expenses/incomes outside of events
+     * @since 1.0
+     */
+    public Accounting(Timestamp date, float expense, float income, String purpose, String add) {
+        this.date = date;
+        this.expense = expense;
+        this.income = income;
+        this.event = event;
+        this.purpose = purpose;
+        this.add = add;
+    }
+
     @Exclude
-    public int getId() {
+    public String getId() {
         return id;
     }
 
     @Exclude
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    @Nullable
-    public Date getDate() {
-        SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd", Variables.LOCALE);
-        Date datum;
-        try {
-            datum = formatter2.parse(date);
-            return datum;
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return null;
-        }
+    public Timestamp getDate() {
+        return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Timestamp date) {
         this.date = date;
-    }
-
-    @Exclude
-    public String getDateFormat() {
-        SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd", Variables.LOCALE);
-        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yy", Variables.LOCALE);
-        Date datum;
-        String datumNeu;
-        try {
-            datum = formatter2.parse(date);
-            assert datum != null;
-            datumNeu = format.format(datum);
-            return datumNeu;
-        } catch (ParseException e) {
-            return date;
-        }
     }
 
     public float getIncome() {
@@ -91,6 +123,7 @@ public class Accounting implements Cloneable {
         this.income = income;
     }
 
+    @Exclude
     public String getIncomeFormat() {
         String format = String.format(Variables.LOCALE, "%.2f", getIncome());
         return "€ " + format;
@@ -140,10 +173,6 @@ public class Accounting implements Cloneable {
 
     public void setRecipe(int recipe) {
         this.recipe = recipe;
-    }
-
-    public String getDateString() {
-        return date;
     }
 
     @NotNull

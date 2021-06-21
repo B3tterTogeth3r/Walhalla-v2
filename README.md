@@ -52,7 +52,8 @@ Select a  commit:
 - [A little bit new and many, many comments](#a-little-bit-new-and-many-many-comments) 
 - [Registration, profile, ana- and crashlytics, design and comments](#registration-profile-ana--and-crashlytics-design-and-comments)
 - [Some new Stuff and more ToDos](#some-new-stuff-and-more-todos)
-- [Fixed bugs and some more functional fragments](#fixed-bugs-and-some-more-functional-fragments) (latest)
+- [Fixed bugs and some more functional fragments](#fixed-bugs-and-some-more-functional-fragments)
+- [Portrait mode, drinks, fcm and more](#portrait-mode-drinks-fcm-and-more) (latest)
 
 ## ToDo List
 - [ ] Comment every method, function, constructor and class itself for better understandability
@@ -305,3 +306,21 @@ Sometimes the side nav does not display the email address of the signed in user.
 current user is displayed and refreshed in real time.
 - Added new function goHome. It can be called from anywhere with a fragment manager. Its purpose is
 to send the user back to his in app home screen.
+
+## Portrait mode, drinks, fcm and more
+21.06.2021 03:55<br>
+*Version code:* `2_5_210621` *- Version name:* `Alpha 2.5 21.06.2021`<br>
+- Force app to always be in portrait mode.
+- added fcm to person to send personalized push messages
+  - on every app load the fcm token gets updated in Firestore
+  - if fcm token changes for a signed in user while app is running, it gets updated for sign in users
+- drinks fragment:
+  - added four menu items
+    1. Send reminder: Send a reminder push message to all signed in users who have a fcm token and 
+    whose balance is below zero (Maybe send a mail too). This does not work yet. To get it to work 
+    I have to write a different kind of cloud function. But I am too tiered right now for that.
+    2. Add invoice: A dialog to add drinks to this persons, reduce the price of that drinks from
+    that persons balance and upload the drink.class object to firestore
+    3. Add payment: A person made a payment. The amount will be added to the persons balance and to
+    the account of the current semester.
+    4. Fine: A person got a fine. It can be added here and will be removed from the persons balance.
